@@ -1,0 +1,49 @@
+/* تنسيق مشترك لصفحات الموقع (الرئيسية وصفحات الدورات) */
+:root{
+  --bg:#F2F5EC;--surface:#fff;--surface-2:#E7EEDF;--ink:#152B1C;--muted:#58705E;--line:#D3DECB;
+  --leaf:#2E8B47;--leaf-deep:#1C5A2E;--leaf-soft:#DDEFD9;--sun:#D9920F;--sun-soft:#FBEFD2;
+  --water:#2A74B5;--water-soft:#DCEAF6;--r:18px;--shadow:0 6px 20px rgba(21,43,28,.08);
+  --f-display:"Noto Kufi Arabic","IBM Plex Sans Arabic",Tahoma,sans-serif;
+  --f-body:"IBM Plex Sans Arabic",Tahoma,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.8}
+a{color:inherit}
+.wrap{max-width:980px;margin-inline:auto;padding-inline:18px}
+.top{background:var(--surface);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;height:62px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--f-display);font-weight:800;font-size:18px}
+.logo i{width:36px;height:36px;border-radius:11px;background:var(--leaf);display:grid;place-items:center;color:#fff;font-style:normal}
+.btn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:14px;padding:11px 20px;font:700 16px var(--f-display);background:var(--leaf);color:#fff;text-decoration:none;cursor:pointer}
+.btn.sun{background:var(--sun)}
+.btn.ghost{background:transparent;color:var(--leaf);border:1.5px solid var(--leaf)}
+.hero{margin:22px 0;border-radius:26px;overflow:hidden;position:relative;min-height:300px;display:flex;align-items:flex-end;box-shadow:var(--shadow);background:var(--leaf-deep)}
+.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(8,26,14,.9) 10%,rgba(8,26,14,.35) 65%,rgba(8,26,14,.05))}
+.hero-in{position:relative;z-index:1;color:#fff;padding:26px}
+.hero h1{font-family:var(--f-display);font-size:clamp(26px,5vw,40px);line-height:1.4;margin:0 0 6px}
+.hero p{margin:0 0 16px;opacity:.92;max-width:560px}
+h2{font-family:var(--f-display);font-size:22px;margin:30px 0 12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;box-shadow:var(--shadow);text-decoration:none;display:block}
+.card h3{font-family:var(--f-display);margin:0 0 4px;font-size:18px}
+.card p{margin:0;color:var(--muted);font-size:15px}
+.card.soon{opacity:.6;box-shadow:none}
+.tag{display:inline-block;font-size:12.5px;font-weight:700;padding:2px 10px;border-radius:99px;background:var(--leaf-soft);color:var(--leaf-deep);margin-bottom:8px}
+.tag.free{background:var(--sun-soft);color:#8a5a05}
+.unit{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);margin-bottom:14px;overflow:hidden}
+.unit summary{cursor:pointer;padding:14px 18px;font-family:var(--f-display);font-weight:700;font-size:17px;background:var(--surface-2);list-style:none;display:flex;justify-content:space-between}
+.unit summary::after{content:"＋";color:var(--muted)}
+.unit[open] summary::after{content:"－"}
+.unit ol{margin:0;padding:6px 0;list-style:none}
+.unit li{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 18px;border-top:1px solid var(--line)}
+.unit li:first-child{border-top:0}
+.unit li .n{font-family:var(--f-display);color:var(--muted);margin-inline-end:10px;font-size:14px}
+.unit li a{font-weight:700;color:var(--leaf);text-decoration:none}
+.lock{font-size:13px;color:var(--muted)}
+.cta{margin:28px 0;padding:22px;border-radius:22px;background:var(--leaf-deep);color:#fff;display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between}
+.cta h3{margin:0;font-family:var(--f-display)}
+.cta p{margin:4px 0 0;opacity:.85;font-size:15px}
+.foot{text-align:center;color:var(--muted);font-size:14px;padding:30px 0 40px}
+.crumb{font-size:14px;color:var(--muted);margin-top:18px}
+.crumb a{color:var(--leaf);text-decoration:none}

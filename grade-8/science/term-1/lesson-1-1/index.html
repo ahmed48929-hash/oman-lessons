@@ -1,0 +1,1531 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>[hidden]{display:none!important}body{margin:0}img{max-width:100%}</style>
+<title>التمثيل الضوئي ١-١</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@500;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap">
+<style>
+/* =========================================================
+   درس تفاعلي: ١-١ التمثيل الضوئي — العلوم للصف الثامن
+   التخطيط: تطبيق بصفحات (هيدر + منطقة عرض + شريط تنقل ثابت + تذييل)
+   الهوية: أخضر الكلوروفيل + ذهبي ضوء الشمس + أزرق الماء
+   ========================================================= */
+:root{
+  --bg:#F2F5EC;        /* أرضية بلون ورقة نبات فاتح */
+  --surface:#FFFFFF;
+  --surface-2:#E7EEDF;
+  --ink:#152B1C;       /* حبر أخضر داكن */
+  --muted:#58705E;
+  --line:#D3DECB;
+  --leaf:#2E8B47;      /* أخضر الكلوروفيل */
+  --leaf-deep:#1C5A2E;
+  --leaf-soft:#DDEFD9;
+  --sun:#D9920F;       /* ذهبي الضوء */
+  --sun-soft:#FBEFD2;
+  --water:#2A74B5;
+  --water-soft:#DCEAF6;
+  --air:#6B5BB0;       /* ثاني أكسيد الكربون / الهواء */
+  --air-soft:#E8E4F6;
+  --good:#23894A; --good-soft:#DAF1E1;
+  --bad:#C2412F;  --bad-soft:#F9E1DC;
+  --shadow:0 1px 2px rgba(21,43,28,.06),0 8px 24px rgba(21,43,28,.08);
+  --f-display:"Noto Kufi Arabic","IBM Plex Sans Arabic",Tahoma,sans-serif;
+  --f-body:"IBM Plex Sans Arabic","Noto Kufi Arabic",Tahoma,"Segoe UI",sans-serif;
+  --r:18px;
+  --nav-h:64px; --foot-h:26px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0D1611; --surface:#15221A; --surface-2:#1C2D22; --ink:#E4EEE5; --muted:#9BB2A1; --line:#28392D;
+    --leaf:#5CC274; --leaf-deep:#8FDDA0; --leaf-soft:#1D3A25; --sun:#F0B544; --sun-soft:#3A2E14;
+    --water:#6BB0E8; --water-soft:#16314A; --air:#A99AF0; --air-soft:#2A2547;
+    --good:#5CC274; --good-soft:#173A22; --bad:#F08A78; --bad-soft:#41201B;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.35); color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0D1611; --surface:#15221A; --surface-2:#1C2D22; --ink:#E4EEE5; --muted:#9BB2A1; --line:#28392D;
+  --leaf:#5CC274; --leaf-deep:#8FDDA0; --leaf-soft:#1D3A25; --sun:#F0B544; --sun-soft:#3A2E14;
+  --water:#6BB0E8; --water-soft:#16314A; --air:#A99AF0; --air-soft:#2A2547;
+  --good:#5CC274; --good-soft:#173A22; --bad:#F08A78; --bad-soft:#41201B;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.35); color-scheme:dark;
+}
+
+/* ---------- أساسيات ---------- */
+*{box-sizing:border-box}
+html{direction:rtl}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.85;
+  -webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--surface)}
+h1,h2,h3,h4{font-family:var(--f-display);line-height:1.5;margin:0;text-wrap:balance;color:var(--ink)}
+p{margin:0}
+button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--sun);outline-offset:2px;border-radius:8px}
+img{display:block}
+.en{font-family:Georgia,"Times New Roman",serif;font-weight:700;direction:ltr;unicode-bidi:isolate}
+.wrap{max-width:1100px;margin-inline:auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* ---------- الهيدر ---------- */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:var(--surface);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:14px;padding-block:10px}
+.brand{display:flex;align-items:center;gap:10px;min-width:0;flex:1}
+.brand-num{font-family:var(--f-display);font-weight:800;color:#fff;background:var(--leaf);border-radius:12px;padding:2px 10px;font-size:15px;white-space:nowrap}
+.brand h1{font-size:18px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brand small{display:block;font-family:var(--f-body);font-weight:500;color:var(--muted);font-size:12.5px;line-height:1.3}
+.prog{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.prog-bar{width:120px;height:8px;border-radius:99px;background:var(--surface-2);overflow:hidden}
+.prog-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--leaf),var(--sun));border-radius:99px;transition:width .5s}
+.theme-btn{border:1px solid var(--line);background:var(--surface);border-radius:12px;width:40px;height:40px;display:grid;place-items:center}
+.theme-btn svg{width:20px;height:20px}
+@media (max-width:560px){.prog-bar{width:64px}.brand small{display:none}}
+
+/* ---------- منطقة العرض ---------- */
+main{padding-bottom:calc(var(--nav-h) + var(--foot-h) + 28px + env(safe-area-inset-bottom,0px))}
+.page{animation:pageIn .45s ease both;padding-block:22px 10px}
+@keyframes pageIn{from{opacity:.0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.crumb{font-size:13px;color:var(--muted);margin-bottom:6px;display:flex;gap:6px;flex-wrap:wrap}
+.crumb b{color:var(--leaf);font-weight:600}
+.ptitle{font-size:clamp(24px,4vw,34px);font-weight:800;margin-bottom:6px}
+.lead{color:var(--muted);max-width:62ch;margin-bottom:22px}
+.stack{display:flex;flex-direction:column;gap:18px}
+.grid2{display:grid;grid-template-columns:1.1fr .9fr;gap:22px;align-items:start}
+.grid2>*{min-width:0}
+@media (max-width:820px){.grid2{grid-template-columns:1fr}}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px;box-shadow:var(--shadow)}
+.note{font-size:14px;color:var(--muted)}
+.btn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:14px;padding:10px 18px;font-weight:600;background:var(--leaf);color:#fff;transition:transform .15s,filter .15s}
+.btn:hover{filter:brightness(1.07)} .btn:active{transform:scale(.97)}
+.btn.ghost{background:transparent;color:var(--leaf-deep);border:1.5px solid var(--leaf)}
+.btn.sun{background:var(--sun);color:#1d1500}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.btn svg{width:18px;height:18px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.tag{display:inline-block;font-size:12.5px;font-weight:600;padding:2px 10px;border-radius:99px;background:var(--leaf-soft);color:var(--leaf-deep)}
+.tag.sun{background:var(--sun-soft);color:var(--sun)}
+.tag.water{background:var(--water-soft);color:var(--water)}
+.tag.air{background:var(--air-soft);color:var(--air)}
+mark.hl{background:linear-gradient(transparent 55%,var(--sun-soft) 55%);color:inherit;padding-inline:2px}
+.term{font-weight:700;color:var(--leaf-deep)}
+
+/* ---------- الصفحة الرئيسية ---------- */
+.hero{position:relative;border-radius:26px;overflow:hidden;min-height:260px;display:flex;align-items:flex-end;box-shadow:var(--shadow);background:var(--leaf-deep)}
+.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(8,26,14,.88) 10%,rgba(8,26,14,.35) 60%,rgba(8,26,14,.05))}
+.hero-in{position:relative;z-index:1;padding:26px;color:#fff;max-width:640px}
+.hero-in .k{display:inline-flex;gap:8px;align-items:center;font-size:13px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);padding:3px 12px;border-radius:99px;margin-bottom:10px;backdrop-filter:blur(4px)}
+.hero-in h2{color:#fff;font-size:clamp(30px,6vw,52px);font-weight:800;line-height:1.25}
+.hero-in h2 .en{font-size:.45em;font-weight:400;opacity:.85;display:block;margin-top:4px;letter-spacing:.04em}
+.hero-in p{color:#E4F2E6;margin-top:8px;font-size:16px}
+.mainnav{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:22px}
+@media (max-width:900px){.mainnav{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:420px){.mainnav{grid-template-columns:1fr}}
+.mcard{position:relative;text-align:start;border:1px solid var(--line);background:var(--surface);border-radius:22px;padding:20px 18px 18px;display:flex;flex-direction:column;gap:10px;box-shadow:var(--shadow);transition:transform .25s,border-color .25s;overflow:hidden;min-height:190px}
+.mcard:hover{transform:translateY(-4px);border-color:var(--c)}
+.mcard .ic{width:64px;height:64px;border-radius:18px;display:grid;place-items:center;background:var(--cs);color:var(--c)}
+.mcard .ic svg{width:36px;height:36px}
+.mcard h3{font-size:19px}
+.mcard p{font-size:14px;color:var(--muted);line-height:1.7}
+.mcard .meter{margin-top:auto;height:6px;border-radius:99px;background:var(--surface-2);overflow:hidden}
+.mcard .meter i{display:block;height:100%;width:0;background:var(--c);transition:width .5s}
+.mcard::before{content:"";position:absolute;inset:auto -30px -60px auto;width:140px;height:140px;border-radius:50%;background:var(--cs);opacity:.6;z-index:0}
+.mcard>*{position:relative;z-index:1}
+
+/* ---------- لوحات الأيقونات الفرعية ---------- */
+.hub{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.tile{display:flex;align-items:center;gap:14px;text-align:start;border:1px solid var(--line);background:var(--surface);border-radius:18px;padding:14px;transition:transform .2s,border-color .2s;box-shadow:var(--shadow)}
+.tile:hover{transform:translateY(-3px);border-color:var(--leaf)}
+.tile .ic{flex:none;width:52px;height:52px;border-radius:15px;display:grid;place-items:center;background:var(--leaf-soft);color:var(--leaf)}
+.tile .ic svg{width:28px;height:28px}
+.tile b{display:block;font-family:var(--f-display);font-size:15.5px;line-height:1.5}
+.tile small{color:var(--muted);font-size:13px;line-height:1.5;display:block}
+.tile .ok{margin-inline-start:auto;flex:none;width:24px;height:24px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;color:transparent}
+.tile.done .ok{background:var(--good);border-color:var(--good);color:#fff}
+.tile .ok svg{width:14px;height:14px}
+.tile .num{font-family:var(--f-display);font-weight:800;color:var(--muted);font-size:13px}
+
+/* ---------- الأهداف ---------- */
+.goals{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px;counter-reset:g}
+.goals li{display:flex;gap:16px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px 18px;box-shadow:var(--shadow);animation:pageIn .5s both}
+.goals li:nth-child(2){animation-delay:.08s}.goals li:nth-child(3){animation-delay:.16s}
+.goals .n{flex:none;width:46px;height:46px;border-radius:14px;background:var(--leaf);color:#fff;font-family:var(--f-display);font-weight:800;font-size:20px;display:grid;place-items:center}
+.goals p{font-size:18px;font-weight:500}
+.goal-head{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+
+/* ---------- الشكل والصور ---------- */
+figure{margin:0}
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px;box-shadow:var(--shadow)}
+.fig img{width:100%;border-radius:12px;cursor:zoom-in;background:#fff}
+.fig figcaption{font-size:14px;color:var(--muted);text-align:center;margin-top:8px}
+.zoomhint{display:inline-flex;align-items:center;gap:4px;font-size:12px;color:var(--muted)}
+.zoomhint svg{width:14px;height:14px}
+
+/* ---------- كشف المحتوى بالخطوات ---------- */
+.reveal{display:flex;flex-direction:column;gap:12px}
+.rv{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 16px;display:flex;gap:12px;align-items:flex-start;transition:opacity .3s,transform .3s}
+.rv.off{opacity:.25;transform:translateX(-6px);filter:blur(1.5px);pointer-events:none}
+.rv .d{flex:none;width:30px;height:30px;border-radius:50%;background:var(--sun-soft);color:var(--sun);display:grid;place-items:center;font-weight:800;font-family:var(--f-display);font-size:14px}
+
+/* ---------- تفكيك المصطلح ---------- */
+.split{display:flex;align-items:stretch;justify-content:center;gap:10px;flex-wrap:wrap;direction:ltr}
+.piece{direction:rtl;flex:1 1 180px;max-width:260px;border-radius:18px;padding:16px;text-align:center;border:2px dashed var(--line);background:var(--surface);cursor:pointer;transition:all .3s}
+.piece .en{font-size:28px;display:block}
+.piece .ar{font-family:var(--f-display);font-size:18px;margin-top:6px;opacity:0;transform:translateY(6px);transition:all .35s}
+.piece.open .ar{opacity:1;transform:none}
+.piece.p1{border-color:var(--sun);color:var(--sun)} .piece.p1.open{background:var(--sun-soft)}
+.piece.p2{border-color:var(--leaf);color:var(--leaf-deep)} .piece.p2.open{background:var(--leaf-soft)}
+.piece small{display:block;color:var(--muted);font-size:12px}
+.plus{align-self:center;font-size:28px;color:var(--muted);font-weight:700}
+.defcard{margin-top:18px;border-radius:20px;padding:20px 22px;background:var(--leaf-deep);color:#fff;position:relative;overflow:hidden}
+:root[data-theme="dark"] .defcard{background:#173C24}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .defcard{background:#173C24}}
+.defcard h4{color:#FCE6A9;font-size:14px;letter-spacing:.02em;margin-bottom:6px}
+.defcard p{font-size:19px;line-height:1.9}
+.defcard p b{color:#FCE6A9}
+
+/* ---------- مخطط النبات التفاعلي ---------- */
+.diagram{position:relative;max-width:440px;margin-inline:auto}
+.diagram img{width:100%;border-radius:14px}
+.hot{position:absolute;transform:translate(50%,-50%);width:38px;height:38px;border-radius:50%;border:3px solid #fff;display:grid;place-items:center;color:#fff;font-weight:800;font-family:var(--f-display);box-shadow:0 0 0 0 rgba(0,0,0,.3);animation:pulse 2s infinite}
+.hot.h-light{background:var(--sun)} .hot.h-co2{background:var(--air)} .hot.h-water{background:var(--water)}
+.hot.seen{animation:none;opacity:.9}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(217,146,15,.55)}70%{box-shadow:0 0 0 14px rgba(217,146,15,0)}100%{box-shadow:0 0 0 0 rgba(217,146,15,0)}}
+.infocard{border-radius:16px;padding:16px;border:1px solid var(--line);background:var(--surface);min-height:120px}
+.infocard h4{font-size:17px;margin-bottom:4px}
+.need{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border-radius:14px;border:1px solid var(--line);background:var(--surface)}
+.need .ic{flex:none;width:44px;height:44px;border-radius:12px;display:grid;place-items:center}
+.need .ic svg{width:24px;height:24px}
+
+/* معادلة/تدفق ملخص التمثيل الضوئي */
+.flow{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;padding:16px;border-radius:18px;background:var(--surface);border:1px solid var(--line)}
+.chip{border-radius:14px;padding:8px 14px;font-weight:700;font-family:var(--f-display);font-size:15px;border:1.5px solid}
+.chip.w{background:var(--water-soft);color:var(--water);border-color:var(--water)}
+.chip.c{background:var(--air-soft);color:var(--air);border-color:var(--air)}
+.chip.f{background:var(--leaf-soft);color:var(--leaf-deep);border-color:var(--leaf)}
+.chip.o{background:var(--sun-soft);color:var(--sun);border-color:var(--sun)}
+.arrow{display:flex;flex-direction:column;align-items:center;font-size:12px;color:var(--sun);font-weight:700;min-width:90px}
+.arrow svg{width:90px;height:20px}
+.op{font-weight:800;color:var(--muted);font-size:20px}
+
+/* ---------- الكتلة الحيوية ---------- */
+.chain3{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:10px;align-items:center}
+@media (max-width:640px){.chain3{grid-template-columns:1fr}.chain3 .ar3{transform:rotate(-90deg);justify-self:center}}
+.bstep{border-radius:18px;padding:18px;text-align:center;background:var(--surface);border:1px solid var(--line);opacity:.3;transform:scale(.96);transition:all .4s}
+.bstep.on{opacity:1;transform:none;border-color:var(--leaf);box-shadow:var(--shadow)}
+.bstep b{font-family:var(--f-display);font-size:17px;display:block}
+.bstep small{color:var(--muted);font-size:13.5px}
+.ar3{color:var(--leaf);font-size:26px;font-weight:800}
+
+/* ---------- الخط الزمني للنشاط ---------- */
+.activity{border-radius:22px;overflow:hidden;border:1px solid var(--line);background:var(--surface);box-shadow:var(--shadow)}
+.act-head{background:var(--sun);color:#1d1500;padding:14px 20px}
+.act-head h3{color:#1d1500;font-size:20px}
+.act-head small{font-weight:600}
+.act-body{padding:20px;display:grid;grid-template-columns:1fr 220px;gap:20px}
+.act-body>*{min-width:0}
+@media (max-width:700px){.act-body{grid-template-columns:1fr}}
+.tl{list-style:none;margin:0;padding:0;position:relative}
+.tl li{position:relative;padding-inline-start:46px;padding-bottom:18px}
+.tl li::before{content:attr(data-n);position:absolute;inset-inline-start:0;top:0;width:32px;height:32px;border-radius:50%;background:var(--sun-soft);color:var(--sun);border:2px solid var(--sun);display:grid;place-items:center;font-weight:800;font-family:var(--f-display);font-size:14px}
+.tl li::after{content:"";position:absolute;inset-inline-start:15px;top:34px;bottom:2px;width:2px;background:var(--line)}
+.tl li:last-child::after{display:none}
+
+/* ---------- الأسئلة ---------- */
+.qcard{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow)}
+.qcard .qh{display:flex;gap:12px;align-items:flex-start}
+.qn{flex:none;width:36px;height:36px;border-radius:12px;background:var(--leaf-soft);color:var(--leaf-deep);font-family:var(--f-display);font-weight:800;display:grid;place-items:center}
+.qcard .qt{font-weight:600;font-size:17.5px}
+.qsrc{font-size:12.5px;color:var(--muted)}
+.think{margin-top:12px;display:flex;flex-direction:column;gap:10px}
+.think textarea{width:100%;min-height:64px;border-radius:12px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);padding:10px 12px;font-family:inherit;font-size:15px;resize:vertical}
+.ans{border-radius:14px;background:var(--good-soft);border-inline-start:4px solid var(--good);padding:12px 14px;animation:pageIn .35s both}
+.ans.hint{background:var(--sun-soft);border-color:var(--sun)}
+.ans b{color:var(--good)} .ans.hint b{color:var(--sun)}
+
+/* ---------- الخلاصة ---------- */
+.sumgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+@media (max-width:640px){.sumgrid{grid-template-columns:1fr}}
+.sumcard{border-radius:20px;padding:18px;background:var(--surface);border:1px solid var(--line);display:flex;gap:14px;align-items:flex-start;box-shadow:var(--shadow)}
+.sumcard .ic{flex:none;width:48px;height:48px;border-radius:14px;display:grid;place-items:center}
+.sumcard .ic svg{width:26px;height:26px}
+.sumcard p{font-weight:500;font-size:16.5px}
+.terms{display:flex;flex-wrap:wrap;gap:10px}
+.termchip{border:1px solid var(--line);background:var(--surface);border-radius:14px;padding:8px 14px;display:flex;gap:10px;align-items:baseline}
+.termchip b{font-family:var(--f-display)} .termchip .en{color:var(--muted);font-size:14px;font-weight:400}
+
+/* ---------- المختبرات ---------- */
+.lab{display:grid;grid-template-columns:300px 1fr;gap:20px;align-items:start}
+.lab>*{min-width:0}
+@media (max-width:820px){.lab{grid-template-columns:1fr}}
+.inputs{display:flex;flex-direction:column;gap:12px}
+.inp{border-radius:16px;border:2px solid var(--line);background:var(--surface);padding:12px 14px;transition:border-color .3s,background .3s}
+.inp.on{border-color:var(--c);background:var(--cs)}
+.inp .ih{display:flex;align-items:center;gap:10px}
+.inp .ih .ic{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:var(--cs);color:var(--c);flex:none}
+.inp .ih .ic svg{width:22px;height:22px}
+.inp .ih b{font-family:var(--f-display);font-size:15px}
+.inp .srcq{margin-top:10px;font-size:14px}
+.opts{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.opt{border:1.5px solid var(--line);background:var(--surface);border-radius:12px;padding:6px 14px;font-weight:600;font-size:14px}
+.opt.right{background:var(--good-soft);border-color:var(--good);color:var(--good)}
+.opt.wrong{background:var(--bad-soft);border-color:var(--bad);color:var(--bad);animation:shake .4s}
+@keyframes shake{25%{transform:translateX(4px)}50%{transform:translateX(-4px)}75%{transform:translateX(2px)}}
+.stage{position:relative;border-radius:20px;overflow:hidden;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow)}
+.stage .plantimg{width:100%;max-width:420px;margin-inline:auto;display:block;transition:filter .6s}
+.stage.dim .plantimg{filter:grayscale(.55) brightness(.8)}
+.bubbles{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.bub{position:absolute;bottom:40%;width:14px;height:14px;border-radius:50%;border:2px solid var(--sun);background:rgba(255,255,255,.4);animation:rise 2.6s ease-in forwards}
+@keyframes rise{to{transform:translateY(-260px);opacity:0}}
+.outbar{display:flex;gap:12px;flex-wrap:wrap;padding:14px;border-top:1px solid var(--line)}
+.outbox{flex:1 1 140px;border-radius:14px;padding:10px 12px;border:1.5px dashed var(--line);text-align:center;transition:all .4s}
+.outbox.on{border-style:solid}
+.outbox.f.on{background:var(--leaf-soft);border-color:var(--leaf)}
+.outbox.o.on{background:var(--sun-soft);border-color:var(--sun)}
+.outbox b{font-family:var(--f-display);display:block}
+.outbox span{font-size:13px;color:var(--muted)}
+.feedback{border-radius:14px;padding:12px 14px;font-weight:500;display:none}
+.feedback.show{display:block;animation:pageIn .3s}
+.feedback.good{background:var(--good-soft);color:var(--ink);border-inline-start:4px solid var(--good)}
+.feedback.bad{background:var(--bad-soft);color:var(--ink);border-inline-start:4px solid var(--bad)}
+.feedback.info{background:var(--sun-soft);color:var(--ink);border-inline-start:4px solid var(--sun)}
+.meterbox{padding:14px;border-top:1px solid var(--line)}
+.meterbox .bar{height:12px;border-radius:99px;background:var(--surface-2);overflow:hidden;margin-top:6px}
+.meterbox .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--leaf),var(--leaf-deep));transition:width .8s}
+
+/* مختبر النشاط ١-١ */
+.steps-nav{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.sn{flex:1 1 120px;border-radius:12px;padding:8px 10px;border:1.5px solid var(--line);background:var(--surface);font-size:14px;font-weight:600;color:var(--muted);text-align:center}
+.sn.cur{border-color:var(--sun);color:var(--ink);background:var(--sun-soft)}
+.sn.done{border-color:var(--good);color:var(--good)}
+.dishes{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:520px){.dishes{grid-template-columns:1fr}}
+.dish{border-radius:18px;border:1px solid var(--line);background:var(--surface);padding:14px;text-align:center}
+.plate{position:relative;width:170px;height:170px;max-width:100%;margin:8px auto;border-radius:50%;border:3px solid var(--line);background:radial-gradient(circle,var(--surface-2) 55%,var(--surface) 56%);transition:background .4s}
+.plate.wet{background:radial-gradient(circle,var(--water-soft) 55%,var(--surface) 56%)}
+.seed{position:absolute;width:10px;height:10px;border-radius:50%;background:#5b4a2a;box-shadow:inset -2px -2px 0 rgba(0,0,0,.25);animation:drop .4s ease-out both}
+@keyframes drop{from{transform:translateY(-30px) scale(1.4);opacity:0}}
+.place{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:8px}
+.place .opt.sel{background:var(--leaf-soft);border-color:var(--leaf);color:var(--leaf-deep)}
+.envbox{border-radius:14px;padding:8px;margin-top:8px;font-size:14px;font-weight:600}
+.envbox.dark{background:#1b1f1c;color:#cfd8d0}
+.envbox.light{background:var(--sun-soft);color:var(--sun)}
+.slider{width:100%;accent-color:var(--leaf)}
+.drawwrap{border:1.5px dashed var(--line);border-radius:14px;overflow:hidden;background:var(--surface)}
+.drawwrap canvas{display:block;width:100%;height:180px;touch-action:none;background:var(--bg)}
+.obs textarea{width:100%;min-height:70px;border-radius:12px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);padding:10px;font-family:inherit;font-size:15px}
+
+/* مختبر تتبع الطاقة */
+.chainrow{display:flex;align-items:center;justify-content:space-between;gap:6px;padding:16px 10px;overflow-x:auto}
+.org{flex:none;width:clamp(78px,15vw,140px);text-align:center;border-radius:16px;padding:8px 4px;border:2px solid transparent;background:transparent;transition:all .3s}
+.org img{width:100%;aspect-ratio:1;object-fit:contain;background:#fff;border-radius:12px}
+.org span{font-family:var(--f-display);font-size:14px;display:block;margin-top:4px}
+.org.lit{border-color:var(--sun);background:var(--sun-soft);box-shadow:0 0 0 6px var(--sun-soft)}
+.org.right{border-color:var(--good);background:var(--good-soft)}
+.org.wrong{border-color:var(--bad);background:var(--bad-soft);animation:shake .4s}
+.sunball{flex:none;width:clamp(48px,9vw,74px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 40% 40%,#FFE89A,#F4B400 60%,#E08A00);box-shadow:0 0 30px rgba(244,180,0,.6)}
+.cha{flex:none;color:var(--bad);font-size:22px;font-weight:800;opacity:.35;transition:opacity .3s}
+.cha.lit{opacity:1;color:var(--sun)}
+.cap{min-height:58px}
+
+/* ---------- الألعاب ---------- */
+.gamebar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-bottom:14px}
+.stat{display:flex;gap:6px;align-items:center;font-weight:700;font-variant-numeric:tabular-nums;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:6px 12px;font-size:15px}
+.stat small{font-weight:500;color:var(--muted)}
+.slots{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;direction:rtl}
+.slot{width:clamp(86px,16vw,130px);min-height:150px;border-radius:16px;border:2px dashed var(--line);background:var(--surface);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:6px;position:relative}
+.slot .si{position:absolute;top:4px;inset-inline-start:8px;font-size:12px;color:var(--muted);font-weight:700}
+.slot.ok{border-style:solid;border-color:var(--good);background:var(--good-soft)}
+.slot.no{border-style:solid;border-color:var(--bad);background:var(--bad-soft)}
+.pool{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px;min-height:120px;padding:10px;border-radius:16px;background:var(--surface-2)}
+.card-o{width:clamp(86px,16vw,120px);border-radius:14px;border:2px solid var(--line);background:var(--surface);padding:6px;text-align:center;cursor:grab;user-select:none;touch-action:none;transition:transform .15s,border-color .15s}
+.card-o img{width:100%;aspect-ratio:1;object-fit:contain;background:#fff;border-radius:10px;pointer-events:none}
+.card-o span{font-family:var(--f-display);font-size:13.5px;display:block}
+.card-o.picked{border-color:var(--sun);transform:translateY(-4px) scale(1.04);box-shadow:var(--shadow)}
+.buckets{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:520px){.buckets{grid-template-columns:1fr}}
+.bucket{min-height:170px;border-radius:20px;border:2px dashed var(--c);background:var(--cs);padding:12px;display:flex;flex-direction:column;gap:8px;transition:transform .2s}
+.bucket h4{color:var(--c);font-size:16px;text-align:center}
+.bucket .items{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.bucket.hover{transform:scale(1.02)}
+.word{border-radius:12px;border:1.5px solid var(--line);background:var(--surface);padding:8px 14px;font-weight:700;font-family:var(--f-display);font-size:14.5px;cursor:grab;user-select:none;touch-action:none}
+.word.picked{border-color:var(--sun);background:var(--sun-soft)}
+.word.ok{border-color:var(--good);background:var(--good-soft);color:var(--good);cursor:default}
+.word.no{border-color:var(--bad);background:var(--bad-soft);animation:shake .4s}
+.mem{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;perspective:900px}
+@media (max-width:640px){.mem{grid-template-columns:repeat(3,1fr)}}
+.mc{position:relative;aspect-ratio:3/3.4;border:0;background:transparent;padding:0}
+.mc .in{position:absolute;inset:0;transition:transform .5s;transform-style:preserve-3d}
+.mc.flip .in{transform:rotateY(180deg)}
+.mc .fa,.mc .ba{position:absolute;inset:0;border-radius:14px;backface-visibility:hidden;display:grid;place-items:center;padding:8px;text-align:center}
+.mc .fa{background:linear-gradient(135deg,var(--leaf),var(--leaf-deep));color:#fff}
+.mc .fa svg{width:40%;height:40%;opacity:.85}
+.mc .ba{transform:rotateY(180deg);background:var(--surface);border:2px solid var(--line);font-size:clamp(11.5px,1.6vw,14.5px);font-weight:600;line-height:1.55}
+.mc.match .ba{border-color:var(--good);background:var(--good-soft)}
+.quick{max-width:640px;margin-inline:auto;text-align:center}
+.qstate{font-size:clamp(19px,3vw,24px);font-family:var(--f-display);font-weight:700;min-height:120px;display:grid;place-items:center;padding:20px;border-radius:20px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);transition:background .25s}
+.qstate.good{background:var(--good-soft)} .qstate.bad{background:var(--bad-soft)}
+.tfbtns{display:flex;gap:14px;justify-content:center;margin-top:16px}
+.tfbtns .btn{min-width:130px;justify-content:center;font-size:18px;padding:12px 20px}
+.timer{height:10px;border-radius:99px;background:var(--surface-2);overflow:hidden;margin:14px 0}
+.timer i{display:block;height:100%;background:linear-gradient(90deg,var(--sun),var(--leaf));width:100%;transition:width 1s linear}
+.blank{display:inline-block;min-width:110px;border-bottom:2.5px solid var(--sun);text-align:center;padding:0 6px;margin-inline:3px;border-radius:6px 6px 0 0;cursor:pointer;font-weight:700;color:var(--leaf-deep);line-height:1.6;transition:background .2s}
+.blank.empty{color:var(--muted)} .blank.target{background:var(--sun-soft)}
+.blank.ok{border-color:var(--good);background:var(--good-soft)} .blank.no{border-color:var(--bad);background:var(--bad-soft)}
+.fillsent{font-size:18px;line-height:2.6;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px 18px;margin-bottom:12px}
+.bank{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;padding:12px;border-radius:16px;background:var(--surface-2)}
+.win{text-align:center;padding:22px;border-radius:20px;background:var(--good-soft);border:1px solid var(--good);animation:pageIn .4s}
+.win h3{color:var(--good);font-size:22px}
+.stars{display:flex;gap:6px;justify-content:center;margin:8px 0}
+.stars svg{width:30px;height:30px;color:var(--line)} .stars svg.on{color:var(--sun)}
+
+/* ---------- أسئلة الاختبارات ---------- */
+.exlist{display:flex;flex-direction:column;gap:18px}
+.excard{background:var(--surface);border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:var(--shadow)}
+.exhead{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 16px;border-bottom:1px solid var(--line);background:var(--surface-2)}
+.exhead b{font-family:var(--f-display)}
+.exbody{padding:14px;display:flex;flex-direction:column;gap:12px}
+.eximg{background:#fff;border-radius:12px;border:1px solid var(--line);padding:6px;overflow-x:auto}
+.eximg img{width:100%;min-width:320px;cursor:zoom-in}
+.exans{border-radius:14px;border:2px solid var(--good);padding:8px;background:var(--good-soft)}
+.exq{font-size:16px;line-height:2}.exfig{margin:10px auto;max-width:360px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px;text-align:center}.eqline{margin:10px 0;padding:10px 14px;border-radius:12px;background:var(--surface-2);font-weight:700;text-align:center}.exopts{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px}.exans .lbl{font-weight:700;color:var(--good);font-size:14px;margin-bottom:6px;display:block}
+.exfilter{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+
+/* ---------- نافذة التكبير ---------- */
+.lightbox{position:fixed;inset:0;z-index:100;background:rgba(6,14,9,.92);display:flex;flex-direction:column}
+.lb-bar{display:flex;gap:8px;justify-content:center;padding:calc(10px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px))}
+.lb-bar button{width:44px;height:44px;border-radius:12px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.1);color:#fff;font-size:22px;font-weight:700;display:grid;place-items:center}
+.lb-bar button svg{width:22px;height:22px}
+.lb-stage{flex:1;overflow:auto;display:flex;align-items:flex-start;justify-content:center;padding:10px}
+.lb-stage img{max-width:none;transform-origin:top center;background:#fff;border-radius:8px;transition:width .2s}
+
+/* ---------- شريط التنقل والتذييل ---------- */
+.navbar{position:fixed;left:0;right:0;bottom:calc(var(--foot-h) + env(safe-area-inset-bottom,0px));z-index:40;background:var(--surface);border-top:1px solid var(--line);box-shadow:0 -6px 20px rgba(0,0,0,.06)}
+.navbar .wrap{display:flex;align-items:center;justify-content:space-between;gap:8px;height:var(--nav-h)}
+.nb{display:inline-flex;align-items:center;gap:8px;border:1.5px solid var(--line);background:var(--surface);border-radius:14px;padding:8px 14px;font-weight:600;font-size:15px}
+.nb svg{width:20px;height:20px}
+.nb.home{background:var(--leaf);color:#fff;border-color:var(--leaf)}
+.nb[disabled]{opacity:.35;cursor:not-allowed}
+.nb .lb{white-space:nowrap}
+.navmid{font-size:13px;color:var(--muted);text-align:center;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
+@media (max-width:520px){.nb .lb{display:none}.nb{padding:9px 12px}}
+.foot{position:fixed;left:0;right:0;bottom:0;z-index:41;height:calc(var(--foot-h) + env(safe-area-inset-bottom,0px));padding-bottom:env(safe-area-inset-bottom,0px);background:var(--leaf-deep);color:#EAF6EC;font-size:12px;display:flex;align-items:center;justify-content:center;gap:6px}
+:root[data-theme="dark"] .foot{background:#0A120D}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .foot{background:#0A120D}}
+.foot span{direction:ltr;unicode-bidi:isolate;font-weight:600;letter-spacing:.02em}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(var(--nav-h) + var(--foot-h) + 16px + env(safe-area-inset-bottom,0px));z-index:90;background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:14px;font-weight:600;font-size:15px;box-shadow:var(--shadow);animation:pageIn .3s;max-width:calc(100% - 32px);text-align:center}
+
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+
+<!-- ================= الهيدر ================= -->
+<header class="top">
+  <div class="wrap">
+    <div class="brand">
+      <span class="brand-num">١-١</span>
+      <div style="min-width:0"><h1>التمثيل الضوئيّ</h1><small>العلوم · الصف الثامن · الوحدة ١: النباتات</small></div>
+    </div>
+    <div class="prog" title="نسبة الصفحات التي زرتها"><div class="prog-bar"><i id="progFill"></i></div><span id="progTxt">٠٪</span></div>
+    <button class="theme-btn" id="themeBtn" aria-label="تبديل الوضع الليلي">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="app">
+<div class="wrap">
+
+<!-- ================= الصفحة الرئيسية ================= -->
+<section class="page" id="p-home" data-title="الصفحة الرئيسية">
+  <div class="hero">
+    <img src="assets/oasis.svg" alt="رسم لواحة نخيل عُمانية">
+    <div class="hero-in">
+      <span class="k">الوحدة الأولى · النباتات</span>
+      <h2>التمثيل الضوئيّ<span class="en">Photosynthesis</span></h2>
+      <p>كل نخلة في الواحة تعمل كمصنع صغير يحوّل ضوء الشمس إلى غذاء. اختر من أين تبدأ رحلتك.</p>
+    </div>
+  </div>
+  <div class="mainnav">
+    <button class="mcard" data-go="theory" style="--c:var(--leaf);--cs:var(--leaf-soft)">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 5.5A2.5 2.5 0 0 1 4.5 3H11v17H4.5A2.5 2.5 0 0 0 2 22.5z"/><path d="M22 5.5A2.5 2.5 0 0 0 19.5 3H13v17h6.5a2.5 2.5 0 0 1 2.5 2.5z"/></svg></span>
+      <h3>المحتوى النظري</h3><p>الأهداف، الشرح بالصور، أسئلة الدرس والخلاصة.</p>
+      <span class="meter"><i data-meter="theory"></i></span>
+    </button>
+    <button class="mcard" data-go="labs" style="--c:var(--water);--cs:var(--water-soft)">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v6L4.5 18.5A2 2 0 0 0 6.3 21.5h11.4a2 2 0 0 0 1.8-3L14 9V3"/><path d="M7 15h10"/></svg></span>
+      <h3>المختبر التفاعلي</h3><p>شغّل مصنع الغذاء، نفّذ النشاط ١-١، وتتبّع الطاقة.</p>
+      <span class="meter"><i data-meter="labs"></i></span>
+    </button>
+    <button class="mcard" data-go="exams" style="--c:var(--air);--cs:var(--air-soft)">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span>
+      <h3>أسئلة بنمط الاختبارات</h3><p>تدرّب على أسئلة تشبه أسئلة الاختبار النهائي، مع نماذج إجابات.</p>
+      <span class="meter"><i data-meter="exams"></i></span>
+    </button>
+    <button class="mcard" data-go="games" style="--c:var(--sun);--cs:var(--sun-soft)">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="11" rx="5"/><path d="M7 11v3M5.5 12.5h3"/><circle cx="16" cy="11.5" r="1"/><circle cx="18" cy="13.5" r="1"/></svg></span>
+      <h3>الألعاب التعليمية</h3><p>رتّب، صنّف، طابِق، وتحدَّ الوقت.</p>
+      <span class="meter"><i data-meter="games"></i></span>
+    </button>
+  </div>
+</section>
+
+<!-- ================= لوحة المحتوى النظري ================= -->
+<section class="page" id="p-theory" data-title="المحتوى النظري" hidden>
+  <div class="crumb"><b>المحتوى النظري</b></div>
+  <h2 class="ptitle">المحتوى النظري</h2>
+  <p class="lead">ابدأ بالأهداف ثم انتقل بين العناوين بالترتيب، وستظهر علامة ✓ على كل جزء تنهيه.</p>
+  <div class="hub" id="hub-theory"></div>
+</section>
+
+<!-- ---------- أهداف الدرس ---------- -->
+<section class="page" id="p-goals" data-title="أهداف الدرس" hidden>
+  <div class="crumb">المحتوى النظري ‹ <b>أهداف الدرس</b></div>
+  <div class="goal-head"><h2 class="ptitle" style="margin:0">أهداف الدرس</h2><span class="tag">8Bp1</span></div>
+  <p class="lead">بعد أن تنهي هذا الدرس ستكون قادرًا على أن:</p>
+  <ol class="goals">
+    <li><span class="n">1</span><p>أشرح بكلماتي معنى التمثيل الضوئي.</p></li>
+    <li><span class="n">2</span><p>أعدّد المواد التي يحتاجها النبات ليصنع غذاءه، وأذكر مصدر كل منها.</p></li>
+    <li><span class="n">3</span><p>أذكر ما ينتجه النبات في التمثيل الضوئي.</p></li>
+  </ol>
+</section>
+
+<!-- ---------- من أين تحصل على الطاقة؟ ---------- -->
+<section class="page" id="p-energy" data-title="من أين تحصل على الطاقة؟" hidden>
+  <div class="crumb">المحتوى النظري ‹ <b>من أين تحصل على الطاقة؟</b></div>
+  <h2 class="ptitle">من أين تحصل على الطاقة؟</h2>
+  <p class="lead">اضغط «التالي» لتكشف الفكرة خطوة بخطوة.</p>
+  <div class="grid2">
+    <div class="reveal" id="rvEnergy">
+      <div class="rv"><span class="d">1</span><p>جسمك يحتاج إلى طاقة لتمشي وتفكر وتلعب، وأنت تأخذ هذه الطاقة من <mark class="hl">الطعام</mark>. والطاقة تنتقل بين الكائنات الحية عندما يأكل بعضها بعضًا، ونسمّي هذا الترتيب <span class="term">سلسلة غذائية</span>.</p></div>
+      <div class="rv off"><span class="d">2</span><p>أول حلقة في أي سلسلة غذائية هي دائمًا <mark class="hl">نبات</mark>. فالنبات لا يأكل كائنًا آخر، بل يأخذ طاقته <mark class="hl">من ضوء الشمس</mark> ويخزّن جزءًا منها في الغذاء الذي يصنعه.</p></div>
+      <div class="rv off"><span class="d">3</span><p>فعندما تأكل حبة تمر، فأنت تحصل على جزء من طاقة الشمس التي خزّنتها النخلة في ثمارها.</p></div>
+      <div class="rv off"><span class="d">4</span><p>في هذه الوحدة سنكتشف كيف ينجح النبات في تحويل ضوء الشمس إلى غذاء.</p></div>
+      <div class="row"><button class="btn sun" id="rvEnergyBtn">التالي ←</button></div>
+    </div>
+    <figure class="fig">
+      <img src="assets/foodchain.svg" alt="سلسلة غذائية: عشب ثم جرادة ثم سحلية ثم ثعبان ثم صقر" data-zoom>
+      <figcaption>سلسلة غذائية من البيئة العُمانية: يشير كل سهم إلى الكائن الذي تنتقل إليه الطاقة.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ---------- الإنتاج باستخدام الضوء ---------- -->
+<section class="page" id="p-light" data-title="الإنتاج باستخدام الضوء" hidden>
+  <div class="crumb">المحتوى النظري ‹ <b>الإنتاج باستخدام الضوء</b></div>
+  <h2 class="ptitle">الإنتاج باستخدام الضوء</h2>
+  <p class="lead">الاسم الإنجليزي لـ<b>التمثيل الضوئي</b> <span class="en">Photosynthesis</span> مكوّن من جزأين. اضغط على كل جزء لتكتشف معناه.</p>
+  <div class="split">
+    <button class="piece p1" id="pc1"><span class="en">Photo</span><small>المقطع الأول</small><span class="ar">«الضوء»</span></button>
+    <span class="plus">+</span>
+    <button class="piece p2" id="pc2"><span class="en">Synthesis</span><small>المقطع الثاني</small><span class="ar">«الإنتاج»</span></button>
+  </div>
+  <p class="note" style="text-align:center;margin-top:10px" id="pcMsg">الجزء «Photo» معناه «ضوء»، والجزء «Synthesis» معناه «إنتاج» أو «تصنيع». فالاسم كله يعني: «التصنيع بالضوء».</p>
+  <div class="grid2" style="margin-top:6px">
+    <div class="defcard" id="defCard">
+      <h4>التعريف</h4>
+      <p><b>التمثيل الضوئيّ</b>: عملية يصنع فيها النبات غذاءه مستخدمًا طاقة الضوء.</p>
+    </div>
+    <figure class="fig">
+      <img src="assets/oasis.svg" alt="رسم لواحة نخيل" data-zoom>
+      <figcaption>أوراق النخيل الخضراء تصنع الغذاء طوال النهار.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ---------- ما الذي تحتاج إليه النباتات؟ ---------- -->
+<section class="page" id="p-needs" data-title="ما الذي تحتاج إليه النباتات؟" hidden>
+  <div class="crumb">المحتوى النظري ‹ <b>ما الذي تحتاج إليه النباتات؟</b></div>
+  <h2 class="ptitle">ماذا يحتاج النبات غير الضوء ليصنع غذاءه؟</h2>
+  <p class="lead">اضغط على الأرقام في الرسم لتعرف ماذا يأخذ النبات، ومن أين يأخذه.</p>
+  <div class="grid2">
+    <div class="diagram" id="diag">
+      <img src="assets/plant.svg" alt="نبات يأخذ طاقة الضوء من الشمس وثاني أكسيد الكربون من الهواء والماء من التربة" data-zoom>
+      <button class="hot h-light" style="right:47%;top:20%" data-hot="light" aria-label="الطاقة من الضوء">1</button>
+      <button class="hot h-co2" style="right:60%;top:38%" data-hot="co2" aria-label="ثاني أكسيد الكربون">2</button>
+      <button class="hot h-water" style="right:86%;top:90%" data-hot="water" aria-label="الماء">3</button>
+    </div>
+    <div class="stack">
+      <div class="infocard" id="hotInfo"><h4>اختر رقمًا من الرسم</h4><p class="note">ثلاثة أرقام: طاقة الضوء، وثاني أكسيد الكربون، والماء.</p></div>
+      <div class="need"><span class="ic" style="background:var(--water-soft);color:var(--water)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3s7 7.5 7 12a7 7 0 0 1-14 0c0-4.5 7-12 7-12z"/></svg></span>
+        <p><b>الماء</b> <span class="en">Water</span>: تمتصه الجذور من التربة.</p></div>
+      <div class="need"><span class="ic" style="background:var(--air-soft);color:var(--air)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 9h11a3 3 0 1 0-3-3M3 13h15a3 3 0 1 1-3 3M5 17h5"/></svg></span>
+        <p><b>ثاني أكسيد الكربون</b> <span class="en">Carbon Dioxide</span>: غاز تأخذه الأوراق من الهواء.</p></div>
+    </div>
+  </div>
+  <div class="panel" style="margin-top:20px">
+    <p>وأثناء صنع الغذاء يُطلق النبات غازًا نتنفسه نحن وكل الحيوانات، هو <b>الأكسجين</b> <span class="en">Oxygen</span>.</p>
+    <p style="margin-top:8px">نستطيع أن نلخّص العملية كلها في سطر واحد:</p>
+    <div class="flow" style="margin-top:12px">
+      <span class="chip w">الماء</span><span class="op">+</span><span class="chip c">ثاني أكسيد الكربون</span>
+      <span class="arrow">طاقة الضوء<svg viewBox="0 0 90 20"><path d="M88 10H6M14 3 5 10l9 7" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span class="chip f">غذاء</span><span class="op">+</span><span class="chip o">أكسجين</span>
+    </div>
+    <p class="note" style="margin-top:10px;text-align:center">طاقة الضوء تحوّل الماء وثاني أكسيد الكربون إلى غذاء وأكسجين.</p>
+  </div>
+</section>
+
+<!-- ---------- الكتلة الحيوية ---------- -->
+<section class="page" id="p-biomass" data-title="الكتلة الحيوية" hidden>
+  <div class="crumb">المحتوى النظري ‹ <b>الكتلة الحيوية</b></div>
+  <h2 class="ptitle">الكتلة الحيويّة <span class="en" style="font-size:.6em;color:var(--muted)">Biomass</span></h2>
+  <p class="lead">أين يذهب الغذاء الذي يصنعه النبات؟ اضغط «تابِع الغذاء» لتعرف.</p>
+  <div class="chain3">
+    <div class="bstep on" id="bs1"><b>الغذاء</b><small>الذي يصنعه النبات في التمثيل الضوئيّ</small></div>
+    <span class="ar3">←</span>
+    <div class="bstep" id="bs2"><b>خلايا وأنسجة جديدة</b><small>يبني بها النبات أوراقًا وسيقانًا وجذورًا</small></div>
+    <span class="ar3">←</span>
+    <div class="bstep" id="bs3"><b>الكتلة الحيويّة</b><small>مادة جسم النبات الحي</small></div>
+  </div>
+  <div class="row" style="margin-top:16px"><button class="btn" id="bsBtn">تابِع الغذاء ←</button></div>
+  <div class="defcard" style="margin-top:20px">
+    <h4>تعريف</h4>
+    <p>النبات لا يستهلك كل غذائه في الحصول على الطاقة، بل يبني بجزء منه خلايا جديدة فيكبر وينمو. وكل المادة التي يتكوّن منها جسم الكائن الحي من خلايا وأنسجة نسمّيها <b>الكتلة الحيوية</b> <span class="en">Biomass</span>.</p>
+  </div>
+</section>
+
+<!-- ---------- نشاط ١-١ ---------- -->
+<section class="page" id="p-activity" data-title="نشاط ١-١ النبات والضوء" hidden>
+  <div class="crumb">المحتوى النظري ‹ <b>نشاط ١-١</b></div>
+  <h2 class="ptitle">نشاط ١-١ · النبات والضوء</h2>
+  <div class="activity">
+    <div class="act-head"><small>نشاط ١-١</small><h3>النبات والضوء</h3></div>
+    <div class="act-body">
+      <div>
+        <p style="font-weight:600;margin-bottom:14px">سؤال التجربة: ماذا يحدث لنبات صغير إذا حُرم من الضوء؟</p>
+        <ol class="tl">
+          <li data-n="1">جهّز وعاءين متشابهين، وضع في كل منهما ورقة ترشيح مبللة بالماء، ثم وزّع عليها عددًا من البذور الصغيرة. اترك الوعاءين في مكان دافئ حتى تنبت البذور، وتابعهما حتى لا يجفّا.</li>
+          <li data-n="2">بعد أن تنبت البذور، انقل أحد الوعاءين إلى مكان مظلم تمامًا، مثل خزانة أو كرتونة مغلقة، واترك الآخر في مكان فيه ضوء. اسقِ الوعاءين بكمية قليلة متساوية من الماء، واجعلهما في درجة الحرارة نفسها.</li>
+          <li data-n="3">انتظر يومين، ثم قارن بين نباتات الوعاءين: لونها، وطولها، وشكل أوراقها. ارسم ما تراه، واكتب أسماء الأجزاء على رسمك.</li>
+        </ol>
+        <div class="row"><button class="btn ghost" data-go="l-activity">نفّذ النشاط في المختبر الافتراضي ←</button></div>
+      </div>
+      <figure class="fig" style="box-shadow:none"><img src="assets/seeds.svg" alt="بذور على ورق ترشيح مبلل في وعاءين" data-zoom></figure>
+    </div>
+  </div>
+</section>
+
+<!-- ---------- أسئلة الدرس ---------- -->
+<section class="page" id="p-questions" data-title="أسئلة الدرس" hidden>
+  <div class="crumb">المحتوى النظري ‹ <b>أسئلة الدرس</b></div>
+  <h2 class="ptitle">أسئلة الدرس</h2>
+  <p class="lead">اكتب إجابتك أولًا ثم اكشف الإجابة وقارن.</p>
+  <div class="stack" id="lessonQs"></div>
+</section>
+
+<!-- ---------- الخلاصة ---------- -->
+<section class="page" id="p-summary" data-title="الخلاصة" hidden>
+  <div class="crumb">المحتوى النظري ‹ <b>الخلاصة</b></div>
+  <h2 class="ptitle">الخلاصة</h2>
+  <p class="lead">أهم ما تعلمته في الدرس، في أربع بطاقات للمراجعة السريعة.</p>
+  <div class="sumgrid">
+    <div class="sumcard"><span class="ic" style="background:var(--sun-soft);color:var(--sun)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></span><p>النبات يصنع غذاءه بنفسه بطاقة الضوء، وهذه العملية اسمها التمثيل الضوئي.</p></div>
+    <div class="sumcard"><span class="ic" style="background:var(--leaf-soft);color:var(--leaf)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22V12M12 12C12 7 8 4 3 4c0 5 4 8 9 8zM12 14c0-4 3-7 9-7 0 5-4 7-9 7z"/></svg></span><p>يبني النبات بجزء من غذائه خلايا جديدة، فتزداد كتلته الحيوية وينمو.</p></div>
+    <div class="sumcard"><span class="ic" style="background:var(--water-soft);color:var(--water)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3s7 7.5 7 12a7 7 0 0 1-14 0c0-4.5 7-12 7-12z"/></svg></span><p>المواد الخام: الماء من التربة، وثاني أكسيد الكربون من الهواء.</p></div>
+    <div class="sumcard"><span class="ic" style="background:var(--air-soft);color:var(--air)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="14" r="4"/><circle cx="16" cy="9" r="3"/><circle cx="17" cy="17" r="2"/></svg></span><p>النواتج: غذاء للنبات، وغاز الأكسجين الذي يخرج إلى الهواء.</p></div>
+  </div>
+  <h3 style="font-size:18px;margin:24px 0 10px">مصطلحات الدرس</h3>
+  <div class="terms">
+    <span class="termchip"><b>التمثيل الضوئيّ</b><span class="en">Photosynthesis</span></span>
+    <span class="termchip"><b>الماء</b><span class="en">Water</span></span>
+    <span class="termchip"><b>ثاني أكسيد الكربون</b><span class="en">Carbon Dioxide</span></span>
+    <span class="termchip"><b>الأكسجين</b><span class="en">Oxygen</span></span>
+    <span class="termchip"><b>الكتلة الحيويّة</b><span class="en">Biomass</span></span>
+  </div>
+</section>
+
+<!-- ================= لوحة المختبر ================= -->
+<section class="page" id="p-labs" data-title="المختبر التفاعلي" hidden>
+  <div class="crumb"><b>المختبر التفاعلي</b></div>
+  <h2 class="ptitle">المختبر التفاعلي</h2>
+  <p class="lead">ثلاثة مختبرات، كل واحد يطبّق فكرة من الدرس وتصلك تغذية راجعة فورية.</p>
+  <div class="hub" id="hub-labs"></div>
+</section>
+
+<!-- ---------- مختبر ١: مصنع الغذاء ---------- -->
+<section class="page" id="p-l-factory" data-title="مختبر مصنع الغذاء" hidden>
+  <div class="crumb">المختبر التفاعلي ‹ <b>مصنع الغذاء</b></div>
+  <h2 class="ptitle">مختبر مصنع الغذاء</h2>
+  <p class="lead">زوّد النبات بما يحتاج إليه. لتفعيل كل مادة أجب: من أين يحصل عليها النبات؟ ثم شغّل التمثيل الضوئيّ.</p>
+  <div class="lab">
+    <div class="inputs" id="facInputs"></div>
+    <div class="stack">
+      <div class="stage dim" id="facStage">
+        <img class="plantimg" src="assets/plant.svg" alt="نبات">
+        <div class="bubbles" id="facBub"></div>
+        <div class="outbar">
+          <div class="outbox f" id="outFood"><b>غذاء</b><span>يصنعه النبات</span></div>
+          <div class="outbox o" id="outOxy"><b>أكسجين</b><span>غاز مهم جدًا</span></div>
+        </div>
+        <div class="meterbox"><div class="row" style="justify-content:space-between"><b style="font-family:var(--f-display);font-size:15px">الكتلة الحيويّة</b><span class="note" id="bioTxt">٠ خلايا وأنسجة جديدة</span></div><div class="bar"><i id="bioBar"></i></div></div>
+      </div>
+      <div class="row"><button class="btn sun" id="facRun">شغّل التمثيل الضوئيّ</button><button class="btn ghost" id="facReset">إعادة</button></div>
+      <div class="feedback" id="facFb"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ---------- مختبر ٢: نشاط ١-١ افتراضي ---------- -->
+<section class="page" id="p-l-activity" data-title="مختبر النبات والضوء" hidden>
+  <div class="crumb">المختبر التفاعلي ‹ <b>النبات والضوء (نشاط ١-١)</b></div>
+  <h2 class="ptitle">مختبر النبات والضوء</h2>
+  <p class="lead">نفّذ خطوات نشاط ١-١ بالترتيب، والمختبر ينبّهك عند أي خطأ في الإجراء.</p>
+  <div class="steps-nav"><span class="sn cur" id="sn1">١ · زراعة البذور</span><span class="sn" id="sn2">٢ · ضبط الظروف</span><span class="sn" id="sn3">٣ · المقارنة بعد يومين</span></div>
+
+  <div id="actS1" class="stack">
+    <div class="panel">
+      <p><b>الخطوة ١:</b> بلّل ورقة الترشيح في كل وعاء، ثم وزّع البذور عليها. سنتركها في مكان دافئ حتى تنبت.</p>
+    </div>
+    <div class="dishes">
+      <div class="dish"><b>الوعاء (أ)</b><div class="plate" id="plateA"></div><div class="row" style="justify-content:center"><button class="btn ghost" data-wet="A">بلّل ورقة الترشيح</button><button class="btn" data-sow="A">انثر البذور</button></div></div>
+      <div class="dish"><b>الوعاء (ب)</b><div class="plate" id="plateB"></div><div class="row" style="justify-content:center"><button class="btn ghost" data-wet="B">بلّل ورقة الترشيح</button><button class="btn" data-sow="B">انثر البذور</button></div></div>
+    </div>
+    <div class="feedback" id="fb1"></div>
+    <div class="row"><button class="btn sun" id="toS2">انتظر حتى تنبت البذور ←</button></div>
+  </div>
+
+  <div id="actS2" class="stack" hidden>
+    <div class="panel"><p><b>الخطوة ٢:</b> نبتت البذور. اختر مكانًا لكل مجموعة، بحيث تكون واحدة في الظلام والأخرى في الضوء، واسقِ المجموعتين، واضبط درجتي الحرارة. تذكّر: الضوء فقط هو ما يجب أن يختلف.</p></div>
+    <div class="dishes">
+      <div class="dish"><b>المجموعة (أ)</b>
+        <div class="place" data-group="A"><button class="opt" data-pl="dark">خزانة مظلمة</button><button class="opt" data-pl="box">صندوق مغلق من الورق المقوّى</button><button class="opt" data-pl="light">مكان مضيء</button></div>
+        <div class="envbox" id="envA" hidden></div>
+        <label class="note" for="tA" style="display:block;margin-top:10px">درجة الحرارة: <b id="tAv">25</b> °C</label><input id="tA" class="slider" type="range" min="10" max="40" value="25">
+        <label class="note" style="display:flex;gap:8px;align-items:center;justify-content:center;margin-top:6px"><input type="checkbox" id="wA"> ري بقليل من الماء</label>
+      </div>
+      <div class="dish"><b>المجموعة (ب)</b>
+        <div class="place" data-group="B"><button class="opt" data-pl="dark">خزانة مظلمة</button><button class="opt" data-pl="box">صندوق مغلق من الورق المقوّى</button><button class="opt" data-pl="light">مكان مضيء</button></div>
+        <div class="envbox" id="envB" hidden></div>
+        <label class="note" for="tB" style="display:block;margin-top:10px">درجة الحرارة: <b id="tBv">32</b> °C</label><input id="tB" class="slider" type="range" min="10" max="40" value="32">
+        <label class="note" style="display:flex;gap:8px;align-items:center;justify-content:center;margin-top:6px"><input type="checkbox" id="wB"> ري بقليل من الماء</label>
+      </div>
+    </div>
+    <div class="feedback" id="fb2"></div>
+    <div class="row"><button class="btn sun" id="chkS2">تحقّق من الإجراء</button></div>
+  </div>
+
+  <div id="actS3" class="stack" hidden>
+    <div class="panel"><p><b>الخطوة ٣:</b> مرّ يومان. قارن بين المجموعتين، وارسم ما تلاحظه.</p>
+    <p class="note" style="margin-top:6px">ارسم ما تلاحظه في نشاطك الحقيقي داخل الصفّ، واكتب ملاحظاتك. الرسم يبقى في هذه الصفحة فقط.</p></div>
+    <div class="dishes">
+      <div class="dish obs"><b>المجموعة في الظلام</b><div class="drawwrap"><canvas id="cvA" width="600" height="360"></canvas></div><button class="btn ghost" data-clear="cvA" style="margin-top:8px">امسح الرسم</button><textarea id="obsA" placeholder="ملاحظاتي على المجموعة في الظلام…" style="margin-top:8px"></textarea></div>
+      <div class="dish obs"><b>المجموعة في الضوء</b><div class="drawwrap"><canvas id="cvB" width="600" height="360"></canvas></div><button class="btn ghost" data-clear="cvB" style="margin-top:8px">امسح الرسم</button><textarea id="obsB" placeholder="ملاحظاتي على المجموعة في الضوء…" style="margin-top:8px"></textarea></div>
+    </div>
+    <div class="row"><button class="btn" data-go="questions">أجب عن أسئلة النشاط ←</button><button class="btn ghost" id="actRestart">أعد النشاط من البداية</button></div>
+  </div>
+</section>
+
+<!-- ---------- مختبر ٣: تتبع الطاقة ---------- -->
+<section class="page" id="p-l-chain" data-title="مختبر تتبّع الطاقة" hidden>
+  <div class="crumb">المختبر التفاعلي ‹ <b>تتبّع الطاقة في السلسلة الغذائية</b></div>
+  <h2 class="ptitle">مختبر تتبّع الطاقة</h2>
+  <p class="lead">أطلق الطاقة من الضوء وتابع انتقالها عبر السلسلة الغذائيّة، ثم أجب عن السؤال.</p>
+  <div class="panel" style="padding:8px">
+    <div class="chainrow" id="chainRow"></div>
+  </div>
+  <div class="panel cap" id="chainCap" style="margin-top:14px"><p>اضغط «أطلق الطاقة» وتابع رحلتها من الشمس حتى الصقر.</p></div>
+  <div class="row" style="margin-top:14px"><button class="btn sun" id="chainGo">أطلق الطاقة</button></div>
+  <div class="panel" id="chainQ" style="margin-top:16px" hidden>
+    <p style="font-weight:600">أي كائن في هذه السلسلة يصنع غذاءه بالتمثيل الضوئي؟ <span class="note">اضغط عليه.</span></p>
+    <div class="feedback" id="chainFb" style="margin-top:10px"></div>
+  </div>
+</section>
+
+<!-- ================= أسئلة الاختبارات النهائية ================= -->
+<section class="page" id="p-exams" data-title="أسئلة بنمط الاختبارات" hidden>
+  <div class="crumb"><b>أسئلة بنمط الاختبارات</b></div>
+  <h2 class="ptitle">أسئلة بنمط الاختبارات</h2>
+  <p class="lead">أسئلة على طريقة الاختبار النهائي للصف الثامن. حلّ السؤال في دفترك أولًا، ثم قارن إجابتك بنموذج الإجابة. الرقم بين القوسين [ ] هو درجة السؤال.</p>
+  <div class="exfilter row"><span class="stat"><small>تمت مراجعة</small><span id="exDone">0</span><small>من</small><span id="exTotal">0</span></span></div>
+  <div class="exlist" id="exList"></div>
+</section>
+
+<!-- ================= لوحة الألعاب ================= -->
+<section class="page" id="p-games" data-title="الألعاب التعليمية" hidden>
+  <div class="crumb"><b>الألعاب التعليمية</b></div>
+  <h2 class="ptitle">الألعاب التعليمية</h2>
+  <p class="lead">خمس ألعاب قصيرة، لكل منها هدف واضح. اجمع النجوم وحاول تحسين نتيجتك.</p>
+  <div class="hub" id="hub-games"></div>
+</section>
+
+<!-- ---------- لعبة ١: رتّب السلسلة ---------- -->
+<section class="page" id="p-g-chain" data-title="لعبة رتّب السلسلة الغذائية" hidden>
+  <div class="crumb">الألعاب ‹ <b>رتّب السلسلة الغذائية</b></div>
+  <h2 class="ptitle">رتّب السلسلة الغذائية</h2>
+  <p class="lead">الهدف: معرفة أن كل سلسلة غذائية تبدأ بنبات. اسحب الكائنات (أو اضغط على الكائن ثم على الخانة) لترتيبها من البداية.</p>
+  <div class="gamebar"><span class="stat"><small>المحاولات</small><span id="gcTries">0</span></span><button class="btn ghost" id="gcReset">خلط من جديد</button></div>
+  <div class="slots" id="gcSlots"></div>
+  <div class="pool" id="gcPool"></div>
+  <div class="row" style="margin-top:14px"><button class="btn sun" id="gcCheck">تحقّق</button></div>
+  <div class="feedback" id="gcFb" style="margin-top:10px"></div>
+</section>
+
+<!-- ---------- لعبة ٢: صنّف ---------- -->
+<section class="page" id="p-g-sort" data-title="لعبة يحتاج إليه أم يصنعه؟" hidden>
+  <div class="crumb">الألعاب ‹ <b>يحتاج إليه أم يصنعه؟</b></div>
+  <h2 class="ptitle" id="gsTitle">يحتاج إليه النبات أم يصنعه؟</h2>
+  <p class="lead" id="gsLead">الهدف: التمييز بين ما يحتاج إليه النبات وما يصنعه في التمثيل الضوئيّ. اسحب كل بطاقة إلى السلة الصحيحة.</p>
+  <div class="gamebar"><span class="stat"><small>المرحلة</small><span id="gsRound">1</span><small>/ 2</small></span><span class="stat"><small>أخطاء</small><span id="gsErr">0</span></span><button class="btn ghost" id="gsReset">ابدأ من جديد</button></div>
+  <div class="pool" id="gsPool" style="min-height:70px"></div>
+  <div class="buckets" id="gsBuckets" style="margin-top:14px"></div>
+  <div id="gsWin" style="margin-top:14px"></div>
+</section>
+
+<!-- ---------- لعبة ٣: بطاقات الذاكرة ---------- -->
+<section class="page" id="p-g-memory" data-title="لعبة بطاقات الذاكرة" hidden>
+  <div class="crumb">الألعاب ‹ <b>بطاقات الذاكرة</b></div>
+  <h2 class="ptitle">بطاقات الذاكرة</h2>
+  <p class="lead">الهدف: ربط المصطلحات بمعانيها. اقلب بطاقتين في كل مرة، وطابِق كل مصطلح مع ما يناسبه.</p>
+  <div class="gamebar"><span class="stat"><small>الحركات</small><span id="gmMoves">0</span></span><span class="stat"><small>الأزواج</small><span id="gmPairs">0</span><small>/ 6</small></span><button class="btn ghost" id="gmReset">لعبة جديدة</button></div>
+  <div class="mem" id="gmGrid"></div>
+  <div id="gmWin" style="margin-top:14px"></div>
+</section>
+
+<!-- ---------- لعبة ٤: تحدي الوقت ---------- -->
+<section class="page" id="p-g-quick" data-title="لعبة تحدّي الدقيقة" hidden>
+  <div class="crumb">الألعاب ‹ <b>تحدّي الدقيقة</b></div>
+  <h2 class="ptitle">تحدّي الدقيقة: صواب أم خطأ؟</h2>
+  <p class="lead">الهدف: مراجعة سريعة لكل أفكار الدرس. لديك ٦٠ ثانية، أجب عن أكبر عدد من العبارات.</p>
+  <div class="quick">
+    <div class="gamebar"><span class="stat"><small>النقاط</small><span id="gqScore">0</span></span><span class="stat"><small>الوقت</small><span id="gqTime">60</span></span><span class="stat"><small>أفضل نتيجة</small><span id="gqBest">0</span></span></div>
+    <div class="timer"><i id="gqBar"></i></div>
+    <div class="qstate" id="gqText">اضغط «ابدأ التحدّي» عندما تكون مستعدًا.</div>
+    <div class="tfbtns" id="gqBtns" hidden><button class="btn" data-tf="1">صواب</button><button class="btn" style="background:var(--bad)" data-tf="0">خطأ</button></div>
+    <div class="row" style="justify-content:center;margin-top:16px"><button class="btn sun" id="gqStart">ابدأ التحدّي</button></div>
+    <div id="gqReview" style="margin-top:14px;text-align:start"></div>
+  </div>
+</section>
+
+<!-- ---------- لعبة ٥: أكمل الخلاصة ---------- -->
+<section class="page" id="p-g-fill" data-title="لعبة أكمل الفراغ" hidden>
+  <div class="crumb">الألعاب ‹ <b>أكمل الفراغ</b></div>
+  <h2 class="ptitle">أكمل الفراغ</h2>
+  <p class="lead">الهدف: تثبيت عبارات الخلاصة. اضغط على الفراغ ثم على الكلمة المناسبة (أو اسحب الكلمة إلى الفراغ).</p>
+  <div class="gamebar"><span class="stat"><small>أخطاء</small><span id="gfErr">0</span></span><button class="btn ghost" id="gfReset">ابدأ من جديد</button></div>
+  <div id="gfSents"></div>
+  <div class="bank" id="gfBank"></div>
+  <div id="gfWin" style="margin-top:14px"></div>
+</section>
+
+</div>
+</main>
+
+<!-- ================= شريط التنقل الثابت ================= -->
+<nav class="navbar" aria-label="التنقل">
+  <div class="wrap">
+    <button class="nb" id="btnPrev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg><span class="lb">السابق</span></button>
+    <span class="navmid" id="navMid"></span>
+    <button class="nb home" id="btnHome"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg><span class="lb">الرئيسية</span></button>
+    <span class="navmid" aria-hidden="true"></span>
+    <button class="nb" id="btnNext"><span class="lb">التالي</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
+  </div>
+</nav>
+<footer class="foot"><a href="../" style="color:inherit">فهرس دروس الفصل</a> · دروس العلوم · سلطنة عُمان</footer>
+
+<!-- نافذة تكبير الصور -->
+<div class="lightbox" id="lb" hidden>
+  <div class="lb-bar">
+    <button id="lbIn" aria-label="تكبير">+</button>
+    <button id="lbOut" aria-label="تصغير">−</button>
+    <button id="lbFit" aria-label="ملاءمة الشاشة"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
+    <button id="lbClose" aria-label="إغلاق"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  </div>
+  <div class="lb-stage" id="lbStage"><img id="lbImg" alt=""></div>
+</div>
+
+<script>
+/* =========================================================
+   1) أدوات مساعدة
+   ========================================================= */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const ar = n => String(n).replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
+const store = {
+  get(k, d) { try { const v = localStorage.getItem('ps11_' + k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem('ps11_' + k, JSON.stringify(v)); } catch (e) {} }
+};
+function toast(msg) {
+  const t = document.createElement('div'); t.className = 'toast'; t.textContent = msg;
+  document.body.appendChild(t); setTimeout(() => t.remove(), 2400);
+}
+function fb(el, kind, html) { el.className = 'feedback show ' + kind; el.innerHTML = html; }
+const IMG = {
+  grass: 'assets/grass.svg', locust: 'assets/grasshopper.svg', lizard: 'assets/lizard.svg', snake: 'assets/snake.svg', falcon: 'assets/falcon.svg'
+};
+const ICON = {
+  target: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg>',
+  chain: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="2.5"/><circle cx="12" cy="12" r="2.5"/><circle cx="19" cy="12" r="2.5"/><path d="M7.5 12h2M14.5 12h2"/></svg>',
+  sun: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>',
+  drop: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3s7 7.5 7 12a7 7 0 0 1-14 0c0-4.5 7-12 7-12z"/></svg>',
+  sprout: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22V12M12 12C12 7 8 4 3 4c0 5 4 8 9 8zM12 14c0-4 3-7 9-7 0 5-4 7-9 7z"/></svg>',
+  dish: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="13" rx="9" ry="4"/><path d="M3 13v2c0 2.2 4 4 9 4s9-1.8 9-4v-2"/><circle cx="10" cy="12" r=".8" fill="currentColor"/><circle cx="14" cy="13" r=".8" fill="currentColor"/></svg>',
+  q: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.7.3-1 .9-1 1.7M12 17h.01"/></svg>',
+  list: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01"/></svg>',
+  factory: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 21V10l6 4V10l6 4V5h4l2 16z"/></svg>',
+  bolt: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>',
+  sort: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h7M4 12h7M4 17h7M15 6l3-3 3 3M18 3v18"/></svg>',
+  cards: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="5" width="11" height="15" rx="2"/><path d="M8 3h11a2 2 0 0 1 2 2v13"/></svg>',
+  clock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9 2h6"/></svg>',
+  pen: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M14 6l4 4"/></svg>',
+  check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>',
+  leaf: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 19c0-9 6-14 15-14 0 9-5 15-14 15z"/><path d="M5 19c4-5 7-7 11-9"/></svg>',
+  star: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6.5 7 .8-5.2 4.8 1.5 7L12 17.6 5.7 21l1.5-7L2 9.3l7-.8z"/></svg>'
+};
+
+/* =========================================================
+   2) خريطة الصفحات والتنقل
+   ========================================================= */
+const SECTIONS = {
+  theory: [
+    { id: 'goals', t: 'أهداف الدرس', s: 'ثلاثة أهداف', i: 'target' },
+    { id: 'energy', t: 'من أين تحصل على الطاقة؟', s: 'الطاقة والسلسلة الغذائية', i: 'chain' },
+    { id: 'light', t: 'الإنتاج باستخدام الضوء', s: 'تعريف التمثيل الضوئي', i: 'sun' },
+    { id: 'needs', t: 'ما الذي تحتاج إليه النباتات؟', s: 'الماء وثاني أكسيد الكربون', i: 'drop' },
+    { id: 'biomass', t: 'الكتلة الحيوية', s: 'Biomass', i: 'sprout' },
+    { id: 'activity', t: 'نشاط ١-١ النبات والضوء', s: 'خطوات النشاط', i: 'dish' },
+    { id: 'questions', t: 'أسئلة الدرس', s: 'فكّر وأجب', i: 'q' },
+    { id: 'summary', t: 'الخلاصة', s: 'للمراجعة السريعة', i: 'list' }
+  ],
+  labs: [
+    { id: 'l-factory', t: 'مصنع الغذاء', s: 'ما يحتاجه النبات وما يصنعه', i: 'factory' },
+    { id: 'l-activity', t: 'النبات والضوء', s: 'نشاط ١-١ افتراضي', i: 'dish' },
+    { id: 'l-chain', t: 'تتبّع الطاقة', s: 'من الضوء عبر السلسلة الغذائية', i: 'bolt' }
+  ],
+  games: [
+    { id: 'g-chain', t: 'رتّب السلسلة الغذائية', s: 'سحب وإفلات', i: 'chain' },
+    { id: 'g-sort', t: 'يحتاج إليه أم يصنعه؟', s: 'تصنيف في سلّتين', i: 'sort' },
+    { id: 'g-memory', t: 'بطاقات الذاكرة', s: 'مطابقة المصطلحات', i: 'cards' },
+    { id: 'g-quick', t: 'تحدّي الدقيقة', s: 'صواب أم خطأ', i: 'clock' },
+    { id: 'g-fill', t: 'أكمل الفراغ', s: 'أفكار الدرس', i: 'pen' }
+  ]
+};
+const ORDER = ['home', 'theory', ...SECTIONS.theory.map(x => x.id), 'labs', ...SECTIONS.labs.map(x => x.id), 'exams', 'games', ...SECTIONS.games.map(x => x.id)];
+const visited = new Set(store.get('visited', []));
+let current = 'home';
+
+function buildHub(key) {
+  const host = $('#hub-' + key);
+  host.innerHTML = SECTIONS[key].map((x, n) => `
+    <button class="tile" data-go="${x.id}" data-tile="${x.id}">
+      <span class="ic">${ICON[x.i]}</span>
+      <span style="min-width:0"><span class="num">${ar(n + 1)}</span><b>${x.t}</b><small>${x.s}</small></span>
+      <span class="ok">${ICON.check}</span>
+    </button>`).join('');
+}
+['theory', 'labs', 'games'].forEach(buildHub);
+
+function go(id) {
+  if (!ORDER.includes(id)) id = 'home';
+  $$('.page').forEach(p => p.hidden = true);
+  const pg = $('#p-' + id); pg.hidden = false;
+  pg.style.animation = 'none'; void pg.offsetWidth; pg.style.animation = '';
+  current = id; visited.add(id); store.set('visited', [...visited]);
+  const idx = ORDER.indexOf(id);
+  $('#btnPrev').disabled = idx <= 0;
+  $('#btnNext').disabled = idx >= ORDER.length - 1;
+  $('#navMid').textContent = pg.dataset.title || '';
+  try { history.replaceState(null, '', '#' + id); } catch (e) {}
+  window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+  updateProgress();
+  if (id === 'l-chain') resetChain();
+}
+function updateProgress() {
+  const all = ORDER.filter(x => x !== 'home');
+  const done = all.filter(x => visited.has(x)).length;
+  const pct = Math.round(done / all.length * 100);
+  $('#progFill').style.width = pct + '%';
+  $('#progTxt').textContent = ar(pct) + '٪';
+  $$('[data-tile]').forEach(t => t.classList.toggle('done', visited.has(t.dataset.tile)));
+  ['theory', 'labs', 'games'].forEach(k => {
+    const list = SECTIONS[k]; const d = list.filter(x => visited.has(x.id)).length;
+    $(`[data-meter="${k}"]`).style.width = (d / list.length * 100) + '%';
+  });
+  $('[data-meter="exams"]').style.width = (exSeen.size / EXAMS.length * 100) + '%';
+}
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-go]'); if (b) go(b.dataset.go);
+});
+$('#btnHome').onclick = () => go('home');
+$('#btnPrev').onclick = () => { const i = ORDER.indexOf(current); if (i > 0) go(ORDER[i - 1]); };
+$('#btnNext').onclick = () => { const i = ORDER.indexOf(current); if (i < ORDER.length - 1) go(ORDER[i + 1]); };
+
+/* الوضع الليلي */
+(function () {
+  const saved = store.get('theme', null);
+  if (saved) document.documentElement.dataset.theme = saved;
+  $('#themeBtn').onclick = () => {
+    const isDark = document.documentElement.dataset.theme ? document.documentElement.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+    const next = isDark ? 'light' : 'dark';
+    document.documentElement.dataset.theme = next; store.set('theme', next);
+  };
+})();
+
+/* =========================================================
+   3) نافذة تكبير الصور
+   ========================================================= */
+let lbScale = 1;
+function lbFit() { const img = $('#lbImg'); const W = $('#lbStage').clientWidth - 20; lbScale = Math.min(1, W / img.naturalWidth) || 1; img.style.width = (img.naturalWidth * lbScale) + 'px'; }
+function openLB(src, alt) {
+  const img = $('#lbImg'); img.alt = alt || ''; $('#lb').hidden = false;
+  img.onload = () => { const W = $('#lbStage').clientWidth - 20; lbScale = Math.max(Math.min(2.2, W / img.naturalWidth), Math.min(1, W / img.naturalWidth)); img.style.width = (img.naturalWidth * lbScale) + 'px'; };
+  img.src = src;
+}
+document.addEventListener('click', e => { const im = e.target.closest('img[data-zoom]'); if (im) openLB(im.src, im.alt); });
+$('#lbIn').onclick = () => { lbScale = Math.min(lbScale * 1.3, 6); $('#lbImg').style.width = ($('#lbImg').naturalWidth * lbScale) + 'px'; };
+$('#lbOut').onclick = () => { lbScale = Math.max(lbScale / 1.3, .2); $('#lbImg').style.width = ($('#lbImg').naturalWidth * lbScale) + 'px'; };
+$('#lbFit').onclick = lbFit;
+$('#lbClose').onclick = () => { $('#lb').hidden = true; };
+document.addEventListener('keydown', e => { if (e.key === 'Escape') $('#lb').hidden = true; });
+
+/* =========================================================
+   4) المحتوى النظري: عناصر تفاعلية
+   ========================================================= */
+// كشف الأفكار خطوة بخطوة
+(function () {
+  let k = 0; const items = $$('#rvEnergy .rv'); const btn = $('#rvEnergyBtn');
+  btn.onclick = () => {
+    if (k < items.length - 1) { k++; items[k].classList.remove('off'); if (k === items.length - 1) btn.textContent = 'أعد الكشف'; }
+    else { k = 0; items.forEach((x, i) => x.classList.toggle('off', i > 0)); btn.textContent = 'التالي ←'; }
+  };
+})();
+// تفكيك المصطلح
+['pc1', 'pc2'].forEach(id => $('#' + id).onclick = () => {
+  $('#' + id).classList.toggle('open');
+  if ($('#pc1').classList.contains('open') && $('#pc2').classList.contains('open')) toast('Photo + Synthesis = الإنتاج باستخدام الضوء');
+});
+// النقاط الساخنة على مخطط النبات
+const HOT = {
+  light: { c: 'var(--sun)', h: 'طاقة الضوء', p: 'ضوء الشمس هو مصدر الطاقة التي يصنع بها النبات غذاءه، وتلتقطه الأوراق الخضراء.' },
+  co2: { c: 'var(--air)', h: 'ثاني أكسيد الكربون', p: 'غاز موجود في <b>الهواء</b>، يدخل إلى النبات عن طريق الأوراق.' },
+  water: { c: 'var(--water)', h: 'الماء', p: 'تمتصه الجذور من <b>التربة</b>، ثم ينتقل في الساق حتى يصل إلى الأوراق.' }
+};
+$$('[data-hot]').forEach(b => b.onclick = () => {
+  const d = HOT[b.dataset.hot]; b.classList.add('seen');
+  $('#hotInfo').innerHTML = `<h4 style="color:${d.c}">${d.h}</h4><p>${d.p}</p>`;
+  $('#hotInfo').style.borderColor = d.c;
+});
+// الكتلة الحيوية
+(function () {
+  let s = 1; $('#bsBtn').onclick = () => {
+    if (s < 3) { s++; $('#bs' + s).classList.add('on'); if (s === 3) $('#bsBtn').textContent = 'أعد العرض'; }
+    else { s = 1; $('#bs2').classList.remove('on'); $('#bs3').classList.remove('on'); $('#bsBtn').textContent = 'تابِع الغذاء ←'; }
+  };
+})();
+// أسئلة الدرس
+const LESSON_QS = [
+  { q: 'اشرح بكلماتك: ماذا يعني التمثيل الضوئي؟', src: 'سؤال فهم', a: 'هو العملية التي يصنع فيها النبات غذاءه بنفسه مستخدمًا طاقة الضوء، ويأخذ لذلك الماء وثاني أكسيد الكربون.' },
+  { q: 'انظر إلى السلسلة الغذائية. أي كائن فيها يصنع غذاءه بالتمثيل الضوئي؟ ولماذا هو أول السلسلة؟', src: 'سؤال تطبيق', a: 'العشب. لأنه النبات الوحيد في السلسلة، والنبات هو الذي يصنع غذاءه من طاقة الضوء، ثم تنتقل هذه الطاقة إلى باقي الكائنات عندما يأكل بعضها بعضًا.', img: 'assets/foodchain.svg' },
+  { q: 'يقول أحمد: «النبات يأخذ غذاءه جاهزًا من التربة». هل توافقه؟ صحّح العبارة.', src: 'سؤال تفكير', a: 'لا أوافقه. النبات يأخذ من التربة الماء (وبعض الأملاح)، لكنه يصنع غذاءه بنفسه في أوراقه بالتمثيل الضوئي، مستخدمًا الماء وثاني أكسيد الكربون وطاقة الضوء.' },
+  { q: 'في تجربة البذور، لماذا تركنا إحدى المجموعتين في الضوء؟', src: 'أسئلة النشاط', a: 'لنقارن بها المجموعة التي في الظلام. فبدون مجموعة في الضوء لا نستطيع أن نعرف هل التغيّر الذي نراه سببه غياب الضوء.' },
+  { q: 'في تجربة البذور، لماذا يجب أن تكون درجة الحرارة وكمية الماء متساويتين للمجموعتين؟', src: 'أسئلة النشاط', hint: true, a: 'فكّر: لو اختلفت الحرارة أو الماء أيضًا، فهل ستعرف ما السبب الحقيقي للفرق بين المجموعتين؟ في التجربة العادلة نغيّر عاملًا واحدًا فقط.' }
+];
+$('#lessonQs').innerHTML = LESSON_QS.map((x, i) => `
+  <div class="qcard">
+    <div class="qh"><span class="qn">${ar(i + 1)}</span><div style="min-width:0"><p class="qt">${x.q}</p><span class="qsrc">${x.src}</span></div></div>
+    ${x.img ? `<figure class="fig" style="margin-top:10px;box-shadow:none"><img src="${x.img}" alt="السلسلة الغذائية" data-zoom></figure>` : ''}
+    <div class="think">
+      <label class="note" for="lq${i}">اكتب إجابتك:</label>
+      <textarea id="lq${i}" placeholder="فكّر أولًا ثم اكتب…"></textarea>
+      <div class="row"><button class="btn" data-lq="${i}">${x.hint ? 'أظهر التلميح' : 'أظهر الإجابة'}</button></div>
+      <div class="ans ${x.hint ? 'hint' : ''}" id="lqa${i}" hidden><b>${x.hint ? 'تلميح:' : 'الإجابة:'}</b> ${x.a}</div>
+    </div>
+  </div>`).join('');
+$$('[data-lq]').forEach(b => b.onclick = () => {
+  const i = b.dataset.lq; const box = $('#lqa' + i); const ta = $('#lq' + i);
+  if (box.hidden && !ta.value.trim() && !b.dataset.warned) { b.dataset.warned = 1; toast('حاول أن تكتب إجابتك أولًا، ثم اضغط مرة أخرى'); ta.focus(); return; }
+  box.hidden = !box.hidden;
+  const hint = LESSON_QS[i].hint;
+  b.textContent = box.hidden ? (hint ? 'أظهر التلميح' : 'أظهر الإجابة') : (hint ? 'أخفِ التلميح' : 'أخفِ الإجابة');
+});
+
+/* =========================================================
+   5) المختبر ١: مصنع الغذاء
+   ========================================================= */
+const FAC = [
+  { k: 'light', name: 'الطاقة من الضوء', ic: 'sun', c: 'var(--sun)', cs: 'var(--sun-soft)', q: 'من أين يحصل النبات على الطاقة؟', opts: ['من الضوء', 'من التربة'], right: 0 },
+  { k: 'water', name: 'الماء', ic: 'drop', c: 'var(--water)', cs: 'var(--water-soft)', q: 'من أين يحصل النبات على الماء؟', opts: ['من الهواء', 'من التربة'], right: 1 },
+  { k: 'co2', name: 'ثاني أكسيد الكربون', ic: 'leaf', c: 'var(--air)', cs: 'var(--air-soft)', q: 'من أين يحصل النبات على ثاني أكسيد الكربون؟', opts: ['من الهواء', 'من التربة'], right: 0 }
+];
+let facOn = {}, bio = 0;
+function buildFactory() {
+  facOn = {};
+  $('#facInputs').innerHTML = FAC.map(x => `
+    <div class="inp" id="inp-${x.k}" style="--c:${x.c};--cs:${x.cs}">
+      <div class="ih"><span class="ic">${ICON[x.ic]}</span><b>${x.name}</b><span class="tag" id="st-${x.k}" style="margin-inline-start:auto">غير متوفر</span></div>
+      <div class="srcq">${x.q}<div class="opts">${x.opts.map((o, i) => `<button class="opt" data-fac="${x.k}" data-i="${i}">${o}</button>`).join('')}</div></div>
+    </div>`).join('');
+  $$('[data-fac]').forEach(b => b.onclick = () => {
+    const x = FAC.find(f => f.k === b.dataset.fac);
+    $$(`[data-fac="${x.k}"]`).forEach(o => o.classList.remove('right', 'wrong'));
+    if (+b.dataset.i === x.right) {
+      b.classList.add('right'); facOn[x.k] = true; $('#inp-' + x.k).classList.add('on'); $('#st-' + x.k).textContent = 'متوفر';
+      fb($('#facFb'), 'good', `أحسنت. ${x.k === 'light' ? 'الضوء هو مصدر الطاقة في المصنع.' : x.k === 'water' ? 'الجذور تمتص الماء من التربة.' : 'الأوراق تأخذ ثاني أكسيد الكربون من الهواء.'}`);
+    } else {
+      b.classList.add('wrong'); facOn[x.k] = false; $('#inp-' + x.k).classList.remove('on'); $('#st-' + x.k).textContent = 'غير متوفر';
+      fb($('#facFb'), 'bad', 'إجابة غير صحيحة، راجع صفحة «ما الذي تحتاج إليه النباتات؟» وحاول مرة أخرى.');
+    }
+  });
+  $('#outFood').classList.remove('on'); $('#outOxy').classList.remove('on');
+  $('#facStage').classList.add('dim'); bio = 0; $('#bioBar').style.width = '0'; $('#bioTxt').textContent = '٠ خلايا وأنسجة جديدة';
+}
+buildFactory();
+$('#facReset').onclick = () => { buildFactory(); $('#facFb').className = 'feedback'; };
+$('#facRun').onclick = () => {
+  const missing = FAC.filter(x => !facOn[x.k]).map(x => x.name);
+  if (missing.length) {
+    $('#outFood').classList.remove('on'); $('#outOxy').classList.remove('on'); $('#facStage').classList.add('dim');
+    fb($('#facFb'), 'bad', `لم يحدث التمثيل الضوئيّ. ما زال النبات يحتاج إلى: <b>${missing.join('، ')}</b>.`);
+    return;
+  }
+  $('#facStage').classList.remove('dim');
+  $('#outFood').classList.add('on'); $('#outOxy').classList.add('on');
+  const host = $('#facBub');
+  for (let i = 0; i < 14; i++) {
+    const b = document.createElement('span'); b.className = 'bub';
+    b.style.right = (25 + Math.random() * 45) + '%'; b.style.animationDelay = (Math.random() * 1.2) + 's';
+    host.appendChild(b); setTimeout(() => b.remove(), 4200);
+  }
+  bio = Math.min(bio + 20, 100);
+  $('#bioBar').style.width = bio + '%';
+  $('#bioTxt').textContent = bio >= 100 ? 'نما النبات بخلايا وأنسجة جديدة' : 'خلايا وأنسجة جديدة تتكوّن…';
+  fb($('#facFb'), 'good', 'نجح المصنع! حوّلت طاقة الضوء الماء وثاني أكسيد الكربون إلى غذاء وأكسجين. وبنى النبات بجزء من الغذاء خلايا جديدة، فزادت كتلته الحيوية. شغّله مرة أخرى وراقب النبات وهو ينمو.');
+};
+
+/* =========================================================
+   6) المختبر ٢: نشاط ١-١ افتراضي
+   ========================================================= */
+const act = { wet: {}, sown: {}, place: {} };
+function setStep(n) {
+  [1, 2, 3].forEach(i => { $('#actS' + i).hidden = i !== n; const s = $('#sn' + i); s.classList.toggle('cur', i === n); s.classList.toggle('done', i < n); });
+}
+function resetAct() {
+  act.wet = {}; act.sown = {}; act.place = {};
+  ['A', 'B'].forEach(g => { const p = $('#plate' + g); p.innerHTML = ''; p.classList.remove('wet'); $('#env' + g).hidden = true; $('#w' + g).checked = false; });
+  $('#tA').value = 25; $('#tB').value = 32; $('#tAv').textContent = 25; $('#tBv').textContent = 32;
+  $$('.place .opt').forEach(o => o.classList.remove('sel'));
+  ['fb1', 'fb2'].forEach(id => $('#' + id).className = 'feedback');
+  setStep(1);
+}
+$$('[data-wet]').forEach(b => b.onclick = () => { const g = b.dataset.wet; act.wet[g] = true; $('#plate' + g).classList.add('wet'); });
+$$('[data-sow]').forEach(b => b.onclick = () => {
+  const g = b.dataset.sow;
+  if (!act.wet[g]) { fb($('#fb1'), 'bad', 'البذور تحتاج إلى رطوبة لتنبت. <b>بلّل ورقة الترشيح أولًا</b>.'); return; }
+  if (act.sown[g]) return; act.sown[g] = true;
+  const p = $('#plate' + g);
+  for (let i = 0; i < 9; i++) { const s = document.createElement('span'); s.className = 'seed'; const a = Math.random() * Math.PI * 2, r = Math.random() * 52; s.style.left = (80 + Math.cos(a) * r) + 'px'; s.style.top = (80 + Math.sin(a) * r) + 'px'; s.style.animationDelay = (i * .05) + 's'; p.appendChild(s); }
+  fb($('#fb1'), 'good', `نُثرت البذور في الوعاء (${g === 'A' ? 'أ' : 'ب'}).`);
+});
+$('#toS2').onclick = () => {
+  if (!(act.sown.A && act.sown.B)) { fb($('#fb1'), 'bad', 'انثر البذور على ورقة ترشيح مبلّلة في <b>الوعاءين</b> قبل الانتقال.'); return; }
+  setStep(2);
+};
+$$('.place').forEach(pl => pl.addEventListener('click', e => {
+  const o = e.target.closest('.opt'); if (!o) return; const g = pl.dataset.group;
+  $$('.opt', pl).forEach(x => x.classList.remove('sel')); o.classList.add('sel'); act.place[g] = o.dataset.pl;
+  const env = $('#env' + g); env.hidden = false;
+  env.className = 'envbox ' + (o.dataset.pl === 'light' ? 'light' : 'dark');
+  env.textContent = o.dataset.pl === 'light' ? 'المجموعة في مكان مضيء' : 'المجموعة في الظلام';
+}));
+['A', 'B'].forEach(g => $('#t' + g).oninput = e => $('#t' + g + 'v').textContent = e.target.value);
+$('#chkS2').onclick = () => {
+  const errs = [];
+  const pa = act.place.A, pb = act.place.B;
+  if (!pa || !pb) errs.push('اختر مكانًا لكل مجموعة.');
+  else {
+    const darkA = pa !== 'light', darkB = pb !== 'light';
+    if (darkA === darkB) errs.push('نريد مقارنة نبات في الظلام بنبات في الضوء، فاجعل <b>مجموعة واحدة</b> في الظلام <b>والأخرى</b> في الضوء.');
+  }
+  if (!$('#wA').checked || !$('#wB').checked) errs.push('لا تنسَ أن تسقي <b>المجموعتين</b> كلتيهما.');
+  if ($('#tA').value !== $('#tB').value) errs.push(`درجتا الحرارة مختلفتان (${$('#tA').value} و ${$('#tB').value}). لكي تكون التجربة عادلة اجعلهما <b>متساويتين</b>، فالضوء وحده هو ما يجب أن يختلف.`);
+  if (errs.length) { fb($('#fb2'), 'bad', errs.join('<br>')); return; }
+  fb($('#fb2'), 'good', 'الإجراء صحيح. الآن انتظر يومين ثم قارن بين المجموعتين.');
+  setTimeout(() => setStep(3), 900);
+};
+$('#actRestart').onclick = resetAct;
+// لوحات الرسم للمقارنة
+function setupCanvas(id) {
+  const cv = $('#' + id), ctx = cv.getContext('2d'); let drawing = false, last = null;
+  const pos = e => { const r = cv.getBoundingClientRect(); return { x: (e.clientX - r.left) * cv.width / r.width, y: (e.clientY - r.top) * cv.height / r.height }; };
+  cv.addEventListener('pointerdown', e => { drawing = true; last = pos(e); cv.setPointerCapture(e.pointerId); });
+  cv.addEventListener('pointermove', e => {
+    if (!drawing) return; const p = pos(e);
+    ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--leaf').trim() || '#2E8B47';
+    ctx.lineWidth = 4; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(last.x, last.y); ctx.lineTo(p.x, p.y); ctx.stroke(); last = p;
+  });
+  ['pointerup', 'pointercancel', 'pointerleave'].forEach(ev => cv.addEventListener(ev, () => drawing = false));
+}
+setupCanvas('cvA'); setupCanvas('cvB');
+$$('[data-clear]').forEach(b => b.onclick = () => { const c = $('#' + b.dataset.clear); c.getContext('2d').clearRect(0, 0, c.width, c.height); });
+
+/* =========================================================
+   7) المختبر ٣: تتبّع الطاقة
+   ========================================================= */
+const CHAIN = [
+  { k: 'grass', n: 'عشب' }, { k: 'locust', n: 'جرادة' }, { k: 'lizard', n: 'سحلية' }, { k: 'snake', n: 'ثعبان' }, { k: 'falcon', n: 'صقر' }
+];
+const CHAIN_CAPS = [
+  'يلتقط العشب طاقة الضوء ويخزّنها في الغذاء الذي يصنعه.',
+  'تأكل الجرادة العشب، فتنتقل إليها جزء من الطاقة.',
+  'تأكل السحلية الجرادة، فتنتقل الطاقة خطوة أخرى.',
+  'يأكل الثعبان السحلية، وتستمر الطاقة في الانتقال.',
+  'يصطاد الصقر الثعبان، وهو آخر حلقة في هذه السلسلة.'
+];
+let chainTimer = null, chainAnswered = false;
+function resetChain() {
+  clearInterval(chainTimer); chainAnswered = false;
+  const row = $('#chainRow');
+  row.innerHTML = `<span class="sunball" title="الضوء"></span><span class="cha">←</span>` +
+    CHAIN.map((c, i) => `<button class="org" data-org="${c.k}"><img src="${IMG[c.k]}" alt="${c.n}"><span>${c.n}</span></button>${i < CHAIN.length - 1 ? '<span class="cha">←</span>' : ''}`).join('');
+  $('#chainQ').hidden = true; $('#chainFb').className = 'feedback';
+  $('#chainCap').innerHTML = '<p>اضغط «أطلق الطاقة» وتابع رحلتها من الشمس حتى الصقر.</p>';
+  $('#chainGo').textContent = 'أطلق الطاقة';
+}
+$('#chainGo').onclick = () => {
+  resetChain();
+  const orgs = $$('#chainRow .org'), arrows = $$('#chainRow .cha'); let i = 0;
+  const step = () => {
+    if (i >= orgs.length) { clearInterval(chainTimer); $('#chainQ').hidden = false; $('#chainGo').textContent = 'أعد التجربة'; return; }
+    arrows[i] && arrows[i].classList.add('lit'); orgs[i].classList.add('lit');
+    $('#chainCap').innerHTML = `<p><b style="color:var(--sun)">${orgs[i].querySelector('span').textContent}:</b> ${CHAIN_CAPS[i]}</p>`;
+    i++;
+  };
+  step(); chainTimer = setInterval(step, 1500);
+};
+$('#chainRow').addEventListener('click', e => {
+  const o = e.target.closest('.org'); if (!o || $('#chainQ').hidden || chainAnswered) return;
+  if (o.dataset.org === 'grass') {
+    chainAnswered = true; o.classList.add('right');
+    fb($('#chainFb'), 'good', 'صحيح: <b>العشب</b>. هو النبات الوحيد هنا، وهو الذي يحوّل طاقة الضوء إلى غذاء تعتمد عليه باقي السلسلة.');
+  } else {
+    o.classList.add('wrong'); setTimeout(() => o.classList.remove('wrong'), 600);
+    fb($('#chainFb'), 'bad', `${o.querySelector('span').textContent} حيوان، يحصل على غذائه بالأكل. ابحث عن الكائن الذي يصنع غذاءه بنفسه.`);
+  }
+});
+resetChain();
+
+/* =========================================================
+   8) أسئلة بنمط الاختبارات النهائية (من إعداد الموقع)
+   ========================================================= */
+const EXAMS = [
+  { t: 'اختيار من متعدد', m: 1, q: 'أيّ المواد الآتية <b>يُنتجها</b> النبات أثناء التمثيل الضوئي؟', opts: ['ثاني أكسيد الكربون', 'الأكسجين', 'الماء', 'النيتروجين'], r: 1,
+    a: 'الأكسجين. أما الماء وثاني أكسيد الكربون فهما مادتان <b>يستخدمهما</b> النبات، لا ينتجهما.' },
+  { t: 'اختيار من متعدد', m: 1, q: 'من أين يحصل النبات على ثاني أكسيد الكربون الذي يحتاجه للتمثيل الضوئي؟', opts: ['من التربة', 'من الماء', 'من الهواء', 'من ضوء الشمس'], r: 2,
+    a: 'من الهواء، ويدخل إلى النبات عن طريق الأوراق.' },
+  { t: 'صواب أو خطأ', m: 3, q: 'ضع علامة (✓) أمام العبارة الصحيحة وعلامة (✗) أمام العبارة الخاطئة:<ol style="margin:8px 0 0;padding-inline-start:22px"><li>يصنع النبات غذاءه مستخدمًا طاقة الضوء. (&nbsp;&nbsp;&nbsp;)</li><li>تمتص الأوراق الماء من التربة. (&nbsp;&nbsp;&nbsp;)</li><li>الأكسجين من نواتج التمثيل الضوئي. (&nbsp;&nbsp;&nbsp;)</li></ol>',
+    a: '١- (✓)&nbsp;&nbsp; ٢- (✗) لأن <b>الجذور</b> هي التي تمتص الماء من التربة.&nbsp;&nbsp; ٣- (✓)' },
+  { t: 'سؤال بالرسم', m: 2, q: 'يوضح الشكل نباتًا يقوم بالتمثيل الضوئي. يشير الرمزان (س) و(ص) إلى مادتين يحتاجهما النبات.<div class="exfig"><svg viewBox="0 0 320 300" width="320" height="300" style="max-width:100%;height:auto" font-family="inherit"><rect width="320" height="210" fill="#eef7fd"/><rect y="200" width="320" height="100" fill="#c49a6c"/><path d="M160 202 C158 160 162 120 160 70" stroke="#3f8f3a" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M160 150 C130 150 104 136 92 116 C120 112 146 124 160 150Z" fill="#5cb85c" stroke="#2e7d32" stroke-width="2"/><path d="M160 120 C190 118 214 102 224 82 C196 80 172 96 160 120Z" fill="#5cb85c" stroke="#2e7d32" stroke-width="2"/><path d="M160 74 C146 60 144 42 152 28 C168 40 172 58 160 74Z" fill="#6cc46c" stroke="#2e7d32" stroke-width="2"/><g stroke="#efe3c8" stroke-width="4" fill="none" stroke-linecap="round"><path d="M160 204 C158 230 156 250 160 280"/><path d="M159 214 C140 230 124 240 100 254"/><path d="M161 218 C180 234 198 242 222 252"/></g><circle cx="280" cy="40" r="20" fill="#ffd45a" stroke="#f2a20c" stroke-width="3"/><path d="M30 112 L84 124" stroke="#333" stroke-width="3" marker-end="url(#qa)"/><path d="M40 270 L92 256" stroke="#333" stroke-width="3" marker-end="url(#qa)"/><defs><marker id="qa" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#333"/></marker></defs><circle cx="20" cy="110" r="14" fill="#fff" stroke="#333" stroke-width="2"/><text x="20" y="116" font-size="17" font-weight="700" text-anchor="middle">س</text><circle cx="28" cy="276" r="14" fill="#fff" stroke="#333" stroke-width="2"/><text x="28" y="282" font-size="17" font-weight="700" text-anchor="middle">ص</text></svg></div>أ) ما اسم المادة (س)؟ ........................<br>ب) ما اسم المادة (ص)؟ ........................',
+    a: 'أ) (س): ثاني أكسيد الكربون، لأنه يدخل من الهواء إلى الورقة. [١]<br>ب) (ص): الماء، لأنه يدخل من التربة إلى الجذور. [١]' },
+  { t: 'إكمال', m: 2, q: 'أكمل المعادلة اللفظية للتمثيل الضوئي:<div class="eqline">ماء &nbsp;+&nbsp; ................ &nbsp;←&nbsp; غذاء &nbsp;+&nbsp; ................<div class="note" style="font-weight:400">(يحدث التفاعل بوجود الضوء)</div></div>',
+    a: 'ماء + <b>ثاني أكسيد الكربون</b> ← غذاء + <b>أكسجين</b> (بوجود الضوء). لكل فراغ درجة.' },
+  { t: 'سلسلة غذائية', m: 2, q: 'إليك سلسلة غذائية من صحراء عُمان:<div class="eqline">أعشاب ← غزال ← ذئب</div>أ) أيّ الكائنات يقوم بالتمثيل الضوئي؟ ..............<br>ب) من أين يأتي مصدر الطاقة في هذه السلسلة؟ ..............',
+    a: 'أ) الأعشاب. [١]<br>ب) من ضوء الشمس، الذي تحوّله الأعشاب إلى غذاء. [١]' },
+  { t: 'إكمال', m: 1, q: 'أكمل العبارة: يُطلق على مادة جسم الكائن الحي المكوّنة من خلايا وأنسجة اسم ........................',
+    a: 'الكتلة الحيوية (Biomass).' },
+  { t: 'تجربة', m: 2, q: 'زرعت مريم شتلتين متشابهتين من الفول. وضعت الأولى في خزانة مظلمة، والثانية بجانب النافذة، ولمدة ثلاثة أيام.<br>أ) صف شكل أوراق الشتلة التي وُضعت في الخزانة المظلمة. ........................<br>ب) اذكر عاملًا واحدًا يجب أن يكون متساويًا للشتلتين. ........................',
+    a: 'أ) أوراقها شاحبة أو مصفرّة، وليست خضراء مثل الشتلة الأخرى. [١]<br>ب) أي واحد مما يأتي: كمية الماء، أو درجة الحرارة، أو نوع التربة، أو حجم الشتلة. [١]' },
+  { t: 'قراءة رسم بياني', m: 2, q: 'وضع طالب نبتة مائية تحت مصباح، وعدّ فقاعات الغاز الخارجة منها في الدقيقة، وكرّر التجربة أربع مرات بإضاءة مختلفة. يوضح الرسم البياني النتائج.<div class="exfig"><svg viewBox="0 0 340 230" width="340" height="230" style="max-width:100%;height:auto" font-family="inherit"><g stroke="#999" stroke-width="1" fill="none"><path d="M50 20V190H330"/><path d="M50 156H330M50 122H330M50 88H330M50 54H330" stroke-dasharray="3 4" stroke="#ccc"/></g><g font-size="12" fill="#444" text-anchor="end"><text x="44" y="194">0</text><text x="44" y="160">8</text><text x="44" y="126">16</text><text x="44" y="92">24</text><text x="44" y="58">32</text></g><g fill="#4a8f4f"><rect x="75" y="131" width="40" height="59"/><rect x="140" y="62" width="40" height="128"/><rect x="205" y="164" width="40" height="26"/><rect x="270" y="96" width="40" height="94"/></g><g font-size="15" font-weight="700" text-anchor="middle" fill="#222"><text x="95" y="210">A</text><text x="160" y="210">B</text><text x="225" y="210">C</text><text x="290" y="210">D</text></g><text x="190" y="228" font-size="12" text-anchor="middle" fill="#444">رمز التجربة</text><text x="14" y="105" font-size="11" text-anchor="middle" fill="#444" transform="rotate(-90 14 105)">عدد الفقاعات في الدقيقة</text></svg></div>أ) ما اسم الغاز الموجود في الفقاعات؟ ..............<br>ب) في أي تجربة كانت الإضاءة أقوى؟ فسّر إجابتك. ..............',
+    a: 'أ) الأكسجين. [١]<br>ب) التجربة (B)، لأن عدد الفقاعات فيها هو الأكبر، أي أن التمثيل الضوئي كان أسرع. [١]' },
+  { t: 'تفسير', m: 2, q: 'فسّر: تبدأ كل سلسلة غذائية بنبات.',
+    a: 'لأن النبات هو الكائن الذي يصنع غذاءه بنفسه من طاقة الضوء بالتمثيل الضوئي [١]، ثم تنتقل هذه الطاقة إلى الحيوانات عندما تتغذى عليه [١].' }
+];
+const exSeen = new Set(store.get('exSeen', []));
+$('#exTotal').textContent = EXAMS.length;
+$('#exList').innerHTML = EXAMS.map((x, i) => `
+  <article class="excard">
+    <div class="exhead"><b>سؤال ${ar(i + 1)}</b><span class="note">${x.t} · [${ar(x.m)}] ${x.m > 2 ? 'درجات' : x.m === 2 ? 'درجتان' : 'درجة'}</span></div>
+    <div class="exbody">
+      <div class="exq">${x.q}</div>
+      ${x.opts ? `<div class="exopts">${x.opts.map((o, k) => `<button class="opt" data-mc="${i}" data-k="${k}">${'أبجد'[k]}) ${o}</button>`).join('')}</div>` : ''}
+      <div class="row"><button class="btn" data-ex="${i}">إظهار نموذج الإجابة</button></div>
+      <div class="exans" id="exa${i}" hidden><span class="lbl">نموذج الإجابة</span><div>${x.a}</div></div>
+    </div>
+  </article>`).join('');
+function updExDone() { $('#exDone').textContent = exSeen.size; }
+updExDone();
+function exMark(i) { exSeen.add(i); store.set('exSeen', [...exSeen]); updExDone(); updateProgress(); }
+$$('[data-ex]').forEach(b => b.onclick = () => {
+  const i = +b.dataset.ex; const box = $('#exa' + i); box.hidden = !box.hidden;
+  b.textContent = box.hidden ? 'إظهار نموذج الإجابة' : 'إخفاء نموذج الإجابة';
+  if (!box.hidden) exMark(i);
+});
+$$('[data-mc]').forEach(b => b.onclick = () => {
+  const i = +b.dataset.mc, k = +b.dataset.k, x = EXAMS[i];
+  $$(`[data-mc="${i}"]`).forEach(o => o.classList.remove('right', 'wrong'));
+  b.classList.add(k === x.r ? 'right' : 'wrong');
+  if (k === x.r) { toast('إجابة صحيحة'); exMark(i); } else toast('حاول مرة أخرى');
+});
+
+/* =========================================================
+   9) الألعاب
+   ========================================================= */
+function stars(n) { return `<div class="stars">${[1, 2, 3].map(i => ICON.star.replace('<svg', `<svg class="${i <= n ? 'on' : ''}"`)).join('')}</div>`; }
+function winBox(title, msg, n) { return `<div class="win">${stars(n)}<h3>${title}</h3><p>${msg}</p></div>`; }
+
+/* سحب وإفلات عام يعمل باللمس والفأرة: عنصر قابل للسحب + مناطق إفلات */
+function makeDraggable(el, onDrop, isZone) {
+  let ghost = null, sx = 0, sy = 0, moved = false;
+  el.addEventListener('pointerdown', e => {
+    if (el.classList.contains('ok')) return;
+    sx = e.clientX; sy = e.clientY; moved = false; el.setPointerCapture(e.pointerId);
+  });
+  el.addEventListener('pointermove', e => {
+    if (!el.hasPointerCapture(e.pointerId)) return;
+    if (!moved && Math.hypot(e.clientX - sx, e.clientY - sy) < 8) return;
+    if (!moved) { moved = true; ghost = el.cloneNode(true); Object.assign(ghost.style, { position: 'fixed', zIndex: 200, pointerEvents: 'none', opacity: .9, width: el.offsetWidth + 'px' }); document.body.appendChild(ghost); }
+    ghost.style.left = (e.clientX - el.offsetWidth / 2) + 'px'; ghost.style.top = (e.clientY - el.offsetHeight / 2) + 'px';
+    $$('.hover').forEach(z => z.classList.remove('hover'));
+    const z = document.elementFromPoint(e.clientX, e.clientY); const zone = z && z.closest(isZone); if (zone) zone.classList.add('hover');
+  });
+  el.addEventListener('pointerup', e => {
+    if (ghost) { ghost.remove(); ghost = null; }
+    $$('.hover').forEach(z => z.classList.remove('hover'));
+    if (moved) { const z = document.elementFromPoint(e.clientX, e.clientY); const zone = z && z.closest(isZone); if (zone) onDrop(el, zone); el.dataset.justDragged = 1; setTimeout(() => delete el.dataset.justDragged, 50); }
+  });
+}
+
+/* --- لعبة ١: رتّب السلسلة الغذائية --- */
+let gcPicked = null, gcTries = 0;
+function gcInit() {
+  gcTries = 0; $('#gcTries').textContent = 0; gcPicked = null; $('#gcFb').className = 'feedback';
+  $('#gcSlots').innerHTML = CHAIN.map((_, i) => `<div class="slot" data-slot="${i}"><span class="si">${ar(i + 1)}</span></div>`).join('');
+  $('#gcPool').innerHTML = shuffle(CHAIN).map(c => `<div class="card-o" data-k="${c.k}" tabindex="0"><img src="${IMG[c.k]}" alt=""><span>${c.n}</span></div>`).join('');
+  $$('#gcPool .card-o').forEach(card => {
+    makeDraggable(card, (el, zone) => gcPlace(el, zone), '.slot, #gcPool');
+    card.addEventListener('click', () => { if (card.dataset.justDragged) return; $$('.card-o.picked').forEach(x => x.classList.remove('picked')); gcPicked = card; card.classList.add('picked'); });
+  });
+}
+function gcPlace(card, zone) {
+  card.classList.remove('picked'); gcPicked = null;
+  $$('.slot').forEach(s => s.classList.remove('ok', 'no'));
+  if (zone.id === 'gcPool') { zone.appendChild(card); return; }
+  const existing = zone.querySelector('.card-o'); if (existing && existing !== card) $('#gcPool').appendChild(existing);
+  zone.appendChild(card);
+}
+$('#gcSlots').addEventListener('click', e => { const s = e.target.closest('.slot'); if (s && gcPicked) gcPlace(gcPicked, s); });
+$('#gcPool').addEventListener('click', e => { if (e.target.id === 'gcPool' && gcPicked) gcPlace(gcPicked, $('#gcPool')); });
+$('#gcCheck').onclick = () => {
+  const slots = $$('#gcSlots .slot');
+  if (slots.some(s => !s.querySelector('.card-o'))) { fb($('#gcFb'), 'info', 'ضع جميع الكائنات في الخانات أولًا.'); return; }
+  gcTries++; $('#gcTries').textContent = gcTries; let ok = 0;
+  slots.forEach((s, i) => { const r = s.querySelector('.card-o').dataset.k === CHAIN[i].k; s.classList.toggle('ok', r); s.classList.toggle('no', !r); if (r) ok++; });
+  if (ok === CHAIN.length) fb($('#gcFb'), 'good', winBox('ترتيب صحيح!', 'عشب ← جرادة ← سحلية ← ثعبان ← صقر. النبات دائمًا في أول السلسلة.', gcTries === 1 ? 3 : gcTries <= 3 ? 2 : 1));
+  else if (slots[0].querySelector('.card-o').dataset.k !== 'grass') fb($('#gcFb'), 'bad', `${ok} من ${CHAIN.length} في مكانها الصحيح. تلميح: من يصنع غذاءه بنفسه يأتي أولًا.`);
+  else fb($('#gcFb'), 'bad', `${ok} من ${CHAIN.length} في مكانها الصحيح. انقل الخانات الحمراء وحاول مرة أخرى.`);
+};
+$('#gcReset').onclick = gcInit;
+gcInit();
+
+/* --- لعبة ٢: يحتاج إليه أم يصنعه؟ (مرحلتان) --- */
+const SORT_ROUNDS = [
+  { title: 'يحتاج إليه النبات أم يصنعه؟', lead: 'الهدف: التمييز بين ما يحتاج إليه النبات وما يصنعه في التمثيل الضوئيّ. اسحب كل بطاقة إلى السلة الصحيحة، أو اضغط البطاقة ثم السلة.',
+    buckets: [{ k: 'in', t: 'يحتاج إليه النبات', c: 'var(--water)', cs: 'var(--water-soft)' }, { k: 'out', t: 'يصنعه النبات', c: 'var(--leaf)', cs: 'var(--leaf-soft)' }],
+    items: [{ t: 'الماء', b: 'in' }, { t: 'ثاني أكسيد الكربون', b: 'in' }, { t: 'طاقة الضوء', b: 'in' }, { t: 'الغذاء', b: 'out' }, { t: 'الأكسجين', b: 'out' }] },
+  { title: 'من أين يحصل عليه النبات؟', lead: 'المرحلة الثانية: ضع كل مادة تحت مصدرها الذي يحصل منه النبات عليها.',
+    buckets: [{ k: 'soil', t: 'من التربة', c: 'var(--sun)', cs: 'var(--sun-soft)' }, { k: 'air', t: 'من الهواء', c: 'var(--air)', cs: 'var(--air-soft)' }],
+    items: [{ t: 'الماء', b: 'soil' }, { t: 'ثاني أكسيد الكربون', b: 'air' }] }
+];
+let gsR = 0, gsErr = 0, gsPicked = null, gsLeft = 0;
+function gsInit(r) {
+  gsR = r; if (r === 0) gsErr = 0; gsPicked = null; const R = SORT_ROUNDS[r];
+  $('#gsRound').textContent = r + 1; $('#gsErr').textContent = gsErr; $('#gsTitle').textContent = R.title; $('#gsLead').textContent = R.lead; $('#gsWin').innerHTML = '';
+  $('#gsBuckets').innerHTML = R.buckets.map(b => `<div class="bucket" data-b="${b.k}" style="--c:${b.c};--cs:${b.cs}"><h4>${b.t}</h4><div class="items"></div></div>`).join('');
+  $('#gsPool').innerHTML = shuffle(R.items).map(x => `<span class="word" data-b="${x.b}" tabindex="0">${x.t}</span>`).join('');
+  gsLeft = R.items.length;
+  $$('#gsPool .word').forEach(w => {
+    makeDraggable(w, (el, zone) => gsDrop(el, zone), '.bucket');
+    w.addEventListener('click', () => { if (w.dataset.justDragged || w.classList.contains('ok')) return; $$('.word.picked').forEach(x => x.classList.remove('picked')); gsPicked = w; w.classList.add('picked'); });
+  });
+}
+function gsDrop(w, zone) {
+  w.classList.remove('picked'); gsPicked = null;
+  if (w.dataset.b === zone.dataset.b) {
+    w.classList.add('ok'); zone.querySelector('.items').appendChild(w); gsLeft--;
+    if (gsLeft === 0) {
+      if (gsR === 0) { toast('ممتاز! انتقل إلى المرحلة الثانية'); setTimeout(() => gsInit(1), 900); }
+      else $('#gsWin').innerHTML = winBox('أنهيت المرحلتين!', 'المدخلات: ماء من التربة، وثاني أكسيد الكربون من الهواء، وطاقة الضوء. والنواتج: غذاء وأكسجين.', gsErr === 0 ? 3 : gsErr <= 2 ? 2 : 1);
+    }
+  } else { gsErr++; $('#gsErr').textContent = gsErr; w.classList.add('no'); setTimeout(() => w.classList.remove('no'), 500); toast('ليست هذه السلة، حاول مرة أخرى'); }
+}
+$('#gsBuckets').addEventListener('click', e => { const b = e.target.closest('.bucket'); if (b && gsPicked) gsDrop(gsPicked, b); });
+$('#gsReset').onclick = () => gsInit(0);
+gsInit(0);
+
+/* --- لعبة ٣: بطاقات الذاكرة --- */
+const PAIRS = [
+  ['التمثيل الضوئيّ', 'صنع النبات لغذائه بطاقة الضوء'],
+  ['Photo', 'ضوء'],
+  ['Synthesis', 'إنتاج'],
+  ['الكتلة الحيويّة', 'مادة جسم الكائن الحي من خلايا وأنسجة'],
+  ['الماء', 'تمتصه الجذور من التربة'],
+  ['ثاني أكسيد الكربون', 'تأخذه الأوراق من الهواء']
+];
+let gmOpen = [], gmMoves = 0, gmPairs = 0, gmLock = false;
+function gmInit() {
+  gmOpen = []; gmMoves = 0; gmPairs = 0; gmLock = false; $('#gmMoves').textContent = 0; $('#gmPairs').textContent = 0; $('#gmWin').innerHTML = '';
+  const cards = shuffle(PAIRS.flatMap((p, i) => [{ p: i, t: p[0] }, { p: i, t: p[1] }]));
+  $('#gmGrid').innerHTML = cards.map((c, i) => `<button class="mc" data-p="${c.p}" aria-label="بطاقة ${i + 1}"><span class="in"><span class="fa">${ICON.leaf}</span><span class="ba">${/^[A-Za-z]/.test(c.t) ? `<span class="en" style="font-size:1.25em">${c.t}</span>` : c.t}</span></span></button>`).join('');
+}
+$('#gmGrid').addEventListener('click', e => {
+  const c = e.target.closest('.mc'); if (!c || gmLock || c.classList.contains('flip')) return;
+  c.classList.add('flip'); gmOpen.push(c);
+  if (gmOpen.length === 2) {
+    gmMoves++; $('#gmMoves').textContent = gmMoves; const [a, b] = gmOpen;
+    if (a.dataset.p === b.dataset.p) {
+      a.classList.add('match'); b.classList.add('match'); gmOpen = []; gmPairs++; $('#gmPairs').textContent = gmPairs;
+      if (gmPairs === PAIRS.length) $('#gmWin').innerHTML = winBox('طابقت كل البطاقات!', `أنهيت اللعبة في ${gmMoves} حركة. حاول أن تنهيها بحركات أقل.`, gmMoves <= 9 ? 3 : gmMoves <= 13 ? 2 : 1);
+    } else { gmLock = true; setTimeout(() => { a.classList.remove('flip'); b.classList.remove('flip'); gmOpen = []; gmLock = false; }, 950); }
+  }
+});
+$('#gmReset').onclick = gmInit;
+gmInit();
+
+/* --- لعبة ٤: تحدّي الدقيقة --- */
+const TF = [
+  ['الإنسان يحصل على الطاقة من الطعام الذي يأكله.', 1],
+  ['أول حلقة في السلسلة الغذائية تكون نباتًا.', 1],
+  ['مصدر الطاقة عند النبات هو ضوء الشمس.', 1],
+  ['كلمة «Photo» معناها «إنتاج».', 0, 'كلمة «Photo» معناها «ضوء».'],
+  ['كلمة «Synthesis» معناها «إنتاج».', 1],
+  ['يأخذ النبات الماء من الهواء.', 0, 'يأخذ النبات الماء من التربة عن طريق الجذور.'],
+  ['تأخذ الأوراق ثاني أكسيد الكربون من الهواء.', 1],
+  ['يأخذ النبات ثاني أكسيد الكربون من التربة.', 0, 'يأخذه من الهواء عن طريق الأوراق.'],
+  ['يُطلق النبات غاز الأكسجين أثناء التمثيل الضوئي.', 1],
+  ['ناتج التمثيل الضوئي هو الماء وثاني أكسيد الكربون.', 0, 'الماء وثاني أكسيد الكربون مدخلات، والنواتج غذاء وأكسجين.'],
+  ['يبني النبات خلايا جديدة من جزء من غذائه.', 1],
+  ['الكتلة الحيوية هي مادة جسم الكائن الحي من خلايا وأنسجة.', 1],
+  ['في السلسلة (عشب ← جرادة ← سحلية ← ثعبان ← صقر) الصقر يصنع غذاءه بالتمثيل الضوئي.', 0, 'العشب هو الذي يصنع غذاءه بالتمثيل الضوئي.'],
+  ['النبات يأخذ غذاءه جاهزًا من التربة.', 0, 'النبات يصنع غذاءه بنفسه في أوراقه.'],
+  ['يحتاج النبات إلى الضوء ليصنع غذاءه.', 1],
+  ['تنتقل الطاقة بين الكائنات الحية عندما يأكل بعضها بعضًا.', 1]
+];
+let gq = { on: false, t: 60, score: 0, list: [], i: 0, timer: null, wrong: [] };
+$('#gqBest').textContent = store.get('best', 0);
+function gqShow() { const s = gq.list[gq.i % gq.list.length]; $('#gqText').className = 'qstate'; $('#gqText').textContent = s[0]; }
+$('#gqStart').onclick = () => {
+  gq = { on: true, t: 60, score: 0, list: shuffle(TF), i: 0, timer: null, wrong: [] };
+  $('#gqScore').textContent = 0; $('#gqTime').textContent = 60; $('#gqBar').style.width = '100%'; $('#gqReview').innerHTML = '';
+  $('#gqBtns').hidden = false; $('#gqStart').hidden = true; gqShow();
+  gq.timer = setInterval(() => { gq.t--; $('#gqTime').textContent = gq.t; $('#gqBar').style.width = (gq.t / 60 * 100) + '%'; if (gq.t <= 0) gqEnd(); }, 1000);
+};
+$$('[data-tf]').forEach(b => b.onclick = () => {
+  if (!gq.on) return; const s = gq.list[gq.i % gq.list.length]; const right = +b.dataset.tf === s[1];
+  if (right) { gq.score++; $('#gqText').classList.add('good'); }
+  else { gq.score = Math.max(0, gq.score - 1); $('#gqText').classList.add('bad'); if (!gq.wrong.includes(s)) gq.wrong.push(s); }
+  $('#gqScore').textContent = gq.score; gq.i++;
+  setTimeout(() => { if (gq.on) gqShow(); }, 280);
+});
+function gqEnd() {
+  clearInterval(gq.timer); gq.on = false; $('#gqBtns').hidden = true; $('#gqStart').hidden = false; $('#gqStart').textContent = 'العب مرة أخرى';
+  const best = Math.max(store.get('best', 0), gq.score); store.set('best', best); $('#gqBest').textContent = best;
+  $('#gqText').className = 'qstate good'; $('#gqText').textContent = `انتهى الوقت! نتيجتك ${gq.score} نقطة.`;
+  $('#gqReview').innerHTML = gq.wrong.length ? `<div class="panel"><b>راجع هذه العبارات:</b><ul style="margin:8px 0 0;padding-inline-start:20px">${gq.wrong.map(w => `<li>«${w[0]}» ${w[1] ? '<b style="color:var(--good)">صواب</b>' : `<b style="color:var(--bad)">خطأ</b>، والصحيح: ${w[2]}`}</li>`).join('')}</ul></div>` : winBox('بلا أخطاء!', 'أجبت عن كل العبارات بشكل صحيح.', gq.score >= 12 ? 3 : gq.score >= 7 ? 2 : 1);
+}
+
+/* --- لعبة ٥: أكمل الفراغ --- */
+const FILL = [
+  ['في التمثيل الضوئي يصنع النبات ', ['الغذاء'], ' بطاقة ', ['الضوء'], '.'],
+  ['يبني النبات بجزء من غذائه خلايا جديدة، فتزداد ', ['كتلته الحيوية'], '.'],
+  ['يأخذ النبات ', ['الماء'], ' من التربة، و', ['ثاني أكسيد الكربون'], ' من الهواء.'],
+  ['يخرج من النبات غاز ', ['الأكسجين'], ' أثناء صنع الغذاء.']
+];
+let gfErr = 0, gfTarget = null;
+function gfInit() {
+  gfErr = 0; $('#gfErr').textContent = 0; $('#gfWin').innerHTML = ''; gfTarget = null; const words = [];
+  $('#gfSents').innerHTML = FILL.map(parts => `<p class="fillsent">${parts.map(p => { if (Array.isArray(p)) { words.push(p[0]); return `<span class="blank empty" data-ans="${p[0]}" tabindex="0">؟</span>`; } return p; }).join('')}</p>`).join('');
+  $('#gfBank').innerHTML = shuffle(words).map(w => `<span class="word" data-w="${w}" tabindex="0">${w}</span>`).join('');
+  $$('#gfBank .word').forEach(w => {
+    makeDraggable(w, (el, zone) => gfFill(zone, el), '.blank');
+    w.addEventListener('click', () => {
+      if (w.dataset.justDragged || w.classList.contains('ok')) return;
+      if (gfTarget) gfFill(gfTarget, w);
+      else { $$('#gfBank .word.picked').forEach(x => x.classList.remove('picked')); w.classList.add('picked'); toast('اضغط الآن على الفراغ المناسب'); }
+    });
+  });
+}
+function gfFill(blank, w) {
+  if (blank.classList.contains('ok')) return;
+  $$('.blank.target').forEach(b => b.classList.remove('target')); gfTarget = null; w.classList.remove('picked');
+  if (blank.dataset.ans === w.dataset.w) {
+    blank.textContent = w.dataset.w; blank.className = 'blank ok'; w.classList.add('ok'); w.style.visibility = 'hidden';
+    if ($$('.blank').every(b => b.classList.contains('ok'))) $('#gfWin').innerHTML = winBox('اكتملت الخلاصة!', 'هذه هي أفكار الدرس الأساسية. راجعها قبل الاختبار.', gfErr === 0 ? 3 : gfErr <= 2 ? 2 : 1);
+  } else {
+    gfErr++; $('#gfErr').textContent = gfErr; blank.classList.add('no'); w.classList.add('no');
+    setTimeout(() => { blank.classList.remove('no'); w.classList.remove('no'); }, 500);
+  }
+}
+$('#gfSents').addEventListener('click', e => {
+  const b = e.target.closest('.blank'); if (!b || b.classList.contains('ok')) return;
+  const picked = $('#gfBank .word.picked'); if (picked) { gfFill(b, picked); return; }
+  $$('.blank.target').forEach(x => x.classList.remove('target')); b.classList.add('target'); gfTarget = b;
+});
+$('#gfReset').onclick = gfInit;
+gfInit();
+
+/* =========================================================
+   10) بدء التشغيل
+   ========================================================= */
+const startId = (location.hash || '').slice(1);
+go(ORDER.includes(startId) ? startId : 'home');
+</script>
+<script>
+/* =========================================================
+   ربط الدرس بمنصة التعلم (SCORM 1.2)
+   - يبلغ المنصة ببدء الدرس وحفظ التقدم واستئنافه
+   - تُحتسب الحالة "مكتمل" عند زيارة جميع صفحات المحتوى النظري
+   - الدرجة = نسبة الصفحات التي زارها الطالب
+   ========================================================= */
+(function () {
+  function findAPI(w) { let n = 0; while (w && !w.API && w.parent && w.parent !== w && n < 10) { w = w.parent; n++; } return w && w.API ? w.API : null; }
+  let API = null;
+  try { API = findAPI(window) || (window.opener && findAPI(window.opener)); } catch (e) { API = null; }
+  if (!API) return; // يعمل الدرس عاديًا خارج المنصة
+  let finished = false;
+  const get = k => { try { return API.LMSGetValue(k); } catch (e) { return ''; } };
+  const set = (k, v) => { try { API.LMSSetValue(k, String(v)); } catch (e) {} };
+  try { API.LMSInitialize(''); } catch (e) {}
+  // استئناف التقدم السابق
+  try {
+    const saved = JSON.parse(get('cmi.suspend_data') || '{}');
+    (saved.v || []).forEach(id => visited.add(id));
+    (saved.e || []).forEach(i => exSeen.add(i));
+    if (typeof updExDone === 'function') updExDone();
+  } catch (e) {}
+  const st = get('cmi.core.lesson_status');
+  if (!st || st === 'not attempted') set('cmi.core.lesson_status', 'incomplete');
+  set('cmi.core.score.min', 0); set('cmi.core.score.max', 100);
+  const start = Date.now();
+  function report() {
+    const all = ORDER.filter(x => x !== 'home');
+    const pct = Math.round(all.filter(x => visited.has(x)).length / all.length * 100);
+    set('cmi.core.score.raw', pct);
+    set('cmi.core.lesson_location', current);
+    set('cmi.suspend_data', JSON.stringify({ v: [...visited], e: [...exSeen] }).slice(0, 4000));
+    const theoryDone = SECTIONS.theory.every(x => visited.has(x.id));
+    if (theoryDone && get('cmi.core.lesson_status') !== 'completed') set('cmi.core.lesson_status', 'completed');
+    try { API.LMSCommit(''); } catch (e) {}
+  }
+  const _up = updateProgress;
+  updateProgress = function () { _up(); report(); };
+  function finish() {
+    if (finished) return; finished = true; report();
+    const s = Math.round((Date.now() - start) / 1000);
+    const pad = n => String(n).padStart(2, '0');
+    set('cmi.core.session_time', pad(Math.floor(s / 3600)) + ':' + pad(Math.floor(s / 60) % 60) + ':' + pad(s % 60));
+    set('cmi.core.exit', 'suspend');
+    try { API.LMSCommit(''); API.LMSFinish(''); } catch (e) {}
+  }
+  window.addEventListener('pagehide', finish);
+  window.addEventListener('beforeunload', finish);
+  const loc = get('cmi.core.lesson_location');
+  if (loc && ORDER.includes(loc) && !location.hash) go(loc); else updateProgress();
+})();
+</script>
+
+</body>
+</html>

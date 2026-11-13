@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 450 583" width="450" height="583" font-family="'IBM Plex Sans Arabic','Noto Kufi Arabic',Tahoma,sans-serif">
+<defs>
+<linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d8eefb"/><stop offset="1" stop-color="#f4fbff"/></linearGradient>
+<linearGradient id="soil" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b98952"/><stop offset="1" stop-color="#8a5d33"/></linearGradient>
+<marker id="ah" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="context-stroke"/></marker>
+<marker id="ahR" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#c0392b"/></marker>
+<marker id="ahB" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#2a74b5"/></marker>
+<marker id="ahY" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#e0a10f"/></marker>
+</defs>
+<rect width="450" height="390" fill="url(#sky)"/>
+<rect y="380" width="450" height="203" fill="url(#soil)"/>
+<path d="M0 384 Q60 372 120 382 T240 380 T360 384 T450 378 V392 H0Z" fill="#7aa64a"/>
+<g fill="#a77748" opacity=".55"><circle cx="40" cy="430" r="5"/><circle cx="150" cy="470" r="4"/><circle cx="330" cy="440" r="6"/><circle cx="400" cy="520" r="4"/><circle cx="230" cy="560" r="5"/><circle cx="110" cy="545" r="3"/></g>
+<!-- sun -->
+<g transform="translate(388 62)">
+<g stroke="#f2b632" stroke-width="6" stroke-linecap="round"><path d="M0 -50V-38M0 38V50M-50 0H-38M38 0H50M-35 -35l8 8M27 27l8 8M35 -35l-8 8M-27 27l-8 8"/></g>
+<circle r="30" fill="#ffcf3f" stroke="#f2a20c" stroke-width="4"/>
+</g>
+<!-- light arrows -->
+<path d="M346 92 L268 132" stroke="#e0a10f" stroke-width="6" stroke-linecap="round" marker-end="url(#ahY)"/>
+<path d="M352 112 L290 150" stroke="#e0a10f" stroke-width="4" stroke-linecap="round" stroke-dasharray="2 9" />
+<text x="262" y="40" font-size="19" font-weight="700" fill="#9a6a05" text-anchor="middle">الطاقة من الضوء</text>
+<!-- roots -->
+<g stroke="#e9dcc0" stroke-width="5" stroke-linecap="round" fill="none">
+<path d="M232 386 C230 430 226 470 230 520"/><path d="M231 404 C206 430 180 446 140 470"/><path d="M232 410 C258 436 290 450 330 466"/>
+<path d="M229 440 C212 470 196 500 186 540"/><path d="M233 446 C252 476 270 506 284 548"/><path d="M160 458 C140 478 120 498 96 512"/>
+<path d="M300 456 C318 480 334 500 356 512"/>
+</g>
+<!-- stem -->
+<path d="M232 388 C230 320 236 250 232 150" stroke="#3f8f3a" stroke-width="10" fill="none" stroke-linecap="round"/>
+<!-- leaves -->
+<path d="M232 300 C200 300 160 282 140 254 C176 248 214 262 232 300Z" fill="#5cb85c" stroke="#2e7d32" stroke-width="3"/>
+<path d="M232 300 L152 258" stroke="#2e7d32" stroke-width="2"/>
+<path d="M234 250 C266 246 302 226 318 196 C282 194 248 214 234 250Z" fill="#5cb85c" stroke="#2e7d32" stroke-width="3"/>
+<path d="M234 250 L308 202" stroke="#2e7d32" stroke-width="2"/>
+<path d="M232 158 C206 138 196 110 210 84 C236 100 246 128 232 158Z" fill="#6cc46c" stroke="#2e7d32" stroke-width="3"/>
+<path d="M232 158 C262 150 280 130 282 104 C254 104 236 124 232 158Z" fill="#4caf50" stroke="#2e7d32" stroke-width="3"/>
+<path d="M232 158 L214 92M232 158 L276 110" stroke="#2e7d32" stroke-width="2"/>
+<!-- CO2 -->
+<g fill="#ffffff" stroke="#c0392b" stroke-width="2.5"><circle cx="58" cy="196" r="9"/><circle cx="76" cy="196" r="12"/><circle cx="94" cy="196" r="9"/></g>
+<path d="M112 210 L196 244" stroke="#c0392b" stroke-width="5" stroke-linecap="round" marker-end="url(#ahR)"/>
+<text x="76" y="262" font-size="18" font-weight="700" fill="#a12d22" text-anchor="middle">ثاني أكسيد</text>
+<text x="76" y="285" font-size="18" font-weight="700" fill="#a12d22" text-anchor="middle">الكربون</text>
+<text x="76" y="172" font-size="13" fill="#a12d22" text-anchor="middle">من الهواء</text>
+<!-- water -->
+<g fill="#5aa9e6" stroke="#2a74b5" stroke-width="2.5">
+<path d="M40 500 C40 500 28 516 28 524 A12 12 0 0 0 52 524 C52 516 40 500 40 500Z"/>
+<path d="M70 528 C70 528 60 541 60 547 A10 10 0 0 0 80 547 C80 541 70 528 70 528Z"/>
+</g>
+<path d="M88 528 L126 506" stroke="#2a74b5" stroke-width="5" stroke-linecap="round" marker-end="url(#ahB)"/>
+<rect x="20" y="556" width="70" height="24" rx="12" fill="#ffffff" opacity=".85"/>
+<text x="55" y="574" font-size="17" font-weight="700" fill="#1f5a8f" text-anchor="middle">ماء</text>
+</svg>
