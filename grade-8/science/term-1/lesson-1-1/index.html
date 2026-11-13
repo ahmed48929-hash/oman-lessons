@@ -150,6 +150,7 @@ mark{background:var(--sun-soft);color:inherit;padding:0 4px;border-radius:6px}
 .feedback.bad{background:var(--bad-soft);color:var(--bad)}
 .feedback.info{background:var(--surface-2)}
 
+.dots{display:flex;gap:6px;justify-content:center;margin-bottom:6px}.dots i{width:26px;height:6px;border-radius:99px;background:var(--line);transition:background .3s}.dots i.on{background:var(--leaf)}
 /* المختبرات */
 .chainrow{display:flex;gap:6px;align-items:center;justify-content:center;flex-wrap:wrap}
 .org{width:72px;border:2px solid transparent;border-radius:14px;background:transparent;padding:4px;text-align:center;font:700 13px var(--f-display)}
@@ -388,44 +389,59 @@ function vStation(i) {
 
   /* ---------- تعلّم ---------- */
   function learn(h) {
-    if (i === 0) {
-      h.innerHTML = `${salem('happy', 'سؤالي الأول لك: من أين يأخذ جسمك الطاقة ليجري ويلعب؟ اضغط «التالي» لنكتشف معًا.')}
-      <div class="reveal" id="rv">
-        <div class="rv"><span class="d">١</span><p>أنت تأخذ الطاقة من <mark>الطعام</mark>. والطاقة تنتقل بين الكائنات الحية عندما يأكل بعضها بعضًا، وهذا الترتيب اسمه <span class="term">سلسلة غذائية</span>.</p></div>
-        <div class="rv off"><span class="d">٢</span><p>أول حلقة في كل سلسلة غذائية هي <mark>نبات</mark>. فالنبات لا يأكل أحدًا، بل يأخذ طاقته من <mark>ضوء الشمس</mark>.</p></div>
-        <div class="rv off"><span class="d">٣</span><p>يخزّن النبات جزءًا من طاقة الضوء في الغذاء الذي يصنعه. فحبة التمر التي تأكلها فيها طاقة شمس خزّنتها النخلة!</p></div>
-      </div>
-      <div class="row" style="margin:10px 0 16px"><button class="btn" id="rvBtn">التالي ←</button></div>
-      <figure class="fig"><img src="assets/foodchain.svg" alt="سلسلة غذائية: عشب ثم جرادة ثم سحلية ثم ثعبان ثم صقر"><figcaption>سلسلة غذائية من بيئتنا: يشير كل سهم إلى من تنتقل إليه الطاقة.</figcaption></figure>
-      <h3 style="font-size:18px;margin:20px 0 6px">🔤 سرّ الاسم</h3>
-      <p class="lead">الاسم الإنجليزي للعملية مكوّن من جزأين. اضغط على كل جزء.</p>
-      <div class="split"><button class="piece" data-pc><span class="en">Photo</span><span class="ar">ضوء</span></button><button class="piece" data-pc><span class="en">Synthesis</span><span class="ar">تصنيع</span></button></div>
-      <div class="def" style="margin-top:14px"><h4>التعريف</h4><p style="margin:4px 0 0"><b>التمثيل الضوئي</b> <span class="en" style="color:#BDE5C4">Photosynthesis</span>: عملية يصنع فيها النبات غذاءه بنفسه مستخدمًا طاقة الضوء.</p></div>`;
-      let k = 0; const rv = $$('#rv .rv');
-      $('#rvBtn').onclick = () => { if (k < rv.length - 1) { rv[++k].classList.remove('off'); if (k === rv.length - 1) $('#rvBtn').hidden = true; } };
-      $$('[data-pc]').forEach(p => p.onclick = () => { p.classList.add('open'); if ($$('[data-pc].open').length === 2) toast('Photo + Synthesis = التصنيع بالضوء ✨'); });
-    } else if (i === 1) {
-      h.innerHTML = `${salem('think', 'النبات مثل الطبّاخ، يحتاج مكونات ليصنع الغذاء. اضغط على الأرقام في الرسم لتعرف ما هي، ومن أين يأتي بها.')}
-      <div class="diagram" id="dg"><img src="assets/plant.svg" alt="نبات يأخذ الضوء من الشمس وثاني أكسيد الكربون من الهواء والماء من التربة">
-        <button class="hot" style="left:53%;top:20%;background:var(--sun)" data-h="0">١</button>
-        <button class="hot" style="left:40%;top:38%;background:var(--air)" data-h="1">٢</button>
-        <button class="hot" style="left:14%;top:90%;background:var(--water)" data-h="2">٣</button></div>
-      <div class="info" id="hinfo" style="margin-top:12px"><b>اختر رقمًا من الرسم 👆</b><p class="lead" style="margin:4px 0 0">ثلاثة أرقام تنتظرك.</p></div>
-      <div class="panel" style="margin-top:14px"><h3 style="font-size:17px">📋 الخلاصة</h3>
-        <p style="margin:6px 0 0">💧 <b>الماء</b>: تمتصه الجذور من <b>التربة</b>.<br>🌬️ <b>ثاني أكسيد الكربون</b>: تأخذه الأوراق من <b>الهواء</b>.<br>☀️ <b>طاقة الضوء</b>: من <b>الشمس</b>.</p></div>`;
-      const H = [['☀️ طاقة الضوء', 'مصدر الطاقة في المصنع. تلتقطها الأوراق الخضراء من الشمس.'], ['🌬️ ثاني أكسيد الكربون', 'غاز موجود في <b>الهواء</b> حولنا، يدخل إلى النبات من فتحات صغيرة جدًا في الأوراق.'], ['💧 الماء', 'تمتصه الجذور من <b>التربة</b>، ثم يصعد في الساق حتى يصل إلى الأوراق.']];
-      $$('[data-h]').forEach(b => b.onclick = () => { b.classList.add('seen'); const d = H[+b.dataset.h]; $('#hinfo').innerHTML = `<h4>${d[0]}</h4><p style="margin:4px 0 0">${d[1]}</p>`; });
-    } else {
-      h.innerHTML = `${salem('happy', 'عرفنا المكونات، فماذا يخرج من «مصنع» الورقة؟ انظر إلى المعادلة.')}
-      <div class="flow"><span class="chip w">ماء</span><span class="op">+</span><span class="chip c">ثاني أكسيد الكربون</span><span class="arrow">☀️ طاقة الضوء<br>←</span><span class="chip f">غذاء</span><span class="op">+</span><span class="chip o">أكسجين</span></div>
-      <div class="panel" style="margin-top:14px"><p style="margin:0">🍃 <b>الغذاء</b>: يستخدمه النبات للطاقة، وليبني جسمه.<br>🌬️ <b>الأكسجين</b>: يخرج إلى الهواء، ونتنفسه نحن وكل الحيوانات. فكل نفَس تأخذه، ساهم فيه نبات!</p></div>
-      <h3 style="font-size:18px;margin:20px 0 6px">🌱 أين يذهب الغذاء؟</h3>
-      <div class="bsteps"><div class="bstep on" id="b1"><b>الغذاء</b>يصنعه النبات</div><span class="arw">←</span><div class="bstep" id="b2"><b>خلايا جديدة</b>أوراق وسيقان وجذور</div><span class="arw">←</span><div class="bstep" id="b3"><b>الكتلة الحيوية</b>مادة جسم النبات</div></div>
-      <div class="row center" style="margin-top:12px"><button class="btn" id="bBtn">تابِع الغذاء ←</button></div>
-      <div class="def" style="margin-top:14px"><h4>تعريف</h4><p style="margin:4px 0 0"><b>الكتلة الحيوية</b> <span class="en" style="color:#BDE5C4">Biomass</span>: كل المادة التي يتكوّن منها جسم الكائن الحي من خلايا وأنسجة. وعندما يبني النبات خلايا جديدة، تزداد كتلته الحيوية وينمو.</p></div>`;
-      let k = 1; $('#bBtn').onclick = () => { if (k < 3) { $('#b' + (++k)).classList.add('on'); if (k === 3) $('#bBtn').hidden = true; } };
+    /* الشرح شرائح متتابعة: شريحة واحدة في كل مرة، يربطها سالم ببعضها */
+    const SL = [
+      [ // المحطة ١
+        { m: 'happy', say: 'سؤالي الأول لك: من أين يأخذ جسمك الطاقة ليجري ويلعب؟',
+          html: '<div class="panel"><p style="margin:0">من <mark>الطعام</mark> الذي تأكله! والطاقة تنتقل بين الكائنات الحية عندما يأكل بعضها بعضًا، وهذا الترتيب اسمه <span class="term">سلسلة غذائية</span>.</p></div>' },
+        { m: 'think', say: 'انظر إلى هذه السلسلة من بيئتنا. من أين يبدأ كل شيء؟',
+          html: '<figure class="fig"><img src="assets/foodchain.svg" alt="سلسلة غذائية: عشب ثم جرادة ثم سحلية ثم ثعبان ثم صقر"><figcaption>يشير كل سهم إلى الكائن الذي تنتقل إليه الطاقة.</figcaption></figure><div class="panel" style="margin-top:12px"><p style="margin:0">أول حلقة في كل سلسلة هي <mark>نبات</mark>. فالنبات لا يأكل أحدًا، بل يأخذ طاقته من <mark>ضوء الشمس</mark>، ويخزّن جزءًا منها في الغذاء الذي يصنعه.</p></div>' },
+        { m: 'happy', say: 'وهذا يعني شيئًا مدهشًا عن حبة التمر التي تأكلها! 🌴',
+          html: '<div class="panel"><p style="margin:0">النخلة صنعت التمر بطاقة الشمس. فعندما تأكل التمرة، فأنت تأخذ <mark>طاقة شمس</mark> خزّنتها النخلة لك!</p></div>' },
+        { m: 'think', say: 'إذن النبات يصنع غذاءه بنفسه مستخدمًا الضوء. ولهذه العملية العجيبة اسم: <b>التمثيل الضوئي</b>. وفي اسمها الإنجليزي سرّ صغير، اضغط على الجزأين لتكتشفه!',
+          html: '<div class="split"><button class="piece" data-pc><span class="en">Photo</span><span class="ar">ضوء</span></button><button class="piece" data-pc><span class="en">Synthesis</span><span class="ar">تصنيع</span></button></div>',
+          gate: (box, open) => $$('[data-pc]', box).forEach(p => p.onclick = () => { p.classList.add('open'); if ($$('[data-pc].open', box).length === 2) { toast('Photo + Synthesis = التصنيع بالضوء ✨'); open(); } }) },
+        { m: 'cheer', say: 'التصنيع بالضوء! وهذا بالضبط ما رأيناه: النبات يصنع غذاءه بطاقة الشمس. فلنكتب التعريف:',
+          html: '<div class="def"><h4>التعريف</h4><p style="margin:4px 0 0"><b>التمثيل الضوئي</b> <span class="en" style="color:#BDE5C4">Photosynthesis</span>: عملية يصنع فيها النبات غذاءه بنفسه مستخدمًا طاقة الضوء.</p></div>' }
+      ],
+      [ // المحطة ٢
+        { m: 'think', say: 'عرفنا أن النبات يصنع غذاءه بالضوء. لكن الطبّاخ لا يطبخ بالنار وحدها، بل يحتاج مكونات! اضغط على الأرقام الثلاثة لتعرف مكونات النبات ومن أين يأتي بها.',
+          html: '<div class="diagram"><img src="assets/plant.svg" alt="نبات يأخذ الضوء من الشمس وثاني أكسيد الكربون من الهواء والماء من التربة"><button class="hot" style="left:53%;top:20%;background:var(--sun)" data-h="0">١</button><button class="hot" style="left:40%;top:38%;background:var(--air)" data-h="1">٢</button><button class="hot" style="left:14%;top:90%;background:var(--water)" data-h="2">٣</button></div><div class="info" id="hinfo" style="margin-top:12px"><b>اختر رقمًا من الرسم 👆</b></div>',
+          gate: (box, open) => { const H = [['☀️ طاقة الضوء', 'مصدر الطاقة في المصنع. تلتقطها الأوراق الخضراء من الشمس.'], ['🌬️ ثاني أكسيد الكربون', 'غاز موجود في <b>الهواء</b> حولنا، يدخل إلى النبات من فتحات صغيرة جدًا في الأوراق.'], ['💧 الماء', 'تمتصه الجذور من <b>التربة</b>، ثم يصعد في الساق حتى يصل إلى الأوراق.']];
+            $$('[data-h]', box).forEach(b => b.onclick = () => { b.classList.add('seen'); const d = H[+b.dataset.h]; $('#hinfo').innerHTML = `<h4>${d[0]}</h4><p style="margin:4px 0 0">${d[1]}</p>`; if ($$('[data-h].seen', box).length === 3) open(); }); } },
+        { m: 'cheer', say: 'ممتاز! اكتشفت المكونات الثلاثة. لنجمعها في بطاقة واحدة تحفظها:',
+          html: '<div class="panel"><p style="margin:0">💧 <b>الماء</b>: تمتصه الجذور من <b>التربة</b>.<br>🌬️ <b>ثاني أكسيد الكربون</b>: تأخذه الأوراق من <b>الهواء</b>.<br>☀️ <b>طاقة الضوء</b>: من <b>الشمس</b>.</p></div>' }
+      ],
+      [ // المحطة ٣
+        { m: 'happy', say: 'عرفنا ما يدخل إلى «مصنع» الورقة. والآن: ماذا يخرج منه؟ انظر إلى هذه المعادلة:',
+          html: '<div class="flow"><span class="chip w">ماء</span><span class="op">+</span><span class="chip c">ثاني أكسيد الكربون</span><span class="arrow">☀️ طاقة الضوء<br>←</span><span class="chip f">غذاء</span><span class="op">+</span><span class="chip o">أكسجين</span></div>' },
+        { m: 'think', say: 'خرج من المصنع شيئان. لكل منهما قصة:',
+          html: '<div class="panel"><p style="margin:0">🍃 <b>الغذاء</b>: يأخذ منه النبات الطاقة، ويبني به جسمه.<br>🌬️ <b>الأكسجين</b>: يخرج إلى الهواء، ونتنفسه نحن وكل الحيوانات. فكل نفَس تأخذه، ساهم فيه نبات!</p></div>' },
+        { m: 'think', say: 'لكن كيف «يبني» النبات جسمه من الغذاء؟ اضغط «تابِع الغذاء» لتتبع رحلته.',
+          html: '<div class="bsteps"><div class="bstep on" id="b1"><b>الغذاء</b>يصنعه النبات</div><span class="arw">←</span><div class="bstep" id="b2"><b>خلايا جديدة</b>أوراق وسيقان وجذور</div><span class="arw">←</span><div class="bstep" id="b3"><b>الكتلة الحيوية</b>مادة جسم النبات</div></div><div class="row center" style="margin-top:12px"><button class="btn" id="bBtn">تابِع الغذاء ←</button></div>',
+          gate: (box, open) => { let k = 1; $('#bBtn').onclick = () => { if (k < 3) { $('#b' + (++k)).classList.add('on'); if (k === 3) { $('#bBtn').hidden = true; open(); } } }; } },
+        { m: 'cheer', say: 'كلما بنى النبات خلايا جديدة كبر ونما. ولهذه المادة اسم علمي:',
+          html: '<div class="def"><h4>تعريف</h4><p style="margin:4px 0 0"><b>الكتلة الحيوية</b> <span class="en" style="color:#BDE5C4">Biomass</span>: كل المادة التي يتكوّن منها جسم الكائن الحي من خلايا وأنسجة. وعندما يبني النبات خلايا جديدة، تزداد كتلته الحيوية.</p></div>' }
+      ]
+    ][i];
+    let k = 0;
+    h.innerHTML = `<div class="dots" id="dots">${SL.map(() => '<i></i>').join('')}</div><div id="slide"></div>
+      <div class="row" style="justify-content:space-between;margin-top:16px"><button class="btn ghost" id="prev">→ السابق</button><button class="btn" id="nxt">التالي ←</button></div>`;
+    function render() {
+      const s = SL[k];
+      $$('#dots i').forEach((d, j) => d.classList.toggle('on', j <= k));
+      const box = $('#slide'); box.innerHTML = `<div class="screen">${salem(s.m, s.say)}${s.html}</div>`;
+      $('#prev').style.visibility = k ? 'visible' : 'hidden';
+      const last = k === SL.length - 1;
+      $('#nxt').textContent = last ? 'جرّب بنفسك ←' : 'التالي ←';
+      $('#nxt').className = 'btn' + (last ? ' sun' : '');
+      if (s.gate && !s.passed) { $('#nxt').disabled = true; s.gate(box, () => { s.passed = true; $('#nxt').disabled = false; }); }
+      else { $('#nxt').disabled = false; if (s.gate) s.gate(box, () => {}); }
+      window.scrollTo(0, 0);
     }
-    next(h, 'جرّب بنفسك ←', 1);
+    $('#prev').onclick = () => { if (k) { k--; render(); } };
+    $('#nxt').onclick = () => { if (k < SL.length - 1) { k++; render(); } else show(1); };
+    render();
   }
 
   /* ---------- جرّب ---------- */
