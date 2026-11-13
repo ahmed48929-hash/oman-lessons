@@ -6,7 +6,7 @@
 <title>التمثيل الضوئي ١-١ · القرية التعليمية</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@500;700;800&family=Noto+Naskh+Arabic:wght@500;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@500;700;800&family=Noto+Naskh+Arabic:wght@500;700&family=Aref+Ruqaa:wght@400;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap">
 <style>
 :root{
   --bg:#F2F5EC;--surface:#fff;--surface-2:#E7EEDF;--ink:#152B1C;--muted:#58705E;--line:#D3DECB;
@@ -182,41 +182,87 @@ mark{background:var(--sun-soft);color:inherit;padding:0 4px;border-radius:6px}
 .word.picked{border-color:var(--sun);background:var(--sun-soft)}
 .word.ok{border-color:var(--good);background:var(--good-soft);color:var(--good)}
 
-/* قاعة الاختبار: ورقة بشكل الاختبار النهائي */
-.paper{background:#fffdf6;color:#111;border:1px solid #cfc8b4;border-radius:6px;box-shadow:0 8px 24px rgba(0,0,0,.12);padding:18px 16px;font-family:"Noto Naskh Arabic","IBM Plex Sans Arabic",serif;font-size:17px;line-height:2}
-[data-theme=dark] .paper{background:#fffdf6;color:#111}
-.paper .ph{border:2px solid #111;border-radius:4px;display:grid;grid-template-columns:1fr 1fr;font-size:14.5px}
-.paper .ph div{padding:4px 8px;border:1px solid #111}
-.paper .ph .full{grid-column:1/-1;text-align:center;font-weight:700;font-size:16px}
-.paper .note2{font-size:13px;text-align:center;color:#555;margin:6px 0 0}
-.paper .eq{border-top:1.5px solid #111;margin-top:14px;padding-top:10px}
-.paper .eh{display:flex;justify-content:space-between;gap:8px;font-weight:700}
+/* قاعة الاختبار */
+.ticket{position:relative;border-radius:18px;background:linear-gradient(135deg,#1c5a2e,#2e8b47);color:#fff;padding:18px;box-shadow:var(--shadow);overflow:hidden}
+.ticket::after{content:"";position:absolute;inset-inline-end:-30px;top:-30px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.08)}
+.ticket h3{font-size:18px}
+.ticket .seat{display:inline-block;margin-top:8px;background:#fff;color:#1c5a2e;border-radius:10px;padding:2px 12px;font:800 20px var(--f-display);letter-spacing:2px}
+.ticket .cols{display:grid;grid-template-columns:1fr 1fr;gap:4px 12px;font-size:14px;margin-top:10px;opacity:.95}
+.ticket input{font:inherit;width:100%;border:0;border-bottom:2px dashed rgba(255,255,255,.7);background:transparent;color:#fff;padding:2px 0;margin-top:4px}
+.ticket input::placeholder{color:rgba(255,255,255,.6)}
+.exbar{position:sticky;top:60px;z-index:10;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:8px 10px;box-shadow:var(--shadow);display:flex;gap:10px;align-items:center}
+.ring{position:relative;width:52px;height:52px;flex:none}
+.ring svg{transform:rotate(-90deg)}
+.ring b{position:absolute;inset:0;display:grid;place-items:center;font:800 12.5px var(--f-display);font-variant-numeric:tabular-nums}
+.ring.warn circle.fg{stroke:var(--bad)}
+.ring.warn b{color:var(--bad)}
+.nav8{display:flex;flex-wrap:wrap;gap:6px;flex:1;justify-content:center}
+.nav8 button{position:relative;width:34px;height:34px;border-radius:50%;border:2px solid var(--line);background:var(--surface);font:800 14px var(--f-display);color:var(--muted)}
+.nav8 button.ans{background:var(--leaf);border-color:var(--leaf);color:#fff}
+.nav8 button.cur{box-shadow:0 0 0 3px var(--sun)}
+.nav8 button.flag::after{content:"🚩";position:absolute;top:-10px;inset-inline-end:-8px;font-size:12px}
+.paper{position:relative;background:#fffdf6;color:#111;border:1px solid #cfc8b4;border-radius:6px;box-shadow:0 10px 26px rgba(0,0,0,.14);padding:18px 16px 22px;padding-inline-end:48px;font-family:"Noto Naskh Arabic","IBM Plex Sans Arabic",serif;font-size:17.5px;line-height:2;background-image:repeating-linear-gradient(#fffdf6 0 33px,#ece6d6 33px 34px)}
+.paper::before{content:"";position:absolute;inset-block:0;inset-inline-end:34px;border-inline-end:2px solid #e9b4ad}
+.paper .top2{display:flex;justify-content:space-between;align-items:center;font-size:13.5px;color:#555;border-bottom:2px solid #111;padding-bottom:4px;margin-bottom:8px;background:#fffdf6}
+.paper .eh{display:flex;justify-content:space-between;align-items:center;gap:8px;font-weight:700;background:#fffdf6}
 .paper .lv{font-size:13px;color:#8a6a00;white-space:nowrap}
 .paper .mk{font-weight:700;white-space:nowrap}
-.paper .bw{filter:grayscale(1) contrast(1.1);background:#fff;border:1px solid #bbb;border-radius:4px;padding:6px;margin:8px auto;max-width:340px}
-.paper .ch{display:grid;gap:6px;margin-top:6px}
-.paper .ch label{display:flex;gap:10px;align-items:center;cursor:pointer;padding:2px 4px;border-radius:6px}
-.paper .ch input{width:20px;height:20px;accent-color:#111;flex:none}
-.paper select,.paper input[type=text],.paper input[type=number]{font:inherit;font-size:16px;border:0;border-bottom:2px dotted #111;background:transparent;padding:0 4px;min-width:120px;color:#111}
-.paper select{border:1.5px solid #111;border-radius:6px;padding:2px 6px;background:#fff}
-.paper select{max-width:100%}.paper table.tf{table-layout:fixed}.paper table.tf select{min-width:0;width:100%}.paper{overflow-wrap:anywhere}
-.paper table.tf{width:100%;border-collapse:collapse;margin-top:6px;font-size:15.5px}
-.paper table.tf td,.paper table.tf th{border:1px solid #111;padding:4px 6px;vertical-align:middle}
+.paper .qtx{background:#fffdf6;margin:4px 0 8px}
+.paper .bw{background:#fff;border:1.5px solid #111;border-radius:4px;padding:6px;margin:8px auto;max-width:360px;cursor:zoom-in}
+.paper .ch{display:grid;gap:8px;margin-top:6px}
+.paper .ch button,.paper .pick button{font:inherit;font-size:16px;text-align:start;display:flex;gap:10px;align-items:center;border:1.5px solid #111;background:#fff;border-radius:10px;padding:6px 12px;color:#111}
+.paper .ch button i{flex:none;width:22px;height:22px;border-radius:50%;border:2px solid #111;font-style:normal;display:grid;place-items:center;font-size:12px;font-weight:700}
+.paper .ch button.sel{background:#eaf1fb;border-color:#1f4e8c}
+.paper .ch button.sel i{background:#1f4e8c;border-color:#1f4e8c;color:#fff}
+.paper .pick{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.paper .pick button{padding:6px 14px}
+.paper .pick button.sel{background:#1f4e8c;color:#fff;border-color:#1f4e8c}
+.paper .slot{display:inline-block;min-width:110px;border-bottom:2px dotted #111;text-align:center;font-weight:700;color:#1f4e8c;cursor:pointer;padding:0 6px}
+.paper .slot.on{background:#fbefd2}
+.paper table.tf{width:100%;border-collapse:collapse;margin-top:6px;font-size:15.5px;background:#fff;table-layout:fixed}
+.paper table.tf td,.paper table.tf th{border:1.5px solid #111;padding:6px;vertical-align:middle}
 .paper table.tf th{background:#eee}
+.paper .tfb{display:flex;gap:6px;justify-content:center}
+.paper .tfb button{font:inherit;width:40px;height:36px;border:1.5px solid #111;background:#fff;border-radius:8px;font-size:18px;color:#111}
+.paper .tfb button.sel{background:#1f4e8c;color:#fff;border-color:#1f4e8c}
 .paper .ord{display:flex;flex-direction:column;gap:6px;margin-top:6px}
-.paper .ord button{font:inherit;font-size:15.5px;text-align:start;border:1.5px solid #111;background:#fff;border-radius:6px;padding:4px 10px;color:#111}
-.paper .ord button.used{opacity:.35}
-.paper .seq{min-height:34px;border:1.5px dashed #111;border-radius:6px;padding:4px 8px;margin-top:6px;font-size:15px}
-.paper .res{margin-top:8px;border-radius:8px;padding:8px 10px;font-family:var(--f-body);font-size:15px;line-height:1.8}
-.paper .res.ok{background:#e3f3e0;color:#1c5a2e}.paper .res.part{background:#fbefd2;color:#7a5200}.paper .res.no{background:#f8deda;color:#8f2a20}
-.paper .gotit{outline:3px solid #2e8b47;outline-offset:2px;border-radius:6px}
-.paper .missed{outline:3px solid #c0392b;outline-offset:2px;border-radius:6px}
-.timerbar{position:sticky;top:64px;z-index:10;display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:8px 14px;box-shadow:var(--shadow);font-weight:700}
-.timerbar b{font:800 20px var(--f-display);font-variant-numeric:tabular-nums}
-.timerbar.warn b{color:var(--bad)}
+.paper .ord button{font:inherit;font-size:15.5px;text-align:start;border:1.5px solid #111;background:#fff;border-radius:8px;padding:5px 10px;color:#111;display:flex;gap:8px;align-items:center}
+.paper .ord button b{flex:none;width:26px;height:26px;border-radius:50%;border:2px dashed #999;display:grid;place-items:center;font-size:13px;color:#1f4e8c}
+.paper .ord button.used b{border:2px solid #1f4e8c;background:#eaf1fb}
+.pgnav{display:flex;justify-content:space-between;gap:10px;margin-top:12px}
+.flagbtn{border:1.5px solid var(--sun);background:var(--sun-soft);color:#7a5200;border-radius:12px;padding:8px 12px;font:700 14px var(--f-display)}
+.flagbtn.on{background:var(--sun);color:#fff}
+/* الورقة المصحّحة */
+.redpen{font-family:"Aref Ruqaa","Noto Naskh Arabic",serif;color:#c8102e}
+.grade-circle{position:absolute;top:10px;inset-inline-start:14px;width:96px;height:96px;transform:rotate(-12deg);z-index:2}
+.grade-circle svg{position:absolute;inset:0}
+.grade-circle b{position:absolute;inset:0;display:grid;place-items:center;font:700 26px "Aref Ruqaa",serif;color:#c8102e;line-height:1}
+.graded .gq{position:relative;border-top:1.5px solid #111;margin-top:12px;padding-top:8px;padding-inline-start:40px;background:#fffdf6}
+.graded .mark{position:absolute;inset-inline-start:0;top:8px;width:36px;height:36px}
+.graded .gscore{font:700 21px "Aref Ruqaa",serif;color:#c8102e;white-space:nowrap}
+.graded .yours{font-size:15px;color:#1f4e8c}
+.graded .note{font-size:19px;line-height:1.7;margin-top:2px}
+.graded .model{font-size:15px;background:#eef6ea;border-radius:8px;padding:4px 10px;margin-top:4px;font-family:var(--f-body);color:#1c3a24}
 .lvl{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center}
 .lvl div{border-radius:14px;padding:10px;background:var(--surface);border:1px solid var(--line);font-size:14px}
 .lvl b{display:block;font:800 20px var(--f-display)}
+.zoomwrap{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:100;display:grid;place-items:center;padding:12px}
+.zoomwrap div{background:#fff;border-radius:8px;padding:8px;width:min(100%,720px)}
+/* لعبة السرعة */
+.speed{text-align:center}
+.speed .qbox{background:var(--surface);border:2px solid var(--line);border-radius:22px;padding:18px;box-shadow:var(--shadow);min-height:110px;display:grid;place-items:center;font:700 19px var(--f-display);line-height:1.7}
+.speed .tbar{height:12px;border-radius:99px;background:var(--surface-2);overflow:hidden;margin:12px 0}
+.speed .tbar i{display:block;height:100%;background:linear-gradient(90deg,var(--bad),var(--sun),var(--leaf));transform-origin:right;transition:transform .1s linear}
+.speed .grid4{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.speed .grid4 button{border:0;border-radius:16px;padding:14px 10px;font:700 15.5px var(--f-display);color:#fff;min-height:70px;transition:transform .1s,opacity .2s}
+.speed .grid4 button:nth-child(1){background:#2a74b5}.speed .grid4 button:nth-child(2){background:#d9920f}.speed .grid4 button:nth-child(3){background:#7a5bb5}.speed .grid4 button:nth-child(4){background:#2e8b47}
+.speed .grid4 button.dim{opacity:.25}
+.speed .grid4 button.right{outline:4px solid #fff;box-shadow:0 0 0 7px var(--good)}
+.speed .grid4 button.wrong{animation:shake .4s}
+.speed .hud{display:flex;justify-content:space-between;font:800 15px var(--f-display);margin-bottom:8px}
+.speed .streak{color:#e8590c}
+.pop{animation:popin .35s}
+@keyframes popin{0%{transform:scale(.8)}70%{transform:scale(1.08)}100%{transform:none}}
 
 /* النهاية */
 .badgebig{width:130px;height:130px;margin:0 auto;border-radius:50%;background:radial-gradient(#ffe27a,#d9920f);display:grid;place-items:center;font-size:58px;box-shadow:0 0 0 8px var(--sun-soft)}
@@ -334,7 +380,8 @@ const app = $('#app');
 function go(id, arg) {
   window.scrollTo(0, 0);
   try { history.replaceState(null, '', '#' + id + (arg !== undefined ? '-' + arg : '')); } catch (e) {}
-  ({ start: vStart, pre: vPre, map: vMap, st: vStation, final: vFinal, exam: vExam, end: vEnd })[id](arg);
+  clearInterval(typeof spTimer !== 'undefined' ? spTimer : 0); clearInterval(typeof exTimer !== 'undefined' ? exTimer : 0);
+  ({ start: vStart, pre: vPre, map: vMap, st: vStation, final: vFinal, exam: vExam, speed: vSpeed, end: vEnd })[id](arg);
   updHouses();
 }
 
@@ -388,6 +435,7 @@ const VILLAGE = () => `<svg viewBox="0 0 600 260" xmlns="http://www.w3.org/2000/
   <g class="vpart ${S.done[0] ? '' : 'off'}"><rect x="70" y="140" width="80" height="56" fill="#e8cfa4" stroke="#a87b4f" stroke-width="3"/><path d="M62 142 L110 108 L158 142Z" fill="#c9824a"/><rect x="100" y="166" width="20" height="30" fill="#7a5532"/><rect x="78" y="152" width="14" height="12" fill="#5aa9e6"/></g>
   <g class="vpart ${S.done[1] ? '' : 'off'}"><rect x="200" y="132" width="96" height="64" fill="#f1dcb5" stroke="#a87b4f" stroke-width="3"/><rect x="196" y="124" width="104" height="10" fill="#c9824a"/><rect x="238" y="160" width="22" height="36" fill="#7a5532"/><rect x="208" y="144" width="16" height="14" fill="#5aa9e6"/><rect x="272" y="144" width="16" height="14" fill="#5aa9e6"/></g>
   <g class="vpart ${S.done[2] ? '' : 'off'}"><rect x="350" y="138" width="86" height="58" fill="#e8cfa4" stroke="#a87b4f" stroke-width="3"/><path d="M342 140 L393 104 L444 140Z" fill="#b8693d"/><rect x="382" y="164" width="22" height="32" fill="#7a5532"/><path d="M470 196 C468 170 474 150 470 130" stroke="#7a5532" stroke-width="7" fill="none"/><g stroke="#3f8a3e" stroke-width="7" fill="none" stroke-linecap="round"><path d="M470 130 Q450 118 432 130"/><path d="M470 130 Q492 116 508 128"/><path d="M470 130 Q466 110 452 102"/><path d="M470 130 Q480 108 494 102"/></g></g>
+  <g class="vpart ${S.speed ? '' : 'off'}"><ellipse cx="180" cy="206" rx="22" ry="7" fill="#7a5532"/><rect x="160" y="186" width="40" height="20" fill="#c9a06a" stroke="#7a5532" stroke-width="2.5"/><path d="M162 186 V164 H198 V186" stroke="#7a5532" stroke-width="3" fill="none"/><path d="M156 166 H204" stroke="#7a5532" stroke-width="4"/><path d="M180 166 V180" stroke="#555" stroke-width="2"/><rect x="175" y="178" width="10" height="8" fill="#5aa9e6"/></g>
   <g class="vpart ${S.exam !== null ? '' : 'off'}"><rect x="250" y="40" width="110" height="48" fill="#f7f1e3" stroke="#a87b4f" stroke-width="3"/><path d="M244 42 L305 14 L366 42Z" fill="#2e8b47"/><rect x="296" y="60" width="18" height="28" fill="#7a5532"/><rect x="260" y="52" width="14" height="12" fill="#5aa9e6"/><rect x="336" y="52" width="14" height="12" fill="#5aa9e6"/><text x="305" y="36" font-size="13" text-anchor="middle" fill="#fff" font-weight="700">مدرسة</text></g>
   <g class="vpart ${S.fin ? '' : 'off'}"><rect x="520" y="100" width="40" height="96" fill="#f1dcb5" stroke="#a87b4f" stroke-width="3"/><path d="M516 102 h48 v-10 h-8 v6 h-8 v-6 h-8 v6 h-8 v-6 h-8 v6 h-8 v-6 h-8z" fill="#c9824a"/><path d="M540 92 V60" stroke="#555" stroke-width="3"/><path d="M540 60 L566 68 L540 76Z" fill="#c0392b"/><rect x="532" y="164" width="16" height="32" fill="#7a5532"/></g>
 </svg>`;
@@ -401,6 +449,7 @@ function vMap() {
     <div class="village">${VILLAGE()}</div>
     <div class="path">
       ${STATIONS.map((s, i) => `<button class="station ${st(i)}" data-st="${i}"><span class="ic">${s.ic}</span><span><b>المحطة ${ar(i + 1)}: ${s.t}</b><small>${s.s}</small></span><span class="st">${st(i) === 'done' ? '✅ أتقنتها' + (S.stars[i] ? ' ⭐' : '') : st(i) === 'open' ? 'ابدأ ←' : '🔒'}</span></button>`).join('')}
+      <button class="station ${S.speed ? 'done' : S.done.every(Boolean) ? 'open' : 'locked'}" data-speed><span class="ic">⚡</span><span><b>ساحة السرعة</b><small>لعبة: ١٥ سؤالًا سريعًا، ١٠ ثوانٍ لكل سؤال</small></span><span class="st">${S.best ? `🏆 ${ar(S.best)}` : S.done.every(Boolean) ? 'العب ←' : '🔒'}</span></button>
       <button class="station ${finSt}" data-fin><span class="ic">🏆</span><span><b>تحدي القرية</b><small>٦ أسئلة تجمع كل الأهداف</small></span><span class="st">${finSt === 'done' ? '✅ اجتزته' : finSt === 'open' ? 'ابدأ ←' : '🔒'}</span></button>
       <button class="station ${S.exam !== null ? 'done' : S.fin ? 'open' : 'locked'}" data-exam><span class="ic">📝</span><span><b>قاعة الاختبار</b><small>اختبار تدريبي بنمط الاختبار النهائي · ٨ أسئلة · ١٥ درجة</small></span><span class="st">${S.exam !== null ? `${ar(S.exam)} / ١٥` : S.fin ? 'ادخل ←' : '🔒'}</span></button>
       ${S.exam !== null ? `<button class="station done" data-end><span class="ic">🎖️</span><span><b>نهاية الرحلة</b><small>شارتك، ومقارنة تقدّمك، وتحدٍّ من البيت</small></span><span class="st">افتح ←</span></button>` : ''}
@@ -408,6 +457,7 @@ function vMap() {
   </section>`;
   $$('[data-st]').forEach(b => b.onclick = () => { const i = +b.dataset.st; if (st(i) === 'locked') { toast('أتقن المحطة السابقة أولًا 🔒'); return; } go('st', i); });
   $('[data-fin]').onclick = () => finSt === 'locked' ? toast('أتقن المحطات الثلاث أولًا 🔒') : go('final');
+  $('[data-speed]').onclick = () => S.done.every(Boolean) ? go('speed') : toast('أتقن المحطات الثلاث أولًا 🔒');
   $('[data-exam]').onclick = () => S.fin ? go('exam') : toast('اجتز تحدي القرية أولًا 🔒');
   const e = $('[data-end]'); if (e) e.onclick = () => go('end');
 }
@@ -581,130 +631,248 @@ function vFinal() {
 }
 
 /* ======================= قاعة الاختبار ======================= */
-// تطبيع الإجابات المكتوبة: يقبل الكلمة بأشكال كتابتها المختلفة
-const norm = t => String(t || '').trim().toLowerCase()
-  .replace(/[ً-ْـ]/g, '').replace(/[أإآ]/g, 'ا').replace(/ة/g, 'ه').replace(/ى/g, 'ي')
-  .replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/\s+/g, ' ')
-  .split(' ').map(w => w.replace(/^ال/, '')).join(' ');
+const RED_OK = '<svg class="mark" viewBox="0 0 40 40"><path d="M6 21 C10 24 13 28 16 33 C21 22 28 12 36 5" fill="none" stroke="#c8102e" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const RED_NO = '<svg class="mark" viewBox="0 0 40 40"><path d="M8 7 C16 15 24 25 33 34 M33 7 C24 15 15 25 7 34" fill="none" stroke="#c8102e" stroke-width="4" stroke-linecap="round"/></svg>';
+const RED_HALF = '<svg class="mark" viewBox="0 0 40 40"><path d="M6 21 C10 24 13 28 16 33 C21 22 28 12 36 5" fill="none" stroke="#c8102e" stroke-width="4" stroke-linecap="round"/><path d="M8 34 L34 8" stroke="#c8102e" stroke-width="3"/></svg>';
 const EX_PLANT = `<svg viewBox="0 0 320 300" width="320" height="300" style="width:100%;height:auto"><defs><marker id="xa" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#111"/></marker></defs><rect y="200" width="320" height="100" fill="#ddd"/><path d="M0 200 H320" stroke="#111" stroke-width="2"/><path d="M160 202 C158 160 162 120 160 70" stroke="#111" stroke-width="5" fill="none"/><path d="M160 150 C130 150 104 136 92 116 C120 112 146 124 160 150Z" fill="#fff" stroke="#111" stroke-width="2"/><path d="M160 120 C190 118 214 102 224 82 C196 80 172 96 160 120Z" fill="#fff" stroke="#111" stroke-width="2"/><path d="M160 74 C146 60 144 42 152 28 C168 40 172 58 160 74Z" fill="#fff" stroke="#111" stroke-width="2"/><g stroke="#111" stroke-width="2.5" fill="none"><path d="M160 204 C158 230 156 250 160 280"/><path d="M159 214 C140 230 124 240 100 254"/><path d="M161 218 C180 234 198 242 222 252"/></g><circle cx="282" cy="40" r="18" fill="#fff" stroke="#111" stroke-width="2"/><path d="M38 112 L86 124" stroke="#111" stroke-width="2.5" marker-end="url(#xa)"/><path d="M46 272 L94 256" stroke="#111" stroke-width="2.5" marker-end="url(#xa)"/><text x="22" y="118" font-size="20" font-weight="700" text-anchor="middle" fill="#111">س</text><text x="28" y="282" font-size="20" font-weight="700" text-anchor="middle" fill="#111">ص</text></svg>`;
-const EX_CHART = `<svg viewBox="0 0 340 236" width="340" height="236" style="width:100%;height:auto"><g stroke="#111" stroke-width="1.5" fill="none"><path d="M50 20V190H330"/></g><g stroke="#999" stroke-dasharray="3 4" fill="none"><path d="M50 156H330M50 122H330M50 88H330M50 54H330"/></g><g font-size="12" fill="#111" text-anchor="end"><text x="44" y="194">0</text><text x="44" y="160">8</text><text x="44" y="126">16</text><text x="44" y="92">24</text><text x="44" y="58">32</text></g><g fill="#555"><rect x="75" y="131" width="40" height="59"/><rect x="140" y="62" width="40" height="128"/><rect x="205" y="164" width="40" height="26"/><rect x="270" y="96" width="40" height="94"/></g><g font-size="15" font-weight="700" text-anchor="middle" fill="#111"><text x="95" y="210">A</text><text x="160" y="210">B</text><text x="225" y="210">C</text><text x="290" y="210">D</text></g><text x="190" y="230" font-size="12" text-anchor="middle" fill="#111">رمز التجربة</text><text x="14" y="105" font-size="11" text-anchor="middle" fill="#111" transform="rotate(-90 14 105)">عدد الفقاعات في الدقيقة</text></svg>`;
-// كل سؤال: lv المستوى، m الدرجة، g الهدف، type، والبيانات
+// رسم بياني دقيق: الشبكة كل ٢، والأرقام كل ٤، وقمم الأعمدة على خطوط الشبكة
+const EX_CHART = (() => {
+  const X0 = 56, Y0 = 250, H = 224, MAX = 32, y = v => Y0 - v / MAX * H; let g = '';
+  for (let v = 0; v <= MAX; v += 2) g += `<path d="M${X0} ${y(v)}H380" stroke="${v % 4 ? '#ddd' : '#aaa'}" stroke-width="${v % 4 ? 1 : 1.3}"/>` + (v % 4 ? '' : `<text x="${X0 - 6}" y="${y(v) + 5}" font-size="13" text-anchor="end" fill="#111">${v}</text>`);
+  const bars = [['A', 14], ['B', 30], ['C', 6], ['D', 22]].map(([l, v], k) => `<rect x="${86 + k * 74}" y="${y(v)}" width="44" height="${Y0 - y(v)}" fill="#666" stroke="#111" stroke-width="1.5"/><text x="${108 + k * 74}" y="${Y0 + 20}" font-size="16" font-weight="700" text-anchor="middle" fill="#111">${l}</text>`).join('');
+  return `<svg viewBox="0 0 390 300" width="390" height="300" style="width:100%;height:auto">${g}${bars}<path d="M${X0} 18V${Y0}H380" stroke="#111" stroke-width="2" fill="none"/><text x="220" y="296" font-size="13" text-anchor="middle" fill="#111">رمز التجربة</text><text x="16" y="140" font-size="12" text-anchor="middle" fill="#111" transform="rotate(-90 16 140)">عدد الفقاعات في الدقيقة</text></svg>`;
+})();
+// الأسئلة: الخيارات تُخلط عند العرض دائمًا، والإجابة الصحيحة تُعرف بنصّها
 const EXAM = [
-  { lv: 1, m: 1, g: 3, type: 'mcq', q: 'الغاز الذي ينتج من عملية التمثيل الضوئي هو:', opts: ['ثاني أكسيد الكربون', 'الأكسجين', 'النيتروجين', 'بخار الماء'], r: 1,
-    a: 'الأكسجين.' },
-  { lv: 1, m: 3, g: 2, type: 'tf', q: 'ضع علامة (✓) أمام العبارة الصحيحة، وعلامة (✗) أمام العبارة الخاطئة، وصحّح العبارة الخاطئة:',
-    rows: [
-      ['يصنع النبات غذاءه مستخدمًا طاقة الضوء.', true],
-      ['يحصل النبات على الماء من الهواء عن طريق الأوراق.', false, ['من التربة عن طريق الجذور', 'من الشمس عن طريق الأوراق', 'من الثمار'], 0],
-      ['يدخل ثاني أكسيد الكربون إلى النبات عن طريق الأوراق.', true]],
-    a: '١- (✓)&nbsp;&nbsp; ٢- (✗) والتصحيح: يحصل النبات على الماء <b>من التربة عن طريق الجذور</b>.&nbsp;&nbsp; ٣- (✓)' },
-  { lv: 1, m: 2, g: 3, type: 'fill', q: 'أكمل المعادلة اللفظية للتمثيل الضوئي:', parts: ['ماء + ', 0, ' ← غذاء + ', 1, ' (بوجود الضوء)'],
-    bank: ['ثاني أكسيد الكربون', 'أكسجين', 'نيتروجين', 'تربة'], r: ['ثاني أكسيد الكربون', 'أكسجين'],
-    a: 'ماء + <b>ثاني أكسيد الكربون</b> ← غذاء + <b>أكسجين</b>.' },
+  { lv: 1, m: 1, g: 3, type: 'mcq', q: 'الغاز الذي ينتج من عملية التمثيل الضوئي هو:', right: 'الأكسجين', wrong: ['ثاني أكسيد الكربون', 'النيتروجين', 'بخار الماء'],
+    a: 'الأكسجين.', tip: 'تذكّر: النبات يأخذ ثاني أكسيد الكربون ويُخرج الأكسجين.' },
+  { lv: 1, m: 3, g: 2, type: 'tf', q: 'ضع علامة (✓) أمام العبارة الصحيحة، وعلامة (✗) أمام الخاطئة، ثم اختر تصحيح العبارة الخاطئة:',
+    rows: [['يصنع النبات غذاءه مستخدمًا طاقة الضوء.', true], ['يحصل النبات على الماء من الهواء عن طريق الأوراق.', false, 'من التربة عن طريق الجذور', ['من الشمس عن طريق الأوراق', 'من الثمار عن طريق الساق']], ['يدخل ثاني أكسيد الكربون إلى النبات عن طريق الأوراق.', true]],
+    a: '١- (✓)&nbsp; ٢- (✗)، والتصحيح: يحصل على الماء <b>من التربة عن طريق الجذور</b>.&nbsp; ٣- (✓)', tip: 'الجذور هي التي تمتص الماء.' },
+  { lv: 1, m: 2, g: 3, type: 'fill', q: 'أكمل المعادلة اللفظية للتمثيل الضوئي باختيار الكلمة المناسبة لكل فراغ:', parts: ['ماء + ', 0, ' ← غذاء + ', 1, ' (بوجود الضوء)'],
+    bank: ['ثاني أكسيد الكربون', 'أكسجين', 'نيتروجين', 'تربة'], r: ['ثاني أكسيد الكربون', 'أكسجين'], a: 'ماء + <b>ثاني أكسيد الكربون</b> ← غذاء + <b>أكسجين</b>.', tip: 'المدخلات قبل السهم، والنواتج بعده.' },
   { lv: 2, m: 2, g: 2, type: 'label', q: 'يوضح الشكل نباتًا يقوم بالتمثيل الضوئي. اختر اسم المادة التي يشير إليها كل رمز:', fig: EX_PLANT,
     labels: ['س', 'ص'], bank: ['ثاني أكسيد الكربون', 'الماء', 'الأكسجين', 'الغذاء'], r: ['ثاني أكسيد الكربون', 'الماء'],
-    a: '(س): ثاني أكسيد الكربون، يدخل من الهواء إلى الورقة.<br>(ص): الماء، يدخل من التربة إلى الجذور.' },
-  { lv: 2, m: 1, g: 3, type: 'word', q: 'اكتب المصطلح العلمي: مادة جسم الكائن الحي المكوّنة من خلايا وأنسجة.',
-    accept: ['الكتلة الحيوية', 'كتلة حيوية', 'الكتله الحيويه', 'biomass'], a: 'الكتلة الحيوية (Biomass).' },
-  { lv: 2, m: 2, g: 2, type: 'order', q: 'أرادت مريم أن تعرف ماذا يحدث لنبات صغير لا يتعرّض للضوء. رتّب خطوات تجربتها بالضغط عليها بالترتيب الصحيح:',
+    a: '(س): ثاني أكسيد الكربون، يدخل من الهواء إلى الورقة.<br>(ص): الماء، يدخل من التربة إلى الجذور.', tip: 'انظر من أين يبدأ كل سهم: من الهواء أم من التربة؟' },
+  { lv: 2, m: 1, g: 3, type: 'mcq', q: 'اختر المصطلح العلمي المناسب: «مادة جسم الكائن الحي المكوّنة من خلايا وأنسجة».', right: 'الكتلة الحيوية', wrong: ['التمثيل الضوئي', 'السلسلة الغذائية', 'الطاقة الضوئية'],
+    a: 'الكتلة الحيوية (Biomass).', tip: 'راجع آخر شريحة في المحطة ٣.' },
+  { lv: 2, m: 2, g: 2, type: 'order', q: 'أرادت مريم أن تعرف ماذا يحدث لنبات صغير لا يتعرّض للضوء. اضغط على الخطوات بالترتيب الصحيح:',
     items: ['تضع بذورًا على ورق ترشيح مبلّل في وعاءين متشابهين', 'تنتظر حتى تنبت البذور', 'تضع وعاءً في الظلام والآخر في الضوء، بالماء والحرارة نفسيهما', 'تقارن بين النباتات بعد يومين'],
-    a: 'الترتيب: ١) تضع البذور على ورق مبلّل ← ٢) تنتظر حتى تنبت ← ٣) وعاء في الظلام وآخر في الضوء بالظروف نفسها ← ٤) تقارن بعد يومين.' },
-  { lv: 3, m: 2, g: 3, type: 'chart', q: 'وضع طالب نبتة مائية تحت مصباح، وعدّ فقاعات الغاز الخارجة منها في الدقيقة، وكرّر التجربة أربع مرات بإضاءة مختلفة.', fig: EX_CHART,
-    sub1: 'أ) اكتب عدد الفقاعات في التجربة (A):', num: 14,
-    sub2: 'ب) اختر التفسير الصحيح لسبب كون عدد الفقاعات في التجربة (B) هو الأكبر:', opts: ['لأن الإضاءة فيها أقوى، فكان التمثيل الضوئي أسرع وخرج أكسجين أكثر', 'لأن النبتة فيها أكبر حجمًا فقط', 'لأن الماء فيها أكثر، فخرج بخار ماء أكثر', 'لأن الإضاءة فيها أضعف، فتنفّس النبات أكثر'], r: 0,
-    a: 'أ) ١٤ فقاعة. [١]<br>ب) لأن الإضاءة فيها أقوى، فكان التمثيل الضوئي أسرع وخرج أكسجين أكثر. [١]' },
+    a: '١) البذور على ورق مبلّل ← ٢) الانتظار حتى تنبت ← ٣) وعاء في الظلام وآخر في الضوء بالظروف نفسها ← ٤) المقارنة بعد يومين.', tip: 'لا يمكن أن تقارن قبل أن تنبت البذور وتوضع في مكانها!' },
+  { lv: 3, m: 2, g: 3, type: 'chart', q: 'وضع طالب نبتة مائية تحت مصباح، وعدّ فقاعات الغاز الخارجة منها في الدقيقة، وكرّر التجربة أربع مرات بإضاءة مختلفة. <small>(اضغط على الرسم لتكبيره)</small>', fig: EX_CHART,
+    sub1: 'أ) كم عدد الفقاعات في التجربة (A)؟', num: '14', nums: ['12', '14', '16', '18'],
+    sub2: 'ب) اختر التفسير الصحيح لكون عدد الفقاعات في التجربة (B) هو الأكبر:', right: 'لأن الإضاءة فيها أقوى، فكان التمثيل الضوئي أسرع وخرج أكسجين أكثر', wrong: ['لأن النبتة فيها أكبر حجمًا فقط', 'لأن الماء فيها أكثر، فخرج بخار ماء أكثر', 'لأن الإضاءة فيها أضعف، فتنفّس النبات أكثر'],
+    a: 'أ) ١٤ فقاعة، فقمة العمود A على الخط الذي يلي ١٢ مباشرة. [١]<br>ب) الإضاءة في B أقوى، فالتمثيل الضوئي أسرع، وخرج أكسجين أكثر. [١]', tip: 'تتبّع قمة العمود أفقيًا إلى المحور، فكل خط في الشبكة = ٢.' },
   { lv: 3, m: 2, g: 1, type: 'mcq', q: 'وُضعت نبتة سليمة في صندوق زجاجي شفاف مغلق تمامًا، في الضوء ومع الماء الكافي. بعد عدة أيام توقف نموها. ما التفسير <b>الأدق</b>؟',
-    opts: ['نفد ثاني أكسيد الكربون داخل الصندوق، فلم تعد تستطيع صنع غذائها', 'الزجاج يمنع الضوء من الوصول إلى النبتة', 'امتلأ الصندوق بالأكسجين فاختنقت النبتة', 'النبتة لا تنمو إلا في التربة المفتوحة'], r: 0,
-    a: 'نفد ثاني أكسيد الكربون داخل الصندوق المغلق. الضوء موجود والماء موجود، لكن إحدى المواد الثلاث نفدت، فتوقف صنع الغذاء.' }
+    right: 'نفد ثاني أكسيد الكربون داخل الصندوق، فلم تعد تستطيع صنع غذائها', wrong: ['الزجاج يمنع الضوء من الوصول إلى النبتة', 'امتلأ الصندوق بالأكسجين فاختنقت النبتة', 'النبتة لا تنمو إلا في التربة المفتوحة'],
+    a: 'نفد ثاني أكسيد الكربون داخل الصندوق المغلق. الضوء والماء موجودان، لكن المادة الثالثة نفدت.', tip: 'الزجاج شفاف! ابحث عن المادة التي يمكن أن تنفد في صندوق مغلق.' }
 ];
 const LV = ['', '⭐ سهل', '⭐⭐ متوسط', '⭐⭐⭐ صعب'];
 let exTimer = null;
+function zoomFig(html) { const z = document.createElement('div'); z.className = 'zoomwrap'; z.innerHTML = `<div>${html}<p style="text-align:center;margin:6px 0 0;color:#333;font-size:14px">اضغط في أي مكان للإغلاق</p></div>`; z.onclick = () => z.remove(); document.body.appendChild(z); }
 function vExam() {
   clearInterval(exTimer);
+  const seat = String(100 + Math.floor(Math.random() * 900));
   app.innerHTML = `<section class="screen stack">
     <div class="row" style="justify-content:space-between"><span class="tag">📝 قاعة الاختبار</span><button class="btn ghost" style="padding:6px 12px;font-size:14px" id="back">→ الخريطة</button></div>
-    ${salem('think', 'أهلًا بك في قاعة الاختبار! هذه ورقة تدريبية تشبه ورقة الاختبار النهائي: <b>٨ أسئلة، ١٥ درجة، ٢٠ دقيقة</b>. أجب عن كل الأسئلة، ثم اضغط «سلّم الورقة» ليصحّحها الموقع لك.')}
-    <div class="panel"><b>تعليمات:</b><ul style="margin:6px 0 0;padding-inline-start:20px"><li>الأسئلة بثلاثة مستويات: ⭐ سهل، ⭐⭐ متوسط، ⭐⭐⭐ صعب.</li><li>الدرجة مكتوبة بجانب كل سؤال بين قوسين [ ].</li><li>لا يظهر التصحيح قبل أن تسلّم الورقة، تمامًا مثل الاختبار الحقيقي.</li></ul>
+    ${salem('think', 'أنا اليوم <b>مراقب القاعة</b>! 😄 هذه بطاقة دخولك. اقرأ التعليمات جيدًا، ثم اضغط «ابدأ الاختبار».')}
+    <div class="ticket"><h3>🎫 بطاقة دخول الاختبار</h3><div class="seat">رقم الجلوس ${ar(seat)}</div>
+      <div class="cols"><span>المادة: العلوم</span><span>الصف: الثامن</span><span>الدرس: التمثيل الضوئي</span><span>الزمن: ٢٠ دقيقة</span></div>
+      <input id="stName" placeholder="اسمك (اختياري، يظهر على ورقتك)" value="${S.name || ''}"></div>
+    <div class="panel"><b>📋 تعليمات المراقب:</b><ul style="margin:6px 0 0;padding-inline-start:20px">
+      <li>٨ أسئلة، ١٥ درجة، كل سؤال في صفحة.</li><li>المستويات: ⭐ سهل، ⭐⭐ متوسط، ⭐⭐⭐ صعب.</li>
+      <li>تنقّل بين الأسئلة من الأرقام في الأعلى، واضغط 🚩 لتعليم سؤال تريد الرجوع إليه.</li>
+      <li>لا يظهر التصحيح إلا بعد أن تسلّم الورقة.</li></ul>
       <label style="display:flex;gap:8px;align-items:center;margin-top:10px"><input type="checkbox" id="useT" checked style="width:20px;height:20px"> تشغيل المؤقّت (٢٠ دقيقة)</label></div>
-    <div class="row center"><button class="btn sun" id="startEx">ابدأ الاختبار ←</button></div>
+    <div class="row center"><button class="btn sun" id="startEx">ابدأ الاختبار ✍️</button></div>
   </section>`;
   $('#back').onclick = () => go('map');
-  $('#startEx').onclick = () => paper($('#useT').checked);
+  $('#startEx').onclick = () => { S.name = $('#stName').value.trim(); save(); paper($('#useT').checked, seat); };
 }
-function paper(timed) {
-  window.scrollTo(0, 0);
-  const qhtml = (x, i) => {
-    let body = '';
-    if (x.type === 'mcq') body = `<div class="ch">${x.opts.map((o, j) => `<label><input type="radio" name="e${i}" value="${j}"> ${'أبجد'[j]}) ${o}</label>`).join('')}</div>`;
-    if (x.type === 'tf') body = `<table class="tf"><tr><th>العبارة</th><th style="width:70px">✓ / ✗</th></tr>${x.rows.map((r, k) => `<tr><td>${ar(k + 1)}- ${r[0]}${r[1] ? '' : `<div style="margin-top:4px;font-size:14px">التصحيح (إن كانت خاطئة): <select data-cor="${i}-${k}"><option value="">اختر…</option>${r[2].map((c, j) => `<option value="${j}">${c}</option>`).join('')}</select></div>`}</td><td><select data-tf="${i}-${k}"><option value="">…</option><option value="1">✓</option><option value="0">✗</option></select></td></tr>`).join('')}</table>`;
-    if (x.type === 'fill') body = `<p style="margin:6px 0 0">${x.parts.map(p => typeof p === 'number' ? `<select data-fill="${i}-${p}"><option value="">..........</option>${x.bank.map(b => `<option>${b}</option>`).join('')}</select>` : p).join('')}</p>`;
-    if (x.type === 'label') body = `<div class="bw">${x.fig}</div>${x.labels.map((l, k) => `<p style="margin:4px 0">(${l}): <select data-lab="${i}-${k}"><option value="">اختر…</option>${x.bank.map(b => `<option>${b}</option>`).join('')}</select></p>`).join('')}`;
-    if (x.type === 'word') body = `<p style="margin:6px 0 0">الإجابة: <input type="text" data-word="${i}" placeholder="........................" autocomplete="off"></p>`;
-    if (x.type === 'order') body = `<div class="ord" data-ord="${i}">${shuffle(x.items.map((t, k) => [t, k])).map(([t, k]) => `<button data-k="${k}">${t}</button>`).join('')}</div><div class="seq" id="seq${i}">ترتيبك: </div><button class="btn ghost" style="padding:4px 12px;font-size:13px;margin-top:6px" data-clr="${i}">مسح الترتيب</button>`;
-    if (x.type === 'chart') body = `<div class="bw">${x.fig}</div><p style="margin:6px 0 0">${x.sub1} <input type="text" inputmode="numeric" data-num="${i}" style="min-width:70px" placeholder="....."> فقاعة <span class="mk">[١]</span></p><p style="margin:8px 0 0">${x.sub2} <span class="mk">[١]</span></p><div class="ch">${x.opts.map((o, j) => `<label><input type="radio" name="e${i}" value="${j}"> ${'أبجد'[j]}) ${o}</label>`).join('')}</div>`;
-    return `<div class="eq" id="eq${i}"><div class="eh"><span>السؤال ${ar(i + 1)}</span><span class="lv">${LV[x.lv]}</span><span class="mk">[${ar(x.m)}]</span></div><p style="margin:4px 0 0">${x.q}</p>${body}<div class="res" id="er${i}" hidden></div></div>`;
-  };
+function paper(timed, seat) {
+  // تجهيز: خلط الخيارات لكل سؤال
+  const P = EXAM.map(x => ({ ...x,
+    ch: x.right ? shuffle([x.right, ...x.wrong]) : null,
+    nums: x.nums ? shuffle(x.nums) : null,
+    bank: x.bank ? shuffle(x.bank) : null,
+    rows: x.rows ? x.rows.map(r => r[1] ? r : [r[0], r[1], r[2], shuffle([r[2], ...r[3]])]) : null,
+    items: x.items ? shuffle(x.items.map((t, k) => [t, k])) : null }));
+  const A = P.map(x => ({ ch: null, tf: {}, cor: {}, fill: {}, lab: {}, ord: [], num: null, flag: false }));
+  let cur = 0, left = 20 * 60, submitted = false;
+  const answered = i => { const x = P[i], a = A[i];
+    if (x.type === 'mcq') return a.ch !== null;
+    if (x.type === 'tf') return x.rows.every((r, k) => a.tf[k] !== undefined && (r[1] || a.tf[k] || a.cor[k] !== undefined));
+    if (x.type === 'fill') return x.r.every((r, k) => a.fill[k]);
+    if (x.type === 'label') return x.r.every((r, k) => a.lab[k]);
+    if (x.type === 'order') return a.ord.length === x.items.length;
+    if (x.type === 'chart') return a.num !== null && a.ch !== null; };
   app.innerHTML = `<section class="screen stack">
-    ${timed ? '<div class="timerbar" id="tb"><span>⏱️ الوقت المتبقي</span><b id="tleft">٢٠:٠٠</b></div>' : ''}
-    <div class="paper">
-      <div class="ph"><div class="full">اختبار تدريبي · مادة العلوم</div><div>الصف: الثامن</div><div>الفصل الدراسي: الأول</div><div>الدرس: ١-١ التمثيل الضوئي</div><div>الزمن: ٢٠ دقيقة · الدرجة: ١٥</div><div class="full" style="font-weight:500">اسم الطالب: ...................................</div></div>
-      <p class="note2">من إعداد القرية التعليمية، بنمط أسئلة الاختبارات النهائية</p>
-      <p style="text-align:center;font-weight:700;margin:10px 0 0;text-decoration:underline">أجب عن جميع الأسئلة الآتية</p>
-      ${EXAM.map(qhtml).join('')}
-    </div>
-    <div class="row center"><button class="btn sun" id="submitEx">سلّم الورقة ✋</button></div>
-    <div id="exRes"></div>
+    <div class="exbar">${timed ? `<div class="ring" id="ring"><svg width="52" height="52"><circle cx="26" cy="26" r="22" stroke="var(--surface-2)" stroke-width="6" fill="none"/><circle class="fg" cx="26" cy="26" r="22" stroke="var(--leaf)" stroke-width="6" fill="none" stroke-dasharray="138.2" stroke-dashoffset="0" stroke-linecap="round"/></svg><b id="tl">٢٠:٠٠</b></div>` : ''}<div class="nav8" id="nav8"></div></div>
+    <div class="paper" id="pp"></div>
+    <div class="pgnav"><button class="btn ghost" id="pv">→ السابق</button><button class="flagbtn" id="fl">🚩 علّم للمراجعة</button><button class="btn" id="nx">التالي ←</button></div>
   </section>`;
-  // الترتيب بالضغط
-  const orders = {};
-  $$('[data-ord]').forEach(box => { const i = +box.dataset.ord; orders[i] = [];
-    $$('button', box).forEach(b => b.onclick = () => { if (b.classList.contains('used') || submitted) return; b.classList.add('used'); orders[i].push(+b.dataset.k); $('#seq' + i).innerHTML = 'ترتيبك: ' + orders[i].map((k, n) => `<b>${ar(n + 1)})</b> ${EXAM[i].items[k]}`).join(' ← '); }); });
-  $$('[data-clr]').forEach(b => b.onclick = () => { if (submitted) return; const i = +b.dataset.clr; orders[i] = []; $$(`[data-ord="${i}"] button`).forEach(x => x.classList.remove('used')); $('#seq' + i).textContent = 'ترتيبك: '; });
-  let submitted = false, left = 20 * 60;
-  if (timed) exTimer = setInterval(() => { left--; const m = Math.floor(left / 60), s2 = left % 60; $('#tleft').textContent = ar(String(m).padStart(2, '0')) + ':' + ar(String(s2).padStart(2, '0')); if (left <= 120) $('#tb').classList.add('warn'); if (left <= 0) { clearInterval(exTimer); toast('انتهى الوقت! سُلّمت الورقة.'); grade(); } }, 1000);
-  $('#submitEx').onclick = () => {
-    const blank = EXAM.filter((x, i) => !answered(x, i)).length;
-    if (blank && !$('#submitEx').dataset.warned) { $('#submitEx').dataset.warned = 1; toast(`لم تُجب عن ${ar(blank)} من الأسئلة. اضغط مرة أخرى للتسليم.`); return; }
+  function nav() { $('#nav8').innerHTML = P.map((x, i) => `<button class="${answered(i) ? 'ans' : ''} ${i === cur ? 'cur' : ''} ${A[i].flag ? 'flag' : ''}" data-n="${i}">${ar(i + 1)}</button>`).join(''); $$('#nav8 button').forEach(b => b.onclick = () => page(+b.dataset.n)); }
+  function page(i) {
+    cur = i; const x = P[i], a = A[i]; let body = '';
+    if (x.type === 'mcq' || x.type === 'chart') {
+      if (x.type === 'chart') body += `<div class="bw" id="fig">${x.fig}</div><p class="qtx">${x.sub1} <span class="mk">[١]</span></p><div class="pick" data-g="num">${x.nums.map(n => `<button class="${a.num === n ? 'sel' : ''}" data-v="${n}">${ar(n)} فقاعة</button>`).join('')}</div><p class="qtx" style="margin-top:12px">${x.sub2} <span class="mk">[١]</span></p>`;
+      body += `<div class="ch" data-g="ch">${x.ch.map((o, j) => `<button class="${a.ch === o ? 'sel' : ''}" data-v="${o}"><i>${'أبجد'[j]}</i>${o}</button>`).join('')}</div>`;
+    }
+    if (x.type === 'tf') body = `<table class="tf"><tr><th>العبارة</th><th style="width:100px">الإجابة</th></tr>${x.rows.map((r, k) => `<tr><td>${ar(k + 1)}- ${r[0]}${!r[1] && a.tf[k] === false ? `<div class="pick" data-g="cor" data-k="${k}" style="font-size:14px"><span style="font-size:14px;width:100%">التصحيح: يحصل على الماء…</span>${r[3].map(c => `<button class="${a.cor[k] === c ? 'sel' : ''}" data-v="${c}" style="font-size:14px">${c}</button>`).join('')}</div>` : ''}</td><td><div class="tfb" data-g="tf" data-k="${k}"><button class="${a.tf[k] === true ? 'sel' : ''}" data-v="1">✓</button><button class="${a.tf[k] === false ? 'sel' : ''}" data-v="0">✗</button></div></td></tr>`).join('')}</table>`;
+    if (x.type === 'fill' || x.type === 'label') {
+      const key = x.type === 'fill' ? 'fill' : 'lab';
+      if (x.type === 'fill') body = `<p class="qtx" style="font-size:18px">${x.parts.map(p => typeof p === 'number' ? `<span class="slot" data-slot="${p}">${a.fill[p] || '؟'}</span>` : p).join('')}</p>`;
+      else body = `<div class="bw" id="fig">${x.fig}</div>${x.labels.map((l, k) => `<p class="qtx">(${l}): <span class="slot" data-slot="${k}">${a.lab[k] || '؟'}</span></p>`).join('')}`;
+      body += `<p class="qtx" style="font-size:14px;color:#555">اضغط على الفراغ، ثم اختر الكلمة:</p><div class="pick" data-g="bank">${x.bank.map(b => `<button data-v="${b}">${b}</button>`).join('')}</div>`;
+      a._slot = a._slot ?? 0;
+    }
+    if (x.type === 'order') body = `<div class="ord">${x.items.map(([t, k]) => { const pos = a.ord.indexOf(k); return `<button class="${pos >= 0 ? 'used' : ''}" data-k="${k}"><b>${pos >= 0 ? ar(pos + 1) : ''}</b>${t}</button>`; }).join('')}</div><button class="btn ghost" style="padding:4px 12px;font-size:13px;margin-top:8px" id="clr">مسح الترتيب</button>`;
+    $('#pp').innerHTML = `<div class="top2"><span>اختبار تدريبي · العلوم · الصف الثامن</span><span>رقم الجلوس: ${ar(seat)}</span></div>
+      <div class="eh"><span>السؤال ${ar(i + 1)} من ${ar(P.length)}</span><span class="lv">${LV[x.lv]}</span><span class="mk">[${ar(x.m)}]</span></div><p class="qtx">${x.q}</p>${body}`;
+    // التفاعل
+    $$('#pp [data-g="ch"] button').forEach(b => b.onclick = () => { a.ch = b.dataset.v; page(i); });
+    $$('#pp [data-g="num"] button').forEach(b => b.onclick = () => { a.num = b.dataset.v; page(i); });
+    $$('#pp [data-g="tf"]').forEach(g => $$('button', g).forEach(b => b.onclick = () => { a.tf[g.dataset.k] = b.dataset.v === '1'; page(i); }));
+    $$('#pp [data-g="cor"]').forEach(g => $$('button', g).forEach(b => b.onclick = () => { a.cor[g.dataset.k] = b.dataset.v; page(i); }));
+    $$('#pp .slot').forEach(sl => { if (+sl.dataset.slot === a._slot) sl.classList.add('on'); sl.onclick = () => { a._slot = +sl.dataset.slot; page(i); }; });
+    $$('#pp [data-g="bank"] button').forEach(b => b.onclick = () => { const key = x.type === 'fill' ? 'fill' : 'lab'; a[key][a._slot] = b.dataset.v; const n = (x.r.length); for (let k = 1; k <= n; k++) { const nx = (a._slot + k) % n; if (!a[key][nx]) { a._slot = nx; break; } } page(i); });
+    $$('#pp .ord button').forEach(b => b.onclick = () => { const k = +b.dataset.k; if (!a.ord.includes(k)) a.ord.push(k); page(i); });
+    const c = $('#clr'); if (c) c.onclick = () => { a.ord = []; page(i); };
+    const f = $('#fig'); if (f) f.onclick = () => zoomFig(x.fig);
+    $('#pv').style.visibility = i ? 'visible' : 'hidden';
+    $('#nx').textContent = i === P.length - 1 ? 'سلّم الورقة ✋' : 'التالي ←';
+    $('#nx').className = 'btn' + (i === P.length - 1 ? ' sun' : '');
+    $('#fl').className = 'flagbtn' + (a.flag ? ' on' : '');
+    nav();
+  }
+  $('#pv').onclick = () => cur && page(cur - 1);
+  $('#fl').onclick = () => { A[cur].flag = !A[cur].flag; page(cur); };
+  $('#nx').onclick = () => {
+    if (cur < P.length - 1) { page(cur + 1); window.scrollTo(0, 0); return; }
+    const blank = P.filter((x, i) => !answered(i)).length, flags = A.filter(a => a.flag).length;
+    if ((blank || flags) && !$('#nx').dataset.warned) { $('#nx').dataset.warned = 1; toast(`${blank ? `بقي ${ar(blank)} أسئلة بلا إجابة. ` : ''}${flags ? `علّمت ${ar(flags)} للمراجعة. ` : ''}اضغط مرة أخرى للتسليم.`); return; }
     grade();
   };
-  const radio = i => { const r = $(`input[name="e${i}"]:checked`); return r ? +r.value : null; };
-  function answered(x, i) {
-    if (x.type === 'mcq') return radio(i) !== null;
-    if (x.type === 'tf') return $$(`[data-tf^="${i}-"]`).every(s => s.value);
-    if (x.type === 'fill') return $$(`[data-fill^="${i}-"]`).every(s => s.value);
-    if (x.type === 'label') return $$(`[data-lab^="${i}-"]`).every(s => s.value);
-    if (x.type === 'word') return $(`[data-word="${i}"]`).value.trim();
-    if (x.type === 'order') return orders[i].length === x.items.length;
-    if (x.type === 'chart') return $(`[data-num="${i}"]`).value.trim() && radio(i) !== null;
-  }
-  function score(x, i) {
-    if (x.type === 'mcq') return radio(i) === x.r ? x.m : 0;
-    if (x.type === 'tf') return x.rows.reduce((t, r, k) => { const v = $(`[data-tf="${i}-${k}"]`).value; if (r[1]) return t + (v === '1' ? 1 : 0); return t + (v === '0' && $(`[data-cor="${i}-${k}"]`).value === String(r[3]) ? 1 : 0); }, 0);
-    if (x.type === 'fill') return x.r.reduce((t, r, k) => t + ($(`[data-fill="${i}-${k}"]`).value === r ? 1 : 0), 0);
-    if (x.type === 'label') return x.r.reduce((t, r, k) => t + ($(`[data-lab="${i}-${k}"]`).value === r ? 1 : 0), 0);
-    if (x.type === 'word') { const v = norm($(`[data-word="${i}"]`).value); return x.accept.some(a => norm(a) === v) ? x.m : 0; }
-    if (x.type === 'order') { const o = orders[i]; if (o.length !== x.items.length) return 0; const ok = o.filter((k, n) => k === n).length; return ok === o.length ? 2 : ok >= 2 ? 1 : 0; }
-    if (x.type === 'chart') return (+norm($(`[data-num="${i}"]`).value) === x.num ? 1 : 0) + (radio(i) === x.r ? 1 : 0);
-  }
+  if (timed) exTimer = setInterval(() => { left--; const m = Math.floor(left / 60), s2 = left % 60; $('#tl').textContent = ar(String(m).padStart(2, '0')) + ':' + ar(String(s2).padStart(2, '0')); $('#ring .fg').setAttribute('stroke-dashoffset', 138.2 * (1 - left / 1200)); if (left <= 120) $('#ring').classList.add('warn'); if (left <= 0) { toast('انتهى الوقت! سُلّمت الورقة.'); grade(); } }, 1000);
+  page(0);
+
+  function score(i) { const x = P[i], a = A[i];
+    if (x.type === 'mcq') return a.ch === x.right ? x.m : 0;
+    if (x.type === 'tf') return x.rows.reduce((t, r, k) => t + (r[1] ? (a.tf[k] === true ? 1 : 0) : (a.tf[k] === false && a.cor[k] === r[2] ? 1 : 0)), 0);
+    if (x.type === 'fill') return x.r.reduce((t, r, k) => t + (a.fill[k] === r ? 1 : 0), 0);
+    if (x.type === 'label') return x.r.reduce((t, r, k) => t + (a.lab[k] === r ? 1 : 0), 0);
+    if (x.type === 'order') { const ok = a.ord.filter((k, n) => k === n).length; return a.ord.length === x.items.length && ok === x.items.length ? 2 : ok >= 2 ? 1 : 0; }
+    if (x.type === 'chart') return (a.num === x.num ? 1 : 0) + (a.ch === x.right ? 1 : 0); }
+  function yours(i) { const x = P[i], a = A[i];
+    if (x.type === 'mcq') return a.ch || '—';
+    if (x.type === 'tf') return x.rows.map((r, k) => `${ar(k + 1)}- ${a.tf[k] === undefined ? '—' : a.tf[k] ? '✓' : '✗'}${!r[1] && a.cor[k] ? ` (${a.cor[k]})` : ''}`).join('&nbsp; ');
+    if (x.type === 'fill') return x.r.map((r, k) => a.fill[k] || '—').join(' / ');
+    if (x.type === 'label') return x.labels.map((l, k) => `(${l}) ${a.lab[k] || '—'}`).join('&nbsp; ');
+    if (x.type === 'order') return a.ord.length ? a.ord.map(k => ar(k + 1)).join(' ← ') : '—';
+    if (x.type === 'chart') return `أ) ${a.num ? ar(a.num) : '—'}&nbsp; ب) ${a.ch || '—'}`; }
   function grade() {
     if (submitted) return; submitted = true; clearInterval(exTimer);
     let total = 0; const byLv = { 1: [0, 0], 2: [0, 0], 3: [0, 0] }; const weak = new Set();
-    EXAM.forEach((x, i) => {
-      const got = score(x, i); total += got; byLv[x.lv][0] += got; byLv[x.lv][1] += x.m; if (got < x.m) weak.add(x.g);
-      const el = $('#er' + i); el.hidden = false; el.className = 'res ' + (got === x.m ? 'ok' : got ? 'part' : 'no');
-      el.innerHTML = `<b>${got === x.m ? '✅' : got ? '🟡' : '❌'} درجتك: ${ar(got)} من ${ar(x.m)}</b><br><b>نموذج الإجابة:</b> ${x.a}`;
-      $$('#eq' + i + ' input, #eq' + i + ' select, #eq' + i + ' button').forEach(e => e.disabled = true);
-    });
+    const rows = P.map((x, i) => { const got = score(i); total += got; byLv[x.lv][0] += got; byLv[x.lv][1] += x.m; if (got < x.m) weak.add(x.g);
+      return `<div class="gq">${got === x.m ? RED_OK : got ? RED_HALF : RED_NO}
+        <div class="eh"><span>السؤال ${ar(i + 1)}</span><span class="lv">${LV[x.lv]}</span><span class="gscore">${ar(got)} / ${ar(x.m)}</span></div>
+        <div style="font-size:15.5px">${x.q.replace(/<small>.*?<\/small>/, '')}</div>
+        <div class="yours">إجابتك: ${yours(i)}</div>
+        ${got < x.m ? `<div class="note redpen">${x.tip}</div><div class="model"><b>نموذج الإجابة:</b> ${x.a}</div>` : `<div class="note redpen">أحسنت!</div>`}</div>`; }).join('');
     S.exam = Math.max(S.exam ?? 0, total); save(); updHouses();
-    const pct = total / 15, lvl = pct >= .9 ? 'ممتاز 🌟' : pct >= .75 ? 'جيد جدًا 👍' : pct >= .6 ? 'جيد' : 'يحتاج مراجعة 🔁';
-    $('#exRes').innerHTML = `<div class="panel stack" style="text-align:center">
-      ${salem(pct >= .75 ? 'cheer' : 'happy', `درجتك <b>${ar(total)} من ١٥</b>، والتقدير: <b>${lvl}</b>.${weak.size ? ` راجع ${[...weak].sort().map(g => `المحطة ${ar(g)}`).join(' و')}، ففيها الأفكار التي أخطأت فيها.` : ' لم تخطئ في أي سؤال، رائع!'}`)}
-      <div class="lvl">${[1, 2, 3].map(l => `<div>${LV[l]}<b>${ar(byLv[l][0])} / ${ar(byLv[l][1])}</b></div>`).join('')}</div>
-      <p class="lead" style="margin:0">انزل في الورقة لترى تصحيح كل سؤال ونموذج إجابته.</p>
-      <div class="row center"><button class="btn ghost" id="reEx">أعد الاختبار</button><button class="btn sun" id="toEnd2">استلم شارتك ←</button></div></div>`;
+    const pct = total / 15, lvl = pct >= .9 ? 'ممتاز' : pct >= .75 ? 'جيد جدًا' : pct >= .6 ? 'جيد' : 'يحتاج مراجعة';
+    window.scrollTo(0, 0);
+    app.innerHTML = `<section class="screen stack">
+      ${salem(pct >= .75 ? 'cheer' : 'happy', `صحّح المعلم ورقتك! ✍️ درجتك <b>${ar(total)} من ١٥</b>.${weak.size ? ` راجع ${[...weak].sort().map(g => `المحطة ${ar(g)}`).join(' و')}، ثم أعد المحاولة لترفع درجتك.` : ' ورقة كاملة بلا أخطاء!'}`)}
+      <div class="paper graded" style="padding-top:22px">
+        <div class="grade-circle"><svg viewBox="0 0 100 100"><path d="M50 6 C78 4 96 26 94 52 C92 80 70 96 46 94 C20 92 4 72 6 48 C8 24 28 8 56 7" fill="none" stroke="#c8102e" stroke-width="3.5" stroke-linecap="round"/></svg><b>${ar(total)}<br><small style="font-size:16px">١٥</small></b></div>
+        <div class="top2" style="padding-inline-start:100px"><span>${S.name ? 'الطالب/ة: ' + S.name : 'اختبار تدريبي · العلوم'}</span><span>رقم الجلوس: ${ar(seat)}</span></div>
+        <p class="redpen" style="font-size:24px;margin:6px 0 0;padding-inline-start:100px">${lvl}${pct >= .75 ? ' 👏' : ''}</p>
+        ${rows}
+      </div>
+      <div class="panel stack" style="text-align:center"><b>📊 درجتك حسب مستوى الصعوبة</b>
+        <div class="lvl">${[1, 2, 3].map(l => `<div>${LV[l]}<b>${ar(byLv[l][0])} / ${ar(byLv[l][1])}</b></div>`).join('')}</div>
+        <div class="row center"><button class="btn ghost" id="reEx">أعد الاختبار</button><button class="btn sun" id="toEnd2">استلم شارتك ←</button></div></div>
+    </section>`;
     $('#reEx').onclick = () => vExam(); $('#toEnd2').onclick = () => go('end');
-    $('#exRes').scrollIntoView({ behavior: 'smooth' });
   }
+}
+
+/* ======================= لعبة السرعة ⚡ ======================= */
+const SPEED = [
+  ['يصنع النبات غذاءه مستخدمًا طاقة:', 'الضوء', ['الصوت', 'الرياح', 'المطر']],
+  ['الغاز الذي يأخذه النبات من الهواء ليصنع غذاءه:', 'ثاني أكسيد الكربون', ['الأكسجين', 'النيتروجين', 'الهيليوم']],
+  ['الغاز الذي يُطلقه النبات أثناء التمثيل الضوئي:', 'الأكسجين', ['ثاني أكسيد الكربون', 'بخار الماء', 'الهيدروجين']],
+  ['يمتص النبات الماء بواسطة:', 'الجذور', ['الأوراق', 'الأزهار', 'الثمار']],
+  ['أول حلقة في أي سلسلة غذائية:', 'نبات', ['حيوان مفترس', 'إنسان', 'حشرة']],
+  ['كلمة Photo معناها:', 'ضوء', ['إنتاج', 'ماء', 'نبات']],
+  ['كلمة Synthesis معناها:', 'إنتاج', ['ضوء', 'هواء', 'تنفّس']],
+  ['ناتجا التمثيل الضوئي:', 'غذاء وأكسجين', ['ماء وضوء', 'تربة وماء', 'ثاني أكسيد الكربون وماء']],
+  ['مدخلات التمثيل الضوئي:', 'ماء وثاني أكسيد الكربون', ['غذاء وأكسجين', 'أكسجين وتربة', 'سكر وملح']],
+  ['مادة جسم الكائن الحي من خلايا وأنسجة تُسمّى:', 'الكتلة الحيوية', ['الطاقة الضوئية', 'السلسلة الغذائية', 'التمثيل الضوئي']],
+  ['أيّ هذه الكائنات يصنع غذاءه بنفسه؟', 'النخلة', ['الجمل', 'الصقر', 'الثعبان']],
+  ['نبات صغير نما في الظلام يكون غالبًا:', 'أصفر ضعيفًا', ['أخضر قويًا', 'مليئًا بالثمار', 'بلا أي تغيّر']],
+  ['المصدر الأصلي للطاقة في السلسلة الغذائية:', 'الشمس', ['التربة', 'الماء', 'الصقر']],
+  ['عندما تأكل تمرة، فأصل طاقتها:', 'الشمس', ['التربة', 'الماء', 'الهواء']],
+  ['يدخل ثاني أكسيد الكربون إلى النبات عن طريق:', 'الأوراق', ['الجذور', 'الساق', 'الأزهار']],
+  ['يبني النبات خلايا جديدة من:', 'الغذاء الذي يصنعه', ['التربة مباشرة', 'الضوء مباشرة', 'الأكسجين']],
+  ['فقاعات نبتة مائية تحت الضوء فيها غاز:', 'الأكسجين', ['ثاني أكسيد الكربون', 'النيتروجين', 'الهيليوم']],
+  ['عند زيادة شدة الضوء يصبح التمثيل الضوئي غالبًا:', 'أسرع', ['أبطأ', 'متوقفًا', 'بلا تغيّر']],
+  ['في السلسلة: عشب ← جرادة ← سحلية، تأخذ الجرادة طاقتها من:', 'العشب', ['السحلية', 'التربة', 'الماء']],
+  ['ما الذي لا يحتاجه النبات ليصنع غذاءه؟', 'الأكسجين', ['الماء', 'الضوء', 'ثاني أكسيد الكربون']],
+  ['تُسمّى النباتات «منتجات» لأنها:', 'تصنع غذاءها بنفسها', ['تأكل الحيوانات', 'تُنتج الماء', 'تعيش طويلًا']],
+  ['يحدث معظم التمثيل الضوئي في:', 'الأوراق', ['الجذور', 'الثمار', 'البذور']],
+  ['العملية التي يصنع بها النبات غذاءه:', 'التمثيل الضوئي', ['الهضم', 'التبخّر', 'الذوبان']],
+  ['يصعد الماء من الجذور إلى الأوراق عبر:', 'الساق', ['الأزهار', 'الثمار', 'الهواء']],
+  ['يوجد ثاني أكسيد الكربون في:', 'الهواء', ['التربة فقط', 'ضوء الشمس', 'الثمار فقط']],
+  ['أين يذهب الأكسجين الذي يُنتجه النبات؟', 'يخرج إلى الهواء', ['يبقى في الجذور', 'يتحوّل إلى ماء', 'يختفي']],
+  ['يحصل الإنسان على الطاقة من:', 'الغذاء', ['الضوء مباشرة', 'ثاني أكسيد الكربون', 'التربة']],
+  ['في تجربة البذور، العامل الذي غيّرناه بين المجموعتين:', 'الضوء', ['الماء', 'الحرارة', 'نوع البذور']],
+  ['لماذا جعلنا الحرارة متساوية في تجربة البذور؟', 'لتكون التجربة عادلة', ['لتنمو البذور أسرع', 'لأن الحرارة تصنع الغذاء', 'لا يوجد سبب']],
+  ['إذا غاب ثاني أكسيد الكربون عن النبات فإنه:', 'لا يستطيع صنع الغذاء', ['يصنع غذاءً أكثر', 'يصبح أخضر أكثر', 'يمتص ماءً أكثر']]
+];
+let spTimer = null;
+function vSpeed() {
+  clearInterval(spTimer);
+  app.innerHTML = `<section class="screen stack speed">
+    <div class="row" style="justify-content:space-between"><span class="tag">⚡ ساحة السرعة</span><button class="btn ghost" style="padding:6px 12px;font-size:14px" id="back">→ الخريطة</button></div>
+    ${salem('cheer', 'أهلًا بك في ساحة السرعة! <b>١٥ سؤالًا</b>، ولكل سؤال <b>١٠ ثوانٍ</b> فقط. كلما أجبت أسرع ربحت نقاطًا أكثر، والإجابات المتتالية الصحيحة تشعل 🔥. وفي كل مرة تلعب تظهر أسئلة مختلفة!')}
+    <div class="panel"><b>🏆 أفضل نتيجة لك:</b> <span class="score">${ar(S.best || 0)}</span> نقطة</div>
+    <div class="row center"><button class="btn sun" id="go">ابدأ اللعب ⚡</button></div></section>`;
+  $('#back').onclick = () => go('map');
+  $('#go').onclick = play;
+}
+function play() {
+  // اختيار ١٥ سؤالًا، مع تفضيل الأسئلة التي لم تظهر في المرة السابقة
+  const last = new Set(S.spLast || []);
+  const idx = shuffle(SPEED.map((q, k) => k)); const fresh = idx.filter(k => !last.has(k)), old = idx.filter(k => last.has(k));
+  const pick = fresh.concat(old).slice(0, 15); S.spLast = pick; save();
+  let n = 0, pts = 0, right = 0, streak = 0, best = 0, t0 = 0; const missed = [];
+  function q() {
+    if (n >= pick.length) return end();
+    const Q = SPEED[pick[n]], ch = shuffle([Q[1], ...Q[2]]); let done = false;
+    app.innerHTML = `<section class="screen speed"><div class="hud"><span>السؤال ${ar(n + 1)} / ${ar(pick.length)}</span><span class="streak">${streak >= 2 ? '🔥 ×' + ar(streak) : ''}</span><span>⭐ ${ar(pts)}</span></div>
+      <div class="qbox pop">${Q[0]}</div><div class="tbar"><i id="tb"></i></div>
+      <div class="grid4">${ch.map(c => `<button>${c}</button>`).join('')}</div></section>`;
+    t0 = Date.now();
+    const finish = (b) => { if (done) return; done = true; clearInterval(spTimer);
+      const ok = b && b.textContent === Q[1];
+      $$('.grid4 button').forEach(x => { if (x.textContent === Q[1]) x.classList.add('right'); else x.classList.add('dim'); });
+      if (ok) { const secLeft = Math.max(0, 10 - (Date.now() - t0) / 1000); streak++; best = Math.max(best, streak); right++; pts += 10 + Math.round(secLeft) + (streak >= 3 ? 5 : 0); }
+      else { streak = 0; missed.push(Q); if (b) b.classList.add('wrong'); }
+      setTimeout(() => { n++; q(); }, ok ? 650 : 1300); };
+    $$('.grid4 button').forEach(b => b.onclick = () => finish(b));
+    spTimer = setInterval(() => { const el = (Date.now() - t0) / 1000; const tb = $('#tb'); if (tb) tb.style.transform = `scaleX(${Math.max(0, 1 - el / 10)})`; if (el >= 10) finish(null); }, 100);
+  }
+  function end() {
+    const nb = pts > (S.best || 0); if (nb) S.best = pts; S.speed = true; save(); updHouses();
+    app.innerHTML = `<section class="screen stack speed">
+      ${salem(right >= 12 ? 'cheer' : 'happy', `${nb ? '🎉 <b>رقم قياسي جديد!</b> ' : ''}أجبت عن <b>${ar(right)} من ١٥</b>، وجمعت <b>${ar(pts)} نقطة</b>، وأطول سلسلة إجابات صحيحة: ${ar(best)} 🔥`)}
+      ${missed.length ? `<div class="panel" style="text-align:start"><b>📌 راجع هذه الأسئلة:</b><ul style="margin:6px 0 0;padding-inline-start:20px">${missed.map(m => `<li>${m[0]} <b style="color:var(--good)">${m[1]}</b></li>`).join('')}</ul></div>` : ''}
+      <div class="row center"><button class="btn sun" id="again">العب مرة أخرى (أسئلة جديدة) ⚡</button><button class="btn ghost" id="toMap">→ الخريطة</button></div></section>`;
+    $('#again').onclick = play; $('#toMap').onclick = () => go('map');
+  }
+  q();
 }
 
 /* ======================= النهاية ======================= */
@@ -733,6 +901,7 @@ function vEnd() {
   else if (['map', 'pre'].includes(h) && S.pre !== null) go(h);
   else if (h === 'final' && S.done.every(Boolean)) go('final');
   else if (h === 'exam' && S.fin) go('exam');
+  else if (h === 'speed' && S.done.every(Boolean)) go('speed');
   else if (h === 'end' && S.exam !== null) go('end');
   else go('start');
 })();
