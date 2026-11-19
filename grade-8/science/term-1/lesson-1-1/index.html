@@ -228,6 +228,9 @@ h1,h2,h3{font-family:var(--f-display);line-height:1.5;margin:0}
 @keyframes floatup{from{bottom:-50px}to{bottom:340px}}
 .clues{display:grid;gap:6px;margin-bottom:6px}
 .clue{background:var(--air-soft);border-inline-start:4px solid var(--air);border-radius:10px;padding:6px 10px;animation:pop .4s}
+.hot.sm{width:22px;height:22px;border-width:2px}
+.word.wrongw{border-color:var(--bad);background:var(--bad-soft)}
+.qrow.okrow{border-color:var(--good)}
 /* مسار الرحلة */
 .path{display:flex;align-items:center;margin:0 0 12px}
 .path i{flex:1;height:3px;background:var(--line);border-radius:2px}
@@ -684,6 +687,21 @@ const WHO = [
   { c: ['أكون في أول السلسلة الغذائية.', 'أصنع غذائي بنفسي.', 'أحتاج إلى الضوء والماء وثاني أكسيد الكربون.'], o: ['النبات', 'الجراد', 'الصقر', 'الإنسان'], a: 'النبات' }
 ];
 
+/* إعدادات الألعاب (المحرّك يقرأ هذه الأسماء) */
+LESSON.goals = ['أستطيع أن أشرح مصطلح التمثيل الضوئي.', 'أستطيع أن أذكر ما تحتاج إليه النباتات في التمثيل الضوئي.', 'أستطيع أن أذكر ما تصنعه النباتات خلال التمثيل الضوئي.'];
+const GAMES = [
+  { id: 'quick', ico: '⏱️', t: 'تحدّي الدقيقة', s: 'صواب أم خطأ؟ في ٦٠ ثانية' },
+  { id: 'bubbles', ico: '🫧', t: 'صيد الفقاعات', s: 'اصطد الكلمات الصحيحة قبل أن تطير' },
+  { id: 'chains', ico: '🔗', t: 'رتّب السلسلة', s: 'سلاسل غذائية من بيئة عُمان' },
+  { id: 'equation', ico: '🧩', t: 'ابنِ المعادلة', s: 'ضع كل قطعة في مكانها' },
+  { id: 'who', ico: '🕵️', t: 'من أنا؟', s: 'خمّن من أقل عدد من الأدلة' },
+  { id: 'sort', ico: '🧺', t: 'يحتاج إليه أم يصنعه؟', s: 'صنّف البطاقات في سلّتين' },
+  { id: 'memory', ico: '🃏', t: 'بطاقات الذاكرة', s: 'طابق كل مصطلح بمعناه' }
+];
+const SORT_CFG = { t: 'يحتاج إليه أم يصنعه؟ 🧺', keys: ['need', 'make'], long: ['📥 يحتاج إليه النبات', '📤 يصنعه النبات'], short: ['📥 يحتاج', '📤 يصنع'], done: ['📥 يحتاج إليه', '📤 يصنعه'], win: 'أحسنت! يحتاج النبات إلى الماء وثاني أكسيد الكربون وطاقة الضوء، ويصنع الغذاء والأكسجين.' };
+const CHAINS_CFG = { t: 'رتّب السلسلة 🔗', intro: 'رتّب الكائنات من بداية السلسلة (يمين) إلى نهايتها: من يُؤكل أولًا؟' };
+const BUBBLE_CFG = { rounds: [{ k: 'make', t: 'اصطد ما يصنعه النبات 🫧' }, { k: 'need', t: 'اصطد ما يحتاج إليه النبات 💧' }], end: 'تذكّر: يحتاج النبات إلى الماء وثاني أكسيد الكربون والضوء، ويصنع الغذاء والأكسجين.' };
+
 /* =========================================================
    قالب «المحطات الحرّة» · القرية التعليمية
    المحرّك المشترك لكل الدروس. محتوى الدرس في lessons-src/.../data.js
@@ -816,9 +834,7 @@ function viewHome() {
   </div>
   <div class="sec-h"><h2>أهداف الدرس</h2></div>
   <div class="goals"><ol>
-    <li>أستطيع أن أشرح مصطلح التمثيل الضوئي. <small>(المحطة ١)</small></li>
-    <li>أستطيع أن أذكر ما تحتاج إليه النباتات في التمثيل الضوئي. <small>(المحطة ٢)</small></li>
-    <li>أستطيع أن أذكر ما تصنعه النباتات خلال التمثيل الضوئي. <small>(المحطة ٣)</small></li>
+    ${LESSON.goals.map((g, k) => `<li>${g} <small>(المحطة ${ar(k + 1)})</small></li>`).join('')}
   </ol></div>
   <div class="sec-h"><h2>📌 ملخص الدرس</h2><small>يُفتح مع كل محطة تكملها</small></div>
   ${STATIONS.map(S0 => st(S0.id).done ? sumCard(S0) : `<div class="sumcard locked">🔒 أكمل <b>المحطة ${ar(S0.n)}: ${S0.title}</b> لتظهر خلاصتها هنا.</div>`).join('')}
@@ -890,7 +906,7 @@ function layerHTML(S0, L) {
 }
 function mountLayer(S0, L) {
   const s = st(S0.id);
-  if (L === 0) S0.slides.forEach((sl, k) => { if (sl.inter) INTER[sl.inter]($('#inter-' + k), !!s.chk[k], () => { s.chk[k] = true; save(); }); });
+  if (L === 0) S0.slides.forEach((sl, k) => { if (sl.inter) INTER[sl.inter]($('#inter-' + k), !!s.chk[k], () => { s.chk[k] = true; save(); }, sl); });
   if (L === 2) S0.labs.forEach(id => { LAB[id]($('#lab-' + id), () => showObs(id)); if (labSt(id).done) showObs(id); });
 }
 function checkHTML(sid, k, c) {
@@ -1077,7 +1093,7 @@ function viewFinalResult(pct, score, N, per) {
   app.innerHTML = titleCard('📝', 'الاختبار النهائي', 'النتيجة', null) + `
   <div class="panel">
     ${ring(pct, b.c)}
-    <h2 class="res-h">${pass ? '🏅 أتممت درس «التمثيل الضوئي»' : b.t}</h2>
+    <h2 class="res-h">${pass ? `🏅 أتممت درس «${LESSON.title}»` : b.t}</h2>
     <p class="res-sub">درجتك: <b>${fmtN(score)} من ${ar(N)}</b></p>
     <h3 style="font-size:16px">درجتك في كل محطة:</h3>
     ${STATIONS.map(S0 => { const [c, t] = per[S0.id], p = Math.round(c / t * 100), bb = band(p); return `<div class="perrow"><span class="nm">${S0.icon} المحطة ${ar(S0.n)}</span>${bar(p, bb.c)}<b>${fmtN(c)}/${ar(t)}</b>${c < t ? `<button class="linkbtn" data-act="open" data-id="${S0.id}">راجعها</button>` : ''}</div>`; }).join('')}
@@ -1271,15 +1287,7 @@ const LAB = {
    الألعاب
    ========================================================= */
 const starsOf = n => '⭐'.repeat(n) + '☆'.repeat(3 - n);
-const GLIST = [
-  { id: 'quick', ico: '⏱️', t: 'تحدّي الدقيقة', s: 'صواب أم خطأ؟ في ٦٠ ثانية' },
-  { id: 'bubbles', ico: '🫧', t: 'صيد الفقاعات', s: 'اصطد الكلمات الصحيحة قبل أن تطير' },
-  { id: 'chains', ico: '🔗', t: 'رتّب السلسلة', s: 'سلاسل غذائية من بيئة عُمان' },
-  { id: 'equation', ico: '🧩', t: 'ابنِ المعادلة', s: 'ضع كل قطعة في مكانها' },
-  { id: 'who', ico: '🕵️', t: 'من أنا؟', s: 'خمّن من أقل عدد من الأدلة' },
-  { id: 'sort', ico: '🧺', t: 'يحتاج إليه أم يصنعه؟', s: 'صنّف البطاقات في سلّتين' },
-  { id: 'memory', ico: '🃏', t: 'بطاقات الذاكرة', s: 'طابق كل مصطلح بمعناه' }
-];
+const GLIST = GAMES;
 const GSK = { quick: 'quickStars' };
 const gStar = id => games()[GSK[id] || id] || 0;
 const gTotal = () => GLIST.reduce((t, g) => t + gStar(g.id), 0), GMAX = GLIST.length * 3;
@@ -1332,10 +1340,11 @@ const GAME = {
   },
   sort() {
     let picked = null, err = 0, left = SORT.length;
-    app.innerHTML = gameHead('يحتاج إليه أم يصنعه؟ 🧺') + `<div class="panel">
+    const [K1, K2] = SORT_CFG.keys;
+    app.innerHTML = gameHead(SORT_CFG.t) + `<div class="panel">
       <p>اضغط على بطاقة، ثم على السلة المناسبة.</p><div class="gstats"><span>أخطاء<b id="ser">٠</b></span><span>متبقٍّ<b id="sle">${ar(left)}</b></span></div>
       <div class="pool">${shuffle(SORT.map((x, k) => [x, k])).map(([x, k]) => `<button class="word" data-k="${k}">${x.t}</button>`).join('')}</div>
-      <div class="buckets"><div class="bucket" data-b="need"><h4>📥 يحتاج إليه النبات</h4><div class="pool"></div></div><div class="bucket" data-b="make"><h4>📤 يصنعه النبات</h4><div class="pool"></div></div></div>
+      <div class="buckets"><div class="bucket" data-b="${K1}"><h4>${SORT_CFG.long[0]}</h4><div class="pool"></div></div><div class="bucket" data-b="${K2}"><h4>${SORT_CFG.long[1]}</h4><div class="pool"></div></div></div>
       <div id="swin"></div></div>`;
     const root = $('.panel', app);
     root.addEventListener('click', e => {
@@ -1345,7 +1354,7 @@ const GAME = {
         $$('.bucket', root).forEach(b => b.classList.remove('hl'));
         if (SORT[+picked.dataset.k].b === bk.dataset.b) {
           picked.classList.remove('picked'); picked.classList.add('ok'); $('.pool', bk).appendChild(picked); left--; $('#sle').textContent = ar(left);
-          if (!left) { const s = err === 0 ? 3 : err <= 2 ? 2 : 1; bestStars('sort', s); $('#swin').innerHTML = `<div class="why good center"><div class="stars">${starsOf(s)}</div>أحسنت! يحتاج النبات إلى الماء وثاني أكسيد الكربون وطاقة الضوء، ويصنع الغذاء والأكسجين.<br><button class="btn sec" data-act="game" data-id="sort" style="margin-top:8px">العب مرة أخرى</button></div>`; }
+          if (!left) { const s = err === 0 ? 3 : err <= 2 ? 2 : 1; bestStars('sort', s); $('#swin').innerHTML = `<div class="why good center"><div class="stars">${starsOf(s)}</div>${SORT_CFG.win}<br><button class="btn sec" data-act="game" data-id="sort" style="margin-top:8px">العب مرة أخرى</button></div>`; }
         } else { err++; $('#ser').textContent = ar(err); toast('ليست هذه السلة، فكّر مرة أخرى 🤔'); picked.classList.remove('picked'); }
         picked = null;
       }
@@ -1376,8 +1385,8 @@ const winBox = (stars, msg, id) => `<div class="why good center" style="margin-t
 Object.assign(GAME, {
   chains() {
     const rounds = shuffle(CHAINS); let r = 0, score = 0, pk = [];
-    app.innerHTML = gameHead('رتّب السلسلة 🔗') + `<div class="panel"><div class="gstats"><span>الجولة<b id="cr">١/${ar(rounds.length)}</b></span><span>صحيحة<b id="cs">٠</b></span></div>
-      <p>رتّب الكائنات من بداية السلسلة (يمين) إلى نهايتها: من يُؤكل أولًا؟</p><div id="cbox"></div><div id="cfb"></div></div>`;
+    app.innerHTML = gameHead(CHAINS_CFG.t) + `<div class="panel"><div class="gstats"><span>الجولة<b id="cr">١/${ar(rounds.length)}</b></span><span>صحيحة<b id="cs">٠</b></span></div>
+      <p>${CHAINS_CFG.intro}</p><div id="cbox"></div><div id="cfb"></div></div>`;
     const draw = () => {
       const ch = rounds[r], sh = draw.sh;
       $('#cbox').innerHTML = `<div class="oslots">${ch.map((_, k) => `<button class="oslot${pk[k] != null ? ' on' : ''}" data-k="${k}" data-u="1"><small>${ar(k + 1)}</small>${pk[k] != null ? ch[pk[k]] : ''}</button>${k < ch.length - 1 ? '<span class="oar">←</span>' : ''}`).join('')}</div>
@@ -1420,12 +1429,12 @@ Object.assign(GAME, {
     draw();
   },
   bubbles() {
-    const R = [{ k: 'make', t: 'اصطد ما يصنعه النبات 🫧' }, { k: 'need', t: 'اصطد ما يحتاج إليه النبات 💧' }];
+    const R = BUBBLE_CFG.rounds;
     let ri = 0, sc = 0, left = 20, on = false;
     app.innerHTML = gameHead('صيد الفقاعات 🫧') + `<div class="panel"><div class="gstats"><span>النقاط<b id="bsc">٠</b></span><span>الوقت<b id="bt">٢٠</b></span></div>
       <div class="bmission" id="bm">جولتان: في كل جولة ٢٠ ثانية. الكلمة الخاطئة تُنقص نقطة!</div>
       <div class="btank" id="btank"></div><button class="btn full warm" id="bgo">ابدأ</button><div id="bfb"></div></div>`;
-    const tank = $('#btank'), all = [...BUBBLE_WORDS.need.map(w => [w, 'need']), ...BUBBLE_WORDS.make.map(w => [w, 'make']), ...BUBBLE_WORDS.none.map(w => [w, 'none'])];
+    const tank = $('#btank'), all = Object.keys(BUBBLE_WORDS).flatMap(k => BUBBLE_WORDS[k].map(w => [w, k]));
     const spawn = () => {
       if (!on) return; const [w, k] = all[Math.floor(Math.random() * all.length)];
       const b = document.createElement('button'); b.className = 'bub2'; b.textContent = w; b.dataset.k = k;
@@ -1442,7 +1451,7 @@ Object.assign(GAME, {
       timers.push(setInterval(spawn, 750));
       const tk = setInterval(() => { left--; if ($('#bt')) $('#bt').textContent = ar(left); if (left <= 0) { clearTimers(); on = false; tank.innerHTML = ''; ri++; if (ri < R.length) { $('#bm').textContent = 'استعد للجولة التالية…'; timers.push(setTimeout(round, 1300)); } else end(); } }, 1000); timers.push(tk);
     };
-    const end = () => { const s = sc >= 16 ? 3 : sc >= 9 ? 2 : sc >= 1 ? 1 : 0; bestStars('bubbles', s); $('#bm').textContent = 'انتهت اللعبة!'; $('#bfb').innerHTML = winBox(s, `نقاطك: ${ar(sc)}. تذكّر: يحتاج النبات إلى الماء وثاني أكسيد الكربون والضوء، ويصنع الغذاء والأكسجين.`, 'bubbles'); };
+    const end = () => { const s = sc >= 16 ? 3 : sc >= 9 ? 2 : sc >= 1 ? 1 : 0; bestStars('bubbles', s); $('#bm').textContent = 'انتهت اللعبة!'; $('#bfb').innerHTML = winBox(s, `نقاطك: ${ar(sc)}. ${BUBBLE_CFG.end}`, 'bubbles'); };
     $('#bgo').onclick = () => { $('#bgo').hidden = true; sc = 0; ri = 0; $('#bsc').textContent = '٠'; round(); };
   },
   who() {
@@ -1497,11 +1506,11 @@ const INTER = {
   sort(root, done, finish) {
     const items = done ? SORT : shuffle(SORT);
     const ok = new Set(done ? SORT.map((_, k) => k) : []);
-    root.innerHTML = items.map(x => { const k = SORT.indexOf(x); return `<div class="sortrow${ok.has(k) ? ' ok' : ''}" data-k="${k}"><span>${x.t}</span><span class="b2">${ok.has(k) ? (x.b === 'need' ? '📥 يحتاج إليه' : '📤 يصنعه') : '<button data-b="need">📥 يحتاج</button><button data-b="make">📤 يصنع</button>'}</span></div>`; }).join('');
+    root.innerHTML = items.map(x => { const k = SORT.indexOf(x); return `<div class="sortrow${ok.has(k) ? ' ok' : ''}" data-k="${k}"><span>${x.t}</span><span class="b2">${ok.has(k) ? SORT_CFG.done[SORT_CFG.keys.indexOf(x.b)] : `<button data-b="${SORT_CFG.keys[0]}">${SORT_CFG.short[0]}</button><button data-b="${SORT_CFG.keys[1]}">${SORT_CFG.short[1]}</button>`}</span></div>`; }).join('');
     root.style.textAlign = 'start';
     root.addEventListener('click', e => {
       const b = e.target.closest('[data-b]'); if (!b) return; const row = b.closest('.sortrow'), k = +row.dataset.k;
-      if (SORT[k].b === b.dataset.b) { row.classList.add('ok'); $('.b2', row).innerHTML = b.dataset.b === 'need' ? '📥 يحتاج إليه' : '📤 يصنعه'; ok.add(k); if (ok.size === SORT.length) { toast('ممتاز! صنّفت كل البطاقات'); finish(); } }
+      if (SORT[k].b === b.dataset.b) { row.classList.add('ok'); $('.b2', row).innerHTML = SORT_CFG.done[SORT_CFG.keys.indexOf(b.dataset.b)]; ok.add(k); if (ok.size === SORT.length) { toast('ممتاز! صنّفت كل البطاقات'); finish(); } }
       else { row.classList.remove('no'); void row.offsetWidth; row.classList.add('no'); toast('فكّر مرة أخرى 🤔'); }
     });
   }
@@ -1590,6 +1599,150 @@ const FIG = {
     <tr><td>🌑 في الظلام</td><td>٢٫٠</td><td>١٫٩</td><td>١٫٧</td><td>١٫٥</td></tr></table><div class="cap">كتلة البادرات بالغرام (غ)</div>`
 };
 function chainRow(list) { return `<div class="chain">${list.map((o, k) => `${k ? '<span class="ar">←</span>' : ''}<span class="org"><span>${o[0]}</span><small>${o[1]}</small></span>`).join('')}</div>`; }
+
+/* =========================================================
+   إضافات الدرس ١-٢ (أوراق النبات): رسوم وأنشطة ومختبرات
+   ========================================================= */
+const XP = { wax: [40, 13], up: [70, 25], pal: [100, 70], spo: [110, 158], vein: [160, 128], low: [120, 178], sto: [222, 178] };
+const XN = { wax: 'الطبقة الشمعية', up: 'البشرة العليا', pal: 'النسيج الوسطي العمادي', spo: 'النسيج الوسطي الإسفنجي', vein: 'عرق الورقة', low: 'البشرة السفلى', sto: 'الثغر' };
+const XORD = ['wax', 'up', 'pal', 'spo', 'vein', 'low', 'sto'];
+const XLY = { wax: 10, up: 30, pal: 68, spo: 152, vein: 120, low: 180, sto: 204 };
+function xsecSVG(o = {}) {
+  let g = '';
+  g += '<rect x="0" y="10" width="226" height="6" fill="#F2CF5B"/>';
+  for (let x = 2; x < 222; x += 18) g += `<rect x="${x}" y="16" width="16" height="16" rx="3" fill="#EAF5E2" stroke="#6A8F5A"/>`;
+  for (let x = 3; x < 222; x += 14) { g += `<rect x="${x}" y="34" width="12" height="66" rx="5" fill="#8FD18F" stroke="#3E7E3E"/>`; for (let y = 42; y < 96; y += 12) g += `<circle cx="${x + 6}" cy="${y}" r="2.6" fill="#2E7D32"/>`; }
+  const sp = [[14, 112], [36, 122], [14, 140], [40, 150], [18, 160], [62, 112], [66, 136], [88, 118], [86, 156], [110, 126], [112, 152], [196, 112], [214, 130], [192, 150], [218, 158], [132, 162], [62, 162]];
+  sp.forEach(([x, y], k) => { g += `<circle cx="${x}" cy="${y}" r="${8 + (k % 3)}" fill="#BFE6B4" stroke="#4E8C4E"/><circle cx="${x + 2}" cy="${y - 1}" r="2" fill="#2E7D32"/>`; });
+  g += '<circle cx="160" cy="128" r="20" fill="#F4E4B4" stroke="#A0814A" stroke-width="1.5"/>';
+  [[154, 122], [166, 122], [160, 132], [152, 134], [168, 134]].forEach(([x, y]) => g += `<circle cx="${x}" cy="${y}" r="4" fill="#E2C47E" stroke="#A0814A"/>`);
+  for (let x = 2; x < 222; x += 18) { if (x > 200 && x < 236) continue; g += `<rect x="${x}" y="170" width="16" height="15" rx="3" fill="#EAF5E2" stroke="#6A8F5A"/>`; }
+  g += '<ellipse cx="216" cy="177" rx="5" ry="8" fill="#8FD18F" stroke="#3E7E3E"/><ellipse cx="228" cy="177" rx="5" ry="8" fill="#8FD18F" stroke="#3E7E3E"/>';
+  g += '<rect x="0" y="185" width="226" height="3" fill="#F2CF5B"/>';
+  if (o.route) g += `<g stroke-width="3" fill="none" stroke-linecap="round">
+    <path d="M60 -2 V60" stroke="#E0A400"/><path d="M54 52 L60 62 L66 52" stroke="#E0A400"/>
+    <path d="M222 214 V182 Q222 160 200 150 L140 100" stroke="#7A5BB0" stroke-dasharray="5 4"/><path d="M146 96 L138 99 L142 107" stroke="#7A5BB0"/>
+    <path d="M160 128 Q140 110 120 90" stroke="#2A74B5"/><path d="M126 88 L118 88 L120 96" stroke="#2A74B5"/></g>`;
+  let lab = '';
+  if (o.mode) XORD.forEach((k, i) => {
+    if ((o.only || XORD).indexOf(k) < 0) return;
+    const [px, py] = XP[k], ly = XLY[k], tag = o.mode === 'names' ? XN[k] : o.mode === 'nums' ? ar(i + 1) : 'أبجدهوز'[i] === 'ه' ? 'هـ' : 'أبجدهوز'[i];
+    lab += `<line x1="${px}" y1="${py}" x2="238" y2="${ly}" stroke="#333" stroke-width="1"/><circle cx="${px}" cy="${py}" r="2.5" fill="#333"/>`
+      + (o.mode === 'names' ? `<text x="242" y="${ly + 4}" font-size="11" fill="var(--ink)">${tag}</text>` : `<circle cx="250" cy="${ly}" r="10" fill="#fff" stroke="#333"/><text x="250" y="${ly + 5}" text-anchor="middle" font-size="13" font-weight="700" fill="#222">${tag}</text>`);
+  });
+  return `<svg viewBox="0 0 ${o.mode === 'names' ? 378 : 270} 215" width="${o.mode === 'names' ? 360 : 300}" direction="ltr" font-family="sans-serif" role="img" aria-label="مقطع عرضي في ورقة نبات">${g}${lab}</svg>`;
+}
+function leafSVG(nums) {
+  return `<svg viewBox="0 0 300 190" width="290" direction="ltr" font-family="sans-serif" role="img" aria-label="ورقة نبات من الخارج">
+    <path d="M40 150 Q20 40 150 22 Q262 30 262 96 Q240 168 120 172 Q70 172 40 150Z" fill="#5DBB63" stroke="#2E7D32" stroke-width="2"/>
+    <path d="M14 182 L40 150" stroke="#6B8E23" stroke-width="5" stroke-linecap="round"/>
+    <path d="M40 150 Q150 110 250 70" stroke="#E8F5C8" stroke-width="3.5" fill="none"/>
+    ${[[90, 128, 70, 70], [130, 112, 120, 50], [170, 98, 176, 46], [110, 120, 130, 160], [160, 102, 190, 150], [205, 86, 228, 126]].map(([a, b, c, d]) => `<path d="M${a} ${b} Q${(a + c) / 2 + 6} ${(b + d) / 2} ${c} ${d}" stroke="#E8F5C8" stroke-width="1.6" fill="none"/>`).join('')}
+    ${nums ? [[150, 60, '١'], [196, 84, '٢'], [24, 168, '٣'], [262, 110, '٤']].map(([x, y, t]) => `<circle cx="${x}" cy="${y}" r="11" fill="#fff" stroke="#333"/><text x="${x}" y="${y + 5}" text-anchor="middle" font-size="13" font-weight="700" fill="#222">${t}</text>`).join('') : ''}
+  </svg>`;
+}
+function groupedBars(groups, max, step, lstep, unit, legend) {
+  const X1 = 262, Y0 = 200, H = 170, W = 236, py = v => Y0 - v / max * H;
+  let g = ''; for (let v = 0; v <= max; v += step) g += `<line x1="${X1 - W}" x2="${X1}" y1="${py(v)}" y2="${py(v)}" stroke="var(--line)" stroke-width="${v % lstep ? 0.6 : 1.2}"/>` + (v % lstep ? '' : `<text x="${X1 + 6}" y="${py(v) + 4}" font-size="11" fill="var(--ink)">${ar(v)}</text>`);
+  const gw = W / groups.length, cols = ['var(--leaf)', 'var(--sun)'];
+  groups.forEach(([name, vals], i) => {
+    const cx = X1 - gw * (i + 0.5);
+    vals.forEach((v, j) => { const bw = 22, x = cx + (vals.length === 1 ? -bw / 2 : j === 0 ? 2 : -bw - 2); g += `<rect x="${x}" y="${py(v)}" width="${bw}" height="${Math.max(Y0 - py(v), 0.01)}" fill="${cols[j]}"/>`; });
+    g += `<text x="${cx}" y="${Y0 + 17}" text-anchor="middle" font-size="12" fill="var(--ink)">${name}</text>`;
+  });
+  const lg = legend ? `<div class="cap">${legend.map((l, j) => `<span style="display:inline-block;width:12px;height:12px;background:${cols[j]};border-radius:3px;vertical-align:middle"></span> ${l}`).join(' &nbsp; ')}</div>` : '';
+  return `<svg viewBox="0 0 300 228" width="320" direction="ltr" font-family="sans-serif">${g}<line x1="${X1 - W}" y1="${Y0}" x2="${X1}" y2="${Y0}" stroke="var(--ink)" stroke-width="2"/><line x1="${X1}" y1="${Y0}" x2="${X1}" y2="${Y0 - H - 4}" stroke="var(--ink)" stroke-width="2"/></svg><div class="cap">${unit}</div>${lg}`;
+}
+Object.assign(ART, {
+  leafOut: () => leafSVG(false) + '<div class="cap">ورقة خضراء رقيقة واسعة، فيها عروق، ومتصلة بالنبات بساق الورقة</div>',
+  chloro: () => chainRow([['☀️', 'طاقة الضوء'], ['🟢', 'يمتصّها الكلوروفيل'], ['🍯', 'تصنع الورقة الغذاء']]),
+  thinThick: () => `<div style="display:flex;gap:18px;justify-content:center;align-items:flex-end">${[2, 6].map(n => `<div><svg viewBox="0 0 70 ${n * 14 + 30}" width="70"><path d="M35 0 V22" stroke="#E0A400" stroke-width="3"/>${Array.from({ length: n }, (_, i) => `<rect x="5" y="${24 + i * 14}" width="60" height="12" rx="4" fill="${i < 3 ? '#8FD18F' : '#C9D6C3'}" stroke="#3E7E3E"/>`).join('')}</svg><div class="cap">${n === 2 ? 'ورقة رقيقة: الضوء يصل لكل الخلايا' : 'ورقة سميكة: خلايا لا يصلها ضوء'}</div></div>`).join('')}</div>`,
+  xsecNames: () => xsecSVG({ mode: 'names' }) + '<div class="cap">مقطع عرضي في ورقة نبات (رسم توضيحي)</div>',
+  xsec: () => xsecSVG({}) + '<div class="cap">مقطع عرضي: الطبقات من الأعلى إلى الأسفل</div>',
+  route: () => xsecSVG({ route: true }) + '<div class="cap"><span style="color:#E0A400">━ الضوء</span> &nbsp; <span style="color:#2A74B5">━ الماء من العرق</span> &nbsp; <span style="color:#7A5BB0">┅ ثاني أكسيد الكربون من الثغر</span></div>',
+  dip: () => `<svg viewBox="0 0 220 150" width="220"><rect x="20" y="30" width="180" height="110" rx="10" fill="var(--water-soft)" stroke="var(--water)" stroke-width="3"/><path d="M50 85 Q110 60 170 85 Q110 100 50 85Z" fill="#5DBB63" stroke="#2E7D32"/>${[[90, 70], [130, 72]].map(([x, y]) => `<circle class="bub" cx="${x}" cy="${y}" r="3" fill="#fff" stroke="var(--water)"/>`).join('')}${[[70, 96], [85, 99], [100, 101], [115, 101], [130, 99], [145, 97], [160, 93], [92, 108], [122, 108]].map(([x, y], k) => `<circle class="bub" cx="${x}" cy="${y}" r="3" fill="#fff" stroke="var(--water)" style="animation-delay:${k * 0.25}s"/>`).join('')}</svg><div class="cap">ورقة في ماء دافئ: فقاعات أكثر على السطح السفلي</div>`
+});
+Object.assign(FIG, {
+  xsecNum: () => xsecSVG({ mode: 'nums' }),
+  xsecLet: () => xsecSVG({ mode: 'letters' }),
+  leafNum: () => leafSVG(true),
+  dip: () => ART.dip().replace('<div class="cap">ورقة في ماء دافئ: فقاعات أكثر على السطح السفلي</div>', '<div class="cap">ورقة خضراء في ماء دافئ</div>'),
+  stomaGraph: () => groupedBars([['فاصوليا', [40, 240]], ['ذرة', [40, 80]], ['زنبق الماء', [440, 0]]], 480, 40, 80, 'عدد الثغور في كل مليمتر مربع (قيم تقريبية)', ['السطح العلوي', 'السطح السفلي']),
+  foodGraph: () => groupedBars([['العمادي', [24]], ['الإسفنجي', [8]], ['البشرة العليا', [0]]], 28, 2, 4, 'كمية الغذاء التي تصنعها كل طبقة في الساعة (وحدات)'),
+  waxTable: () => `<table class="ftab"><tr><th>الساعة</th><th>١</th><th>٢</th><th>٣</th></tr><tr><td>ورقة سليمة</td><td>١</td><td>٢</td><td>٣</td></tr><tr><td>ورقة أُزيلت طبقتها الشمعية</td><td>٤</td><td>٨</td><td>١٢</td></tr></table><div class="cap">كمية الماء التي فقدتها الورقة (غرام)</div>`
+});
+Object.assign(INTER, {
+  leafHot(root, done, finish) {
+    const H = [
+      { x: 50, y: 32, c: 'var(--leaf)', h: '🟢 اللون الأخضر', p: 'تبدو الورقة خضراء لأن خلاياها فيها <b>الكلوروفيل</b> الذي يمتصّ الطاقة من الضوء.' },
+      { x: 33, y: 46, c: 'var(--water)', h: '💧 العروق', p: 'تحمل <b>الماء</b> إلى خلايا الورقة، وتدعم الورقة فتبقى مسطّحة.' },
+      { x: 92, y: 88, c: 'var(--sun)', h: '🌿 ساق الورقة', p: 'تربط الورقة بالنبات.' },
+      { x: 10, y: 58, c: 'var(--air)', h: '📏 سُمك الورقة', p: 'معظم الأوراق <b>رقيقة جدًا</b>، فيصل الضوء إلى كل خلاياها.' }
+    ];
+    const seen = new Set(done ? [0, 1, 2, 3] : []);
+    root.innerHTML = `<div class="hotwrap">${leafSVG(false)}${H.map((h, k) => `<button class="hot${done ? ' seen' : ''}" style="right:${h.x}%;top:${h.y}%;background:${h.c}" data-k="${k}">${ar(k + 1)}</button>`).join('')}</div><div class="hotinfo" id="lhinfo">${done ? 'اكتشفت الأجزاء الأربعة ✓' : 'اضغط على النقاط المرقّمة (٤ نقاط).'}</div>`;
+    $$('.hot', root).forEach(b => b.onclick = () => { const k = +b.dataset.k, h = H[k]; b.classList.add('seen'); seen.add(k); $('#lhinfo').innerHTML = `<b>${h.h}</b><br>${h.p}<br><small>(${ar(seen.size)} من ٤)</small>`; $('#lhinfo').style.borderColor = h.c; if (seen.size === 4) finish(); });
+  },
+  xsecHot(root, done, finish) {
+    const F = { wax: 'تمنع خلايا الورقة من الجفاف.', up: 'تحمي الخلايا داخل الورقة، وهي شفّافة يمرّ منها الضوء.', pal: 'خلايا طويلة متراصّة فيها بلاستيدات خضراء كثيرة، تقوم بأغلب عمل التمثيل الضوئي.', spo: 'فيها فراغات هوائية كثيرة، وتقوم بقدر قليل من التمثيل الضوئي.', vein: 'يحمل الماء إلى خلايا الورقة.', low: 'تحمي الخلايا داخل الورقة، وفيها الثغور.', sto: 'ثقب صغير جدًا في البشرة السفلى، يدخل منه ثاني أكسيد الكربون إلى الورقة.' };
+    const seen = new Set(done ? XORD : []);
+    root.innerHTML = `<div class="hotwrap" style="max-width:300px">${xsecSVG({})}${XORD.map(k => `<button class="hot sm${done ? ' seen' : ''}" style="left:${XP[k][0] / 270 * 100}%;top:${XP[k][1] / 215 * 100}%;transform:translate(-50%,-50%);background:var(--sun)" data-k="${k}"></button>`).join('')}</div><div class="hotinfo" id="xhinfo">${done ? 'تعرّفت على الأجزاء السبعة ✓' : 'اضغط على النقاط في المقطع (٧ نقاط).'}</div>`;
+    $$('.hot', root).forEach(b => b.onclick = () => { const k = b.dataset.k; b.classList.add('seen'); seen.add(k); $('#xhinfo').innerHTML = `<b>${XN[k]}</b><br>${F[k]}<br><small>(${ar(seen.size)} من ٧)</small>`; if (seen.size === 7) finish(); });
+  },
+  rows(root, done, finish, sl) {
+    const ok = new Set(done ? sl.rows.map((_, i) => i) : []), pool = shuffle(sl.pool);
+    const draw = () => { root.style.textAlign = 'start'; root.innerHTML = sl.rows.map((r, i) => `<div class="qrow${ok.has(i) ? ' okrow' : ''}"><div class="qrow-t">${r.t}</div>${ok.has(i) ? `<div class="why good" style="margin:0">✓ ${r.a}</div>` : `<div class="pool">${pool.map((p, k) => `<button class="word" data-r="${i}" data-k="${k}">${p}</button>`).join('')}</div>`}</div>`).join(''); };
+    draw();
+    root.addEventListener('click', e => { const b = e.target.closest('[data-r]'); if (!b) return; const i = +b.dataset.r; if (pool[+b.dataset.k] === sl.rows[i].a) { ok.add(i); draw(); if (ok.size === sl.rows.length) { toast('ممتاز! ✓'); finish(); } } else { b.classList.add('wrongw'); toast('فكّر مرة أخرى 🤔'); } });
+  }
+});
+Object.assign(LAB, {
+  thinLab(root, ready) {
+    let n = 6, tried = new Set();
+    root.innerHTML = `<p>غيّر سُمك الورقة (عدد طبقات الخلايا)، وراقب كم خلية يصلها ضوء كافٍ لتصنع الغذاء.</p>
+      <div class="art" id="tl"></div><input type="range" min="1" max="8" value="6" id="tlr" style="width:100%"><div id="tlm" class="center"></div>
+      <ul class="tasks"><li id="tl1">اجعل الورقة سميكة (٧ طبقات أو أكثر)</li><li id="tl2">اجعل الورقة رقيقة (طبقتان أو أقل)</li></ul>`;
+    const draw = () => {
+      let light = 100, cells = '', ok = 0;
+      for (let i = 0; i < n; i++) { const on = light >= 25; if (on) ok++; cells += `<rect x="40" y="${30 + i * 18}" width="160" height="15" rx="5" fill="${on ? '#8FD18F' : '#C9D6C3'}" stroke="#3E7E3E"/><text x="210" y="${42 + i * 18}" font-size="11" fill="var(--muted)">${ar(Math.round(light))}٪</text>`; light *= 0.55; }
+      $('#tl').innerHTML = `<svg viewBox="0 0 240 ${n * 18 + 40}" width="240" direction="ltr"><path d="M120 0 V26" stroke="#E0A400" stroke-width="4"/><text x="128" y="16" font-size="11" fill="#a87405">ضوء</text>${cells}</svg>`;
+      $('#tlm').innerHTML = `خلايا تصلها طاقة كافية: <b>${ar(ok)} من ${ar(n)}</b>`;
+      if (n >= 7) { tried.add(1); $('#tl1').classList.add('done'); } if (n <= 2) { tried.add(2); $('#tl2').classList.add('done'); }
+      if (tried.size === 2) ready();
+    };
+    $('#tlr').addEventListener('input', e => { n = +e.target.value; draw(); }); draw();
+  },
+  xsecLab(root, ready) {
+    const ask = shuffle(XORD); let i = 0, first = 0, miss = false;
+    root.innerHTML = `<p>سيطلب منك المختبر جزءًا، فاضغط على مكانه الصحيح في المقطع.</p><div class="gstats"><span>المطلوب<b id="xq" style="font-size:16px"></b></span><span>صحيحة من أول مرة<b id="xs">٠</b></span></div>
+      <div class="hotwrap" style="max-width:300px">${xsecSVG({})}${XORD.map(k => `<button class="hot sm" style="left:${XP[k][0] / 270 * 100}%;top:${XP[k][1] / 215 * 100}%;transform:translate(-50%,-50%);background:var(--blue);animation:none" data-k="${k}"></button>`).join('')}</div><div id="xfb"></div>`;
+    const show = () => { $('#xq').textContent = XN[ask[i]]; };
+    $$('.hot', root).forEach(b => b.onclick = () => {
+      if (i >= ask.length) return;
+      if (b.dataset.k === ask[i]) { if (!miss) first++; $('#xs').textContent = ar(first); b.classList.add('seen'); b.style.background = 'var(--good)'; i++; miss = false; $('#xfb').innerHTML = ''; if (i < ask.length) show(); else { $('#xq').textContent = '✓'; $('#xfb').innerHTML = `<div class="why good">أنهيت المختبر: ${ar(first)} من ${ar(ask.length)} صحيحة من أول مرة.</div>`; ready(); } }
+      else { miss = true; $('#xfb').innerHTML = `<div class="why bad">هذا «${XN[b.dataset.k]}». ابحث عن «${XN[ask[i]]}».</div>`; }
+    });
+    show();
+  },
+  stomaLab(root, ready) {
+    let pred = null;
+    root.innerHTML = `<p>توقّع أولًا: إذا غمسنا ورقة خضراء في ماء دافئ، على أيّ سطح تظهر فقاعات أكثر؟</p>
+      <div class="opts tf"><button class="opt" data-p="up">السطح العلوي</button><button class="opt" data-p="low">السطح السفلي</button></div>
+      <div class="art"><svg viewBox="0 0 240 170" width="240" id="sl"><rect x="20" y="20" width="200" height="140" rx="10" fill="var(--water-soft)" stroke="var(--water)" stroke-width="3"/><path d="M50 90 Q120 60 190 90 Q120 106 50 90Z" fill="#5DBB63" stroke="#2E7D32"/><text x="120" y="50" text-anchor="middle" font-size="12" fill="var(--muted)">السطح العلوي: <tspan id="slu">٠</tspan></text><text x="120" y="148" text-anchor="middle" font-size="12" fill="var(--muted)">السطح السفلي: <tspan id="sld">٠</tspan></text><g id="slb"></g></svg></div>
+      <button class="btn full blue" id="sgo" disabled>🌡️ اغمس الورقة في الماء الدافئ</button><div id="sfb"></div>`;
+    $$('[data-p]', root).forEach(b => b.onclick = () => { pred = b.dataset.p; $$('[data-p]', root).forEach(x => x.classList.toggle('sel', x === b)); $('#sgo').disabled = false; });
+    $('#sgo').onclick = () => {
+      $('#sgo').disabled = true; let u = 0, d = 0, t = 0; const g = $('#slb');
+      const iv = setInterval(() => {
+        t++; const low = Math.random() < 0.85, x = 60 + Math.random() * 120;
+        if (low) d++; else u++;
+        g.insertAdjacentHTML('beforeend', `<circle cx="${x}" cy="${low ? 100 : 76}" r="3.5" fill="#fff" stroke="var(--water)"><animate attributeName="cy" from="${low ? 100 : 76}" to="${low ? 135 : 30}" dur="1.4s" fill="freeze"/></circle>`);
+        $('#slu').textContent = ar(u); $('#sld').textContent = ar(d);
+        if (t >= 26) { clearInterval(iv); const ok = pred === 'low'; $('#sfb').innerHTML = `<div class="why ${ok ? 'good' : 'bad'}">${ok ? '✓ توقّعك صحيح!' : '✗ توقّعك لم يتحقق.'} ظهرت فقاعات أكثر على <b>السطح السفلي</b> (${ar(d)} مقابل ${ar(u)})، لأن الثغور موجودة في البشرة السفلى.</div>`; $('#sgo').disabled = false; $('#sgo').textContent = '🔁 أعد التجربة'; ready(); }
+      }, 160); timers.push(iv);
+    };
+  }
+});
 
 /* =========================================================
    الأحداث
