@@ -898,7 +898,7 @@ function layerHTML(S0, L) {
   if (L === 0) return h + S0.slides.map((sl, k) => `<div class="lcard">
       <div class="salem small"><img src="${salem(sl.s)}" alt="سالم"><p class="bubble">${sl.say}</p></div>
       <h3>${sl.h}</h3><div class="sbody">${sl.b}</div>
-      ${sl.art ? `<div class="art">${ART[sl.art]()}</div>` : ''}
+      ${sl.art ? `<div class="art">${ART[sl.art]()}</div>` : ''}${sl.fig ? `<div class="art">${FIG[sl.fig]()}</div>` : ''}
       ${sl.inter ? `<div class="art" id="inter-${k}"></div>` : ''}
       ${sl.check ? checkHTML(S0.id, k, sl.check) : ''}</div>`).join('') + '</section>';
   if (L === 1) return h + S0.more.map(m => `<div class="morecard"><h3>${m.h}</h3><div>${m.b}</div></div>`).join('') + '</section>';
@@ -1848,6 +1848,108 @@ Object.assign(LAB, {
       $('#ifb').innerHTML = `<div class="why good">✓ ${MSG[k]}</div>`;
       if (i === ST.length) ready();
     });
+  }
+});
+
+/* =========================================================
+   إضافات الدرس ١-٤ (استقصاء التمثيل الضوئي)
+   ========================================================= */
+const RIGN = [['١', 'أنبوبة اختبار', 142, 96, 22], ['٢', 'غاز متجمّع', 130, 44, 52], ['٣', 'ماء', 196, 100, 88], ['٤', 'قمع مقلوب', 160, 178, 124], ['٥', 'نبات مائي', 118, 196, 160], ['٦', 'حواجز لدعم القمع', 184, 213, 196]];
+function rigSVG(o = {}) {
+  const gas = o.gas == null ? 0.45 : o.gas, gy = 22 + 104 * gas;
+  let g = `<path d="M40 60 V214 Q40 222 48 222 H212 Q220 222 220 214 V60" fill="none" stroke="#5c6b78" stroke-width="3"/><rect x="42" y="78" width="176" height="142" fill="#CFE8F7" opacity=".8"/>`;
+  g += `<path d="M118 130 V24 Q118 14 130 14 Q142 14 142 24 V130" fill="#E9F6FB" stroke="#5c6b78" stroke-width="2.5"/><rect x="120" y="${gy}" width="20" height="${128 - gy}" fill="#CFE8F7"/>`;
+  g += `<path d="M70 212 L124 156 V118 M136 118 V156 L190 212" fill="none" stroke="#5c6b78" stroke-width="2.5"/>`;
+  g += `<rect x="64" y="212" width="14" height="8" fill="#9aa5b1"/><rect x="182" y="212" width="14" height="8" fill="#9aa5b1"/>`;
+  for (let i = 0; i < 9; i++) { const x = 92 + i * 9, h = 18 + (i % 3) * 10; g += `<path d="M${x} 212 Q${x - 5} ${212 - h / 2} ${x + 2} ${212 - h}" stroke="#2E7D32" stroke-width="3" fill="none"/><ellipse cx="${x + 2}" cy="${212 - h}" rx="5" ry="3" fill="#5DBB63"/>`; }
+  if (o.bubbles !== false) [[130, 140], [128, 118], [131, 100], [129, 80]].forEach(([x, y], k) => { if (y > gy) g += `<circle class="bub" cx="${x}" cy="${y}" r="3" fill="#fff" stroke="#5c8fb0" style="animation-delay:${k * 0.4}s"/>`; });
+  let lab = '';
+  if (o.nums || o.names) RIGN.forEach(([n, t, px, py, ly]) => { lab += `<line x1="${px}" y1="${py}" x2="232" y2="${ly}" stroke="#333" stroke-width="1"/>` + (o.names ? `<text x="236" y="${ly + 4}" font-size="11" fill="var(--ink)">${t}</text>` : `<circle cx="244" cy="${ly}" r="10" fill="#fff" stroke="#333"/><text x="244" y="${ly + 5}" text-anchor="middle" font-size="12" font-weight="700" fill="#222">${n}</text>`); });
+  return `<svg viewBox="0 0 ${o.names ? 340 : 262} 230" width="${o.names ? 330 : 260}" direction="ltr" font-family="sans-serif" role="img" aria-label="أدوات تجميع الغاز">${g}${lab}</svg>`;
+}
+function lampScene(d, n) {
+  const lx = 250, tx = 210 - d * 3;
+  let b = ''; for (let i = 0; i < n; i++) b += `<circle class="bub" cx="${tx + 9 + (i % 2) * 4}" cy="${86 - i * 9}" r="2.6" fill="#fff" stroke="#5c8fb0" style="animation-delay:${i * 0.2}s"/>`;
+  return `<svg viewBox="0 0 290 130" width="290" direction="ltr" font-family="sans-serif"><path d="M${lx + 20} 20 V120" stroke="#666" stroke-width="5"/><path d="M${lx + 18} 30 L${lx} 18 Q${lx - 16} 40 ${lx} 62 L${lx + 18} 50Z" fill="#9AA5B1" stroke="#5C6670"/><circle cx="${lx - 2}" cy="40" r="8" fill="#FFE27A"/>
+    <path d="M${lx - 12} 40 L${tx + 22} 60" stroke="#F6C343" stroke-width="${Math.max(1, 8 - d / 6)}" opacity=".5"/>
+    <rect x="${tx}" y="20" width="22" height="98" rx="10" fill="#E9F6FB" stroke="#5c6b78" stroke-width="2"/><path d="M${tx + 11} 114 Q${tx + 4} 100 ${tx + 12} 90" stroke="#2E7D32" stroke-width="3" fill="none"/>${b}
+    <line x1="20" y1="124" x2="270" y2="124" stroke="#999"/><text x="${(tx + lx) / 2}" y="122" text-anchor="middle" font-size="11" fill="var(--muted)">${ar(d)} سم</text></svg>`;
+}
+function lineRTL(series, xs, max, step, lstep, xlab, ylab) {
+  const X1 = 262, Y0 = 196, H = 170, W = 226, px = i => X1 - (i / (xs.length - 1)) * W, py = v => Y0 - v / max * H, cols = ['var(--leaf)', 'var(--sun)'], dash = ['', '6 4'];
+  let g = ''; for (let v = 0; v <= max; v += step) g += `<line x1="${X1 - W}" x2="${X1}" y1="${py(v)}" y2="${py(v)}" stroke="var(--line)" stroke-width="${v % lstep ? 0.6 : 1.2}"/>` + (v % lstep ? '' : `<text x="${X1 + 6}" y="${py(v) + 4}" font-size="11" fill="var(--ink)">${ar(v)}</text>`);
+  xs.forEach((x, i) => g += `<text x="${px(i)}" y="${Y0 + 16}" text-anchor="middle" font-size="11" fill="var(--ink)">${ar(x)}</text>`);
+  series.forEach(([name, vals], j) => { g += `<polyline points="${vals.map((v, i) => px(i) + ',' + py(v)).join(' ')}" fill="none" stroke="${cols[j]}" stroke-width="3" stroke-dasharray="${dash[j]}"/>` + vals.map((v, i) => `<circle cx="${px(i)}" cy="${py(v)}" r="3.5" fill="${cols[j]}"/>`).join(''); });
+  const lg = `<div class="cap">${series.map((s, j) => `<span style="display:inline-block;width:16px;height:4px;background:${cols[j]};vertical-align:middle"></span> ${s[0]}`).join(' &nbsp; ')}</div>`;
+  return `<svg viewBox="0 0 300 220" width="320" direction="ltr" font-family="sans-serif">${g}<line x1="${X1 - W}" y1="${Y0}" x2="${X1}" y2="${Y0}" stroke="var(--ink)" stroke-width="2"/><line x1="${X1}" y1="${Y0}" x2="${X1}" y2="${Y0 - H - 4}" stroke="var(--ink)" stroke-width="2"/></svg><div class="cap">المحور الأفقي: ${xlab} · المحور الرأسي: ${ylab}</div>${lg}`;
+}
+Object.assign(ART, {
+  rigNames: () => rigSVG({ names: true, gas: 0.45 }) + '<div class="cap">أدوات تجميع الغاز الناتج عن التمثيل الضوئي (رسم توضيحي)</div>',
+  splint: () => chainRow([['🪵', 'أشعل قطعة خشبية ثم أطفئها'], ['✨', 'تبقى متوهّجة'], ['🧪', 'ضعها في الغاز'], ['🔥', 'تشتعل إلى لهب = أكسجين']]),
+  bubbles14: () => chainRow([['🌿', 'نبات مائي في الضوء'], ['⚗️', 'يقوم بالتمثيل الضوئي'], ['🫧', 'يتصاعد الأكسجين فقاعات']]),
+  nearFar: () => `<div style="display:grid;gap:6px;justify-content:center">${lampScene(10, 8)}<div class="cap">مصباح قريب = شدّة ضوء عالية = فقاعات كثيرة</div>${lampScene(40, 2)}<div class="cap">مصباح بعيد = شدّة ضوء أقل = فقاعات قليلة</div></div>`,
+  vars14: () => `<table class="ftab"><tr><th>🔧 ما أغيّره</th><td>شدّة الضوء (بُعد المصباح عن النبات)</td></tr><tr><th>📏 ما أقيسه</th><td>عدد الفقاعات في الدقيقة</td></tr><tr><th>🔒 ما أثبّته</th><td>النبات نفسه، ودرجة الحرارة، وكمية الماء، ومدة العدّ</td></tr><tr><th>🔁 التكرار</th><td>٣ مرات لكل مسافة، ثم أحسب المتوسط</td></tr></table>`
+});
+Object.assign(FIG, {
+  rigNum: () => rigSVG({ nums: true, gas: 0.45 }),
+  rigFull: () => rigSVG({ gas: 0.5 }) + '<div class="cap">نبات مائي تحت قمع مقلوب، والغاز يتجمّع في أعلى الأنبوبة</div>',
+  lampPos: () => { const P = [['أ', 60], ['ب', 110], ['ج', 170], ['د', 230]]; return `<svg viewBox="0 0 300 120" width="300" direction="ltr" font-family="sans-serif"><path d="M282 20 V110" stroke="#666" stroke-width="5"/><path d="M280 30 L262 18 Q246 40 262 62 L280 50Z" fill="#9AA5B1" stroke="#5C6670"/><circle cx="260" cy="40" r="8" fill="#FFE27A"/><line x1="20" y1="100" x2="290" y2="100" stroke="#999" stroke-width="2"/>${P.map(([n, x]) => `<rect x="${290 - x - 8}" y="56" width="16" height="40" rx="7" fill="#E9F6FB" stroke="#5c6b78"/><text x="${290 - x}" y="116" text-anchor="middle" font-size="13" font-weight="700" fill="var(--ink)">${n}</text>`).join('')}</svg><div class="cap">أنبوبة فيها نبات مائي توضع في أحد المواقع (أ، ب، ج، د)</div>`; },
+  lampsBars: () => groupedBars([['١', [8]], ['٢', [16]], ['٣', [24]], ['٤', [32]]], 36, 4, 8, 'عدد الفقاعات في الدقيقة مقابل عدد المصابيح (١ إلى ٤)'),
+  twoPlants: () => lineRTL([['النبات (أ)', [0, 6, 12, 18, 24]], ['النبات (ب)', [0, 3, 6, 9, 12]]], [0, 1, 2, 3, 4], 28, 4, 8, 'الزمن (دقيقة)', 'عدد الفقاعات الكلي'),
+  repTable: () => `<table class="ftab"><tr><th>بُعد المصباح</th><th>تكرار ١</th><th>تكرار ٢</th><th>تكرار ٣</th><th>المتوسط</th></tr><tr><td>١٠ سم</td><td>٤٢</td><td>٤٦</td><td>٤٤</td><td>٤٤</td></tr><tr><td>٢٠ سم</td><td>٢٧</td><td>٢٩</td><td>٢٨</td><td>؟</td></tr><tr><td>٣٠ سم</td><td>١٥</td><td>١٨</td><td>١٥</td><td>١٦</td></tr></table><div class="cap">عدد الفقاعات في الدقيقة</div>`,
+  tempTable: () => `<table class="ftab"><tr><th>الأنبوبة</th><th>بُعد المصباح</th><th>درجة الحرارة</th><th>الفقاعات في الدقيقة</th></tr><tr><td>(أ)</td><td>١٠ سم</td><td>٢٥ °س</td><td>٣٠</td></tr><tr><td>(ب)</td><td>٣٠ سم</td><td>٣٥ °س</td><td>٢٨</td></tr></table>`
+});
+Object.assign(LAB, {
+  gasLab(root, ready) {
+    const ST = [['th', '👍 ضع إبهامك على فتحة الأنبوبة تحت الماء'], ['out', '⬇️ أخرج الأنبوبة وفتحتها للأسفل'], ['glow', '✨ أشعل القطعة الخشبية ثم أطفئها لتبقى متوهّجة'], ['lift', '💧 ارفع إبهامك برفق حتى ينسكب الماء'], ['in', '🪵 ضع القطعة المتوهّجة داخل الأنبوبة دون لمس الجوانب']];
+    let i = 0, gas = 0;
+    root.innerHTML = `<p>١) أين ستترك أدوات التجربة؟</p><div class="opts tf"><button class="opt" data-pl="sun">☀️ مكان دافئ ومشمس</button><button class="opt" data-pl="cold">☁️ مكان بارد قليل الضوء</button></div>
+      <div class="art" id="grig">${rigSVG({ gas: 0, bubbles: false })}</div><div id="gmsg"></div><div id="gsteps"></div><div id="gfb"></div>`;
+    $$('[data-pl]', root).forEach(b => b.onclick = () => {
+      $$('[data-pl]', root).forEach(x => x.disabled = true); const sun = b.dataset.pl === 'sun';
+      const iv = setInterval(() => {
+        gas = Math.min(gas + (sun ? 0.1 : 0.05), 0.5); $('#grig').innerHTML = rigSVG({ gas });
+        if (gas >= 0.5) { clearInterval(iv); $('#gmsg').innerHTML = `<div class="why ${sun ? 'good' : 'bad'}">${sun ? '✓ في المكان المشمس تجمّع الغاز سريعًا.' : 'في المكان البارد قليل الضوء تجمّع الغاز ببطء شديد (يحتاج يومًا تقريبًا).'} وصل الغاز إلى نصف الأنبوبة: اختبره الآن.</div>`;
+          $('#gsteps').innerHTML = `<p>٢) اختر الخطوة التالية بالترتيب:</p><div class="grid">${shuffle(ST).map(([k, t]) => `<button class="opt" data-k="${k}">${t}</button>`).join('')}</div>`; }
+      }, 220); timers.push(iv);
+    });
+    root.addEventListener('click', e => {
+      const b = e.target.closest('[data-k]'); if (!b || i >= ST.length) return;
+      if (b.dataset.k !== ST[i][0]) { $('#gfb').innerHTML = '<div class="why bad">ليست هذه الخطوة الآن. فكّر: ماذا يجب أن يحدث قبلها؟</div>'; return; }
+      i++; b.disabled = true; b.classList.add('right');
+      $('#gfb').innerHTML = i < ST.length ? '<div class="why good">✓ صحيح.</div>' : '<div class="why good">🔥 اشتعلت القطعة المتوهّجة إلى لهب! إذن الغاز هو <b>الأكسجين</b>، والنبات قام بالتمثيل الضوئي.</div>';
+      if (i === ST.length) ready();
+    });
+  },
+  lightLab(root, ready) {
+    const BASE = { 10: 44, 20: 28, 30: 16, 40: 8 }, R = { 10: [], 20: [], 30: [], 40: [] }; let d = 10, busy = false;
+    root.innerHTML = `<p>اختر بُعد المصباح، ثم عُدّ الفقاعات لمدة دقيقة (مُسرّعة). كرّر ٣ مرات لكل بُعد.</p>
+      <div class="opts tf" style="grid-template-columns:repeat(4,1fr)">${[10, 20, 30, 40].map(x => `<button class="opt${x === 10 ? ' sel' : ''}" data-d="${x}">${ar(x)} سم</button>`).join('')}</div>
+      <div class="art" id="lsc">${lampScene(10, 0)}</div><button class="btn full warm" id="lgo">⏱️ عُدّ الفقاعات دقيقة</button><div class="center" id="lct"></div>
+      <div id="ltb"></div><ul class="tasks"><li id="lt1">أكمل ٣ تكرارات والمصباح قريب (١٠ أو ٢٠ سم)</li><li id="lt2">أكمل ٣ تكرارات والمصباح بعيد (٣٠ أو ٤٠ سم)</li></ul>`;
+    const tbl = () => { $('#ltb').innerHTML = `<table class="ftab"><tr><th>البُعد</th><th>١</th><th>٢</th><th>٣</th><th>المتوسط</th></tr>${[10, 20, 30, 40].map(x => `<tr><td>${ar(x)} سم</td>${[0, 1, 2].map(k => `<td>${R[x][k] != null ? ar(R[x][k]) : '–'}</td>`).join('')}<td><b>${R[x].length === 3 ? ar(Math.round(R[x].reduce((a, b) => a + b) / 3)) : '–'}</b></td></tr>`).join('')}</table>`;
+      const near = R[10].length === 3 || R[20].length === 3, far = R[30].length === 3 || R[40].length === 3;
+      if (near) $('#lt1').classList.add('done'); if (far) $('#lt2').classList.add('done'); if (near && far) ready(); };
+    tbl();
+    $$('[data-d]', root).forEach(b => b.onclick = () => { if (busy) return; d = +b.dataset.d; $$('[data-d]', root).forEach(x => x.classList.toggle('sel', x === b)); $('#lsc').innerHTML = lampScene(d, 0); $('#lct').textContent = ''; });
+    $('#lgo').onclick = () => {
+      if (busy) return; if (R[d].length >= 3) { toast('أكملت ٣ تكرارات لهذا البُعد. جرّب بُعدًا آخر.'); return; }
+      busy = true; const target = BASE[d] + Math.round(Math.random() * 4 - 2); let c = 0;
+      $('#lsc').innerHTML = lampScene(d, Math.max(1, Math.round(BASE[d] / 5)));
+      const iv = setInterval(() => { c = Math.min(target, c + Math.ceil(target / 10)); $('#lct').innerHTML = `الفقاعات: <b>${ar(c)}</b>`; if (c >= target) { clearInterval(iv); R[d].push(target); busy = false; tbl(); } }, 120); timers.push(iv);
+    };
+  },
+  planLab(root, ready) {
+    const Q = [['ما الذي ستغيّره؟', 'شدّة الضوء (بُعد المصباح)', ['نوع النبات في كل مرة', 'كمية الماء في الأنبوبة']], ['ما الذي ستقيسه؟', 'عدد الفقاعات في الدقيقة', ['طول النبات بالسنتيمتر', 'لون أوراق النبات']], ['ما الذي ستجعله متماثلًا؟', 'النبات ودرجة الحرارة ومدة العدّ', ['لا شيء، أغيّر كل شيء', 'بُعد المصباح فقط']], ['هل ستكرّر التجربة؟', 'نعم، ٣ مرات وأحسب المتوسط', ['لا، مرة واحدة تكفي', 'نعم، لكن بنبات مختلف كل مرة']]];
+    const WHY = ['هذا هو المتغيّر الذي نستقصي أثره.', 'عدد الفقاعات يدلّ على معدّل التمثيل الضوئي.', 'لتكون التجربة عادلة، نغيّر شيئًا واحدًا فقط.', 'التكرار يقلّل أثر الأخطاء، والمتوسط أدقّ.'];
+    let i = 0; const plan = [];
+    root.innerHTML = '<p>أجب عن أسئلة التخطيط، وسيبني المختبر خطتك خطوة خطوة.</p><div id="pq"></div><div id="pfb"></div><div class="art" id="pcard" style="text-align:start"></div>';
+    const draw = () => { $('#pcard').innerHTML = `<b>📋 خطتي: هل يوجد ارتباط بين شدّة الضوء ومعدّل التمثيل الضوئي؟</b><ul class="sum">${plan.map(p => `<li>${p}</li>`).join('') || '<li>…</li>'}</ul>`;
+      $('#pq').innerHTML = i < Q.length ? `<p><b>${Q[i][0]}</b></p><div class="opts">${shuffle([Q[i][1], ...Q[i][2]]).map(o => `<button class="opt" data-o="${o}">${o}</button>`).join('')}</div>` : '<div class="why good">✓ اكتملت خطتك! نفّذها في مختبر «شدّة الضوء والفقاعات».</div>'; };
+    root.addEventListener('click', e => { const b = e.target.closest('[data-o]'); if (!b || i >= Q.length) return;
+      if (b.dataset.o === Q[i][1]) { plan.push(`${Q[i][0].replace('؟', '')}: <b>${Q[i][1]}</b>`); $('#pfb').innerHTML = `<div class="why good">✓ ${WHY[i]}</div>`; i++; draw(); if (i === Q.length) ready(); }
+      else { b.classList.add('wrong'); b.disabled = true; $('#pfb').innerHTML = '<div class="why bad">فكّر مرة أخرى: التجربة العادلة تغيّر شيئًا واحدًا وتقيس أثره.</div>'; } });
+    draw();
   }
 });
 
