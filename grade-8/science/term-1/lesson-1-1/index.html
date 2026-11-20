@@ -2190,6 +2190,78 @@ Object.assign(LAB, {
 });
 
 /* =========================================================
+   أدوات عامة (من الدرس ١-٧): رسوم ومختبرات تُعرَّف من data.js
+   - XART / XFIG / XLAB في data.js دوالّ تأخذ الأدوات H وتعيد كائنًا يُدمج في ART / FIG / LAB.
+   - المختبرات العامة: في LABS ضع kind (steps | match | sim | sort | reveal) و cfg بدل كتابة مختبر في المحرّك.
+   ========================================================= */
+const ftable = (head, rows) => `<table class="ftab">${head ? `<tr>${head.map(h => `<th>${h}</th>`).join('')}</tr>` : ''}${rows.map(r => `<tr>${r.map((c, i) => !head && i === 0 ? `<th>${c}</th>` : `<td>${c}</td>`).join('')}</tr>`).join('')}</table>`;
+const emoArt = (s, cap) => `<div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;font-size:42px;line-height:1.2">${s}</div>${cap ? `<div class="cap">${cap}</div>` : ''}`;
+const cardsArt = list => `<div class="grid">${list.map(([i, t]) => `<div class="opt" style="cursor:default">${i} ${t}</div>`).join('')}</div>`;
+const H = { ar, shuffle, chain: chainRow, bars: groupedBars, line: lineRTL, table: ftable, emo: emoArt, cards: cardsArt, $, $$, toast, timers };
+const GLAB = {
+  steps(root, ready, c) {
+    let i = 0;
+    root.innerHTML = `<p>${c.intro}</p>${c.art ? `<div class="art" id="gsv">${c.art(0)}</div>` : ''}<div class="grid">${shuffle(c.steps.map((s, k) => [k, s[0]])).map(([k, t]) => `<button class="opt" data-gk="${k}">${t}</button>`).join('')}</div><div id="gsf"></div>`;
+    root.addEventListener('click', e => {
+      const b = e.target.closest('[data-gk]'); if (!b || i >= c.steps.length) return;
+      if (+b.dataset.gk !== i) { b.classList.remove('wrong'); void b.offsetWidth; b.classList.add('wrong'); $('#gsf', root).innerHTML = `<div class="why bad">${c.wrong || 'ليست هذه الخطوة الآن. فكّر: ماذا يجب أن يحدث قبلها؟'}</div>`; return; }
+      b.classList.remove('wrong'); b.classList.add('right'); b.disabled = true; i++;
+      if (c.art) $('#gsv', root).innerHTML = c.art(i);
+      $('#gsf', root).innerHTML = `<div class="why good">✓ ${c.steps[i - 1][1] || 'صحيح.'}${i === c.steps.length && c.end ? '<br>' + c.end : ''}</div>`;
+      if (i === c.steps.length) ready();
+    });
+  },
+  match(root, ready, c) {
+    const done = new Set(); let cur = null;
+    root.innerHTML = `<p>${c.intro}</p><div class="grid">${c.items.map((s, k) => `<button class="opt" data-gi="${k}">${s[0]}</button>`).join('')}</div><div id="gmq"></div><div id="gmf"></div><div class="center">مكتمل: <b class="gmn">٠</b> من ${ar(c.items.length)}</div>`;
+    root.addEventListener('click', e => {
+      const s = e.target.closest('[data-gi]'), f = e.target.closest('[data-go]');
+      if (s) { cur = +s.dataset.gi; $('#gmq', root).innerHTML = `<p><b>${c.items[cur][1]}</b></p><div class="grid">${shuffle(c.opts).map(o => `<button class="opt" data-go="${o}">${o}</button>`).join('')}</div>`; $('#gmf', root).innerHTML = ''; return; }
+      if (f && cur != null) {
+        const it = c.items[cur];
+        if (f.dataset.go === it[2]) { done.add(cur); $(`[data-gi="${cur}"]`, root).classList.add('right'); $('#gmf', root).innerHTML = `<div class="why good">✓ ${it[3] || ''}</div>`; $('#gmq', root).innerHTML = ''; $('.gmn', root).textContent = ar(done.size); cur = null; if (done.size === c.items.length) { if (c.end) $('#gmf', root).innerHTML += `<div class="why good">${c.end}</div>`; ready(); } }
+        else { f.classList.add('wrong'); f.disabled = true; $('#gmf', root).innerHTML = `<div class="why bad">${c.wrong || 'فكّر مرة أخرى 🤔'}</div>`; }
+      }
+    });
+  },
+  sim(root, ready, c) {
+    const R = {}; let v = null, busy = false; const need = c.need || 3;
+    root.innerHTML = `<p>${c.intro}</p><p><b>${c.ask}</b></p><div class="opts tf" style="grid-template-columns:repeat(${Math.min(c.vals.length, 4)},1fr)">${c.vals.map(x => `<button class="opt" data-gv="${x}" style="white-space:nowrap;padding-inline:4px">${c.label(x)}</button>`).join('')}</div>${c.show ? `<div class="art" id="gss">${c.show(null, 0)}</div>` : ''}<button class="btn full warm" id="gsg" disabled>${c.go || '▶️ نفّذ'}</button><div id="gsr"></div><div class="art" id="gsc"></div><ul class="tasks"><li class="gst">جرّب ${ar(need)} قيم مختلفة على الأقل</li></ul>`;
+    $$('[data-gv]', root).forEach(b => b.onclick = () => { if (busy) return; v = b.dataset.gv; $$('[data-gv]', root).forEach(x => x.classList.toggle('sel', x === b)); $('#gsg', root).disabled = false; if (c.show) $('#gss', root).innerHTML = c.show(v, 0); });
+    $('#gsg', root).onclick = () => {
+      if (busy || v == null) return; busy = true; let t = 0;
+      const iv = setInterval(() => { t = Math.min(1, t + 0.1); if (c.show) $('#gss', root).innerHTML = c.show(v, t); if (t >= 1) { clearInterval(iv); busy = false; R[v] = c.res[v];
+        $('#gsr', root).innerHTML = `<div class="why good">${c.say ? c.say(v, c.res[v]) : `${c.label(v)}: <b>${ar(c.res[v])} ${c.unit || ''}</b>`}</div>`;
+        const ks = c.vals.filter(x => R[x] != null);
+        $('#gsc', root).innerHTML = groupedBars(ks.map(x => [c.label(x), [R[x]]]), c.max, c.step || 4, c.lstep || 8, c.axis);
+        if (ks.length >= need) { $('.gst', root).classList.add('done'); if (c.end) $('#gsr', root).innerHTML += `<div class="why good">🔎 ${c.end}</div>`; ready(); } } }, 110); timers.push(iv);
+    };
+  },
+  sort(root, ready, c) {
+    const ok = new Set();
+    root.innerHTML = `<p>${c.intro}</p>${shuffle(c.items.map((x, k) => [x, k])).map(([x, k]) => `<div class="sortrow" data-gr="${k}"><span>${x[0]}</span><span class="b2"><button data-gb="0">${c.b[0]}</button><button data-gb="1">${c.b[1]}</button></span></div>`).join('')}<div id="gtf"></div>`;
+    root.style.textAlign = 'start';
+    root.addEventListener('click', e => {
+      const b = e.target.closest('[data-gb]'); if (!b) return; const row = b.closest('.sortrow'), k = +row.dataset.gr, it = c.items[k];
+      if (ok.has(k)) return;
+      if (+b.dataset.gb === it[1]) { ok.add(k); row.classList.add('ok'); $('.b2', row).innerHTML = c.b[it[1]]; $('#gtf', root).innerHTML = it[2] ? `<div class="why good">✓ ${it[2]}</div>` : ''; if (ok.size === c.items.length) { if (c.end) $('#gtf', root).innerHTML = `<div class="why good">${c.end}</div>`; ready(); } }
+      else { row.classList.remove('no'); void row.offsetWidth; row.classList.add('no'); $('#gtf', root).innerHTML = `<div class="why bad">${it[3] || 'فكّر مرة أخرى 🤔'}</div>`; }
+    });
+  },
+  reveal(root, ready, c) {
+    const seen = new Set();
+    root.innerHTML = `<p>${c.intro}</p>${c.art ? `<div class="art">${c.art()}</div>` : ''}<div class="grid">${c.cards.map((x, k) => `<button class="opt" data-gc="${k}">${x[0]}</button>`).join('')}</div><div id="gcf"></div><div class="center">اكتشفت: <b class="gcn">٠</b> من ${ar(c.cards.length)}</div>`;
+    root.addEventListener('click', e => { const b = e.target.closest('[data-gc]'); if (!b) return; const k = +b.dataset.gc; seen.add(k); b.classList.add('right');
+      $('#gcf', root).innerHTML = `<div class="why good"><b>${c.cards[k][0]}</b><br>${c.cards[k][1]}</div>`; $('.gcn', root).textContent = ar(seen.size);
+      if (seen.size === c.cards.length) { if (c.end) $('#gcf', root).innerHTML += `<div class="why good">${c.end}</div>`; ready(); } });
+  }
+};
+if (typeof XART === 'function') Object.assign(ART, XART(H));
+if (typeof XFIG === 'function') Object.assign(FIG, XFIG(H));
+if (typeof XLAB === 'function') Object.assign(LAB, XLAB(H));
+LABS.forEach(L => { if (!LAB[L.id] && L.kind) LAB[L.id] = (root, ready) => GLAB[L.kind](root, ready, typeof L.cfg === 'function' ? L.cfg(H) : L.cfg); });
+
+/* =========================================================
    الأحداث
    ========================================================= */
 const ACT = {
