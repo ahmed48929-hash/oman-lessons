@@ -2031,6 +2031,165 @@ Object.assign(LAB, {
 });
 
 /* =========================================================
+   إضافات الدرس ١-٦ (نقل الماء والأملاح المعدنية)
+   ========================================================= */
+const DYE16 = '#D6336C', XYL16 = '#1F5FA8';
+function celerySVG(h, o = {}) {
+  const top = 44, base = 206, y = 150 - (150 - top) * Math.min(Math.max(h, 0), 1), lv = h >= 1 ? DYE16 : '#3E7E3E';
+  let g = '';
+  if (!o.noCup) g += `<rect x="36" y="120" width="88" height="100" rx="8" fill="#EEF7FB" stroke="#7FA7B8" stroke-width="3"/>` + (o.empty ? '' : `<rect x="40" y="150" width="80" height="66" rx="5" fill="${o.clear ? '#BFE3F5' : DYE16}" opacity=".55"/>`);
+  if (!o.noStalk) {
+    g += '<path d="M70 210 Q66 120 72 44 L90 44 Q94 120 90 210 Z" fill="#B8E08A" stroke="#6E9E3A" stroke-width="2"/>';
+    [75, 85].forEach(x => { g += `<line x1="${x}" y1="${base}" x2="${x}" y2="${top}" stroke="#93C46A" stroke-width="2.5"/>`; if (h > 0) g += `<line x1="${x}" y1="${base}" x2="${x}" y2="${y}" stroke="${DYE16}" stroke-width="3.2"/>`; });
+    [[60, 32, -30], [100, 30, 30], [80, 18, 0]].forEach(([x, yy, r]) => g += `<ellipse cx="${x}" cy="${yy}" rx="17" ry="9" fill="#7CC36A" stroke="#3E7E3E" transform="rotate(${r} ${x} ${yy})"/><line x1="80" y1="44" x2="${x}" y2="${yy}" stroke="${lv}" stroke-width="2"/>`);
+  }
+  return `<svg viewBox="0 0 160 228" width="${o.w || 150}" direction="ltr" role="img" aria-label="ساق كرفس في كأس">${g}</svg>`;
+}
+function celeryCutSVG(o = {}) {
+  const dyed = o.dyed !== false, qb = (t, a, b, c) => (1 - t) * (1 - t) * a + 2 * t * (1 - t) * b + t * t * c;
+  let g = '<path d="M30 50 Q26 140 127 142 Q228 140 224 50 Q206 62 190 52 Q176 96 127 98 Q78 96 64 52 Q48 62 30 50Z" fill="#DDF0BF" stroke="#6E9E3A" stroke-width="3"/>';
+  const dots = [];
+  [0.2, 0.42, 0.64, 0.88].forEach(t => { const x = qb(t, 30, 26, 127), y = qb(t, 50, 140, 142), dx = 127 - x, dy = 70 - y, L = Math.hypot(dx, dy); dots.push([x + dx / L * 14, y + dy / L * 14]); });
+  [...dots, ...dots.map(([x, y]) => [254 - x, y])].forEach(([x, y]) => g += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="7" fill="${dyed ? DYE16 : '#A9D07C'}" stroke="${dyed ? '#8E1F48' : '#6E9E3A'}"/>` + [[-2.5, -2], [2.5, -1.5], [0, 2.5]].map(([a, b]) => `<circle cx="${(x + a).toFixed(1)}" cy="${(y + b).toFixed(1)}" r="1.3" fill="#fff" opacity=".8"/>`).join(''));
+  if (o.nums) { const d = [254 - dots[1][0], dots[1][1]]; [['١', d[0], d[1], 24], ['٢', 150, 118, 76], ['٣', 222, 70, 128]].forEach(([n, px, py, ly]) => g += `<line x1="${px.toFixed(1)}" y1="${py.toFixed(1)}" x2="262" y2="${ly}" stroke="#333"/><circle cx="272" cy="${ly}" r="10" fill="#fff" stroke="#333"/><text x="272" y="${ly + 5}" text-anchor="middle" font-size="12" font-weight="700" fill="#222">${n}</text>`); }
+  return `<svg viewBox="0 0 ${o.nums ? 290 : 254} 150" width="${o.nums ? 290 : 254}" direction="ltr" font-family="sans-serif" role="img" aria-label="مقطع عرضي في ساق كرفس">${g}</svg>`;
+}
+function xylemSVG(o = {}) {
+  let g = '';
+  [20, 70, 120, 170].forEach((x, k) => {
+    g += `<rect x="${x}" y="${12 + k * 4}" width="34" height="${176 - k * 4}" fill="#DFF1FB"/><line x1="${x}" y1="${12 + k * 4}" x2="${x}" y2="188" stroke="#8B5E34" stroke-width="6"/><line x1="${x + 34}" y1="${12 + k * 4}" x2="${x + 34}" y2="188" stroke="#8B5E34" stroke-width="6"/>`;
+    for (let y = 30 + k * 4; y < 186; y += 22) g += `<path d="M${x + 3} ${y} Q${x + 17} ${y + 5} ${x + 31} ${y}" stroke="#A97B4F" stroke-width="2" fill="none"/>`;
+    if (o.arrows !== false) [150, 96].forEach(y => g += `<path d="M${x + 17} ${y + 22} V${y}" stroke="#2A74B5" stroke-width="3"/><path d="M${x + 10} ${y + 8} L${x + 17} ${y} L${x + 24} ${y + 8}" stroke="#2A74B5" stroke-width="3" fill="none"/>`);
+  });
+  const L = [['١', 'جدار صلب قوي يدعم النبات', 204, 60, 50], ['٢', 'تجويف فارغ يمرّ فيه الماء', 187, 120, 120]];
+  if (o.names) L.forEach(([n, t, px, py, ly]) => g += `<line x1="${px}" y1="${py}" x2="222" y2="${ly}" stroke="#333"/><text x="226" y="${ly + 5}" font-size="13" fill="var(--ink)">${t}</text>`);
+  if (o.nums) L.forEach(([n, t, px, py, ly]) => g += `<line x1="${px}" y1="${py}" x2="222" y2="${ly}" stroke="#333"/><circle cx="232" cy="${ly}" r="10" fill="#fff" stroke="#333"/><text x="232" y="${ly + 5}" text-anchor="middle" font-size="12" font-weight="700" fill="#222">${n}</text>`);
+  const w = o.names ? 390 : o.nums ? 250 : 214;
+  return `<svg viewBox="0 0 ${w} 196" width="${Math.min(w, 340)}" direction="ltr" font-family="sans-serif" role="img" aria-label="أنسجة وعائية خشبية: أنابيب طويلة مجوّفة">${g}</svg>`;
+}
+function organXsSVG(kind) {
+  let g = '';
+  if (kind === 'root') {
+    for (let a = 0; a < 360; a += 40) { const r = a * Math.PI / 180; g += `<line x1="${55 + 48 * Math.cos(r)}" y1="${55 + 48 * Math.sin(r)}" x2="${55 + 56 * Math.cos(r)}" y2="${55 + 56 * Math.sin(r)}" stroke="#B5895A" stroke-width="2"/>`; }
+    g += `<circle cx="55" cy="55" r="48" fill="#EEF5E1" stroke="#7A9A5A" stroke-width="2"/><circle cx="55" cy="55" r="22" fill="#FAFCF4" stroke="#7A9A5A"/><path d="M55 36 Q58 50 74 55 Q58 60 55 74 Q52 60 36 55 Q52 50 55 36Z" fill="${XYL16}"/>`;
+  } else if (kind === 'stem') {
+    g += '<circle cx="55" cy="55" r="48" fill="#EEF5E1" stroke="#7A9A5A" stroke-width="2"/>';
+    for (let a = 0; a < 360; a += 45) { const r = a * Math.PI / 180; g += `<circle cx="${(55 + 36 * Math.cos(r)).toFixed(1)}" cy="${(55 + 36 * Math.sin(r)).toFixed(1)}" r="7" fill="#B9DD94"/><circle cx="${(55 + 29 * Math.cos(r)).toFixed(1)}" cy="${(55 + 29 * Math.sin(r)).toFixed(1)}" r="5.5" fill="${XYL16}"/>`; }
+  } else {
+    g += `<path d="M55 104 V92" stroke="#3E7E3E" stroke-width="3"/><path d="M55 92 Q8 70 22 34 Q38 8 55 4 Q72 8 88 34 Q102 70 55 92Z" fill="#9BD37E" stroke="#3E7E3E" stroke-width="2"/><path d="M55 92 V8" stroke="${XYL16}" stroke-width="3"/>`;
+    [[80, 24], [66, 30], [52, 28], [38, 20]].forEach(([y, d]) => g += `<path d="M55 ${y} L${55 - d} ${y - 12}" stroke="${XYL16}" stroke-width="2"/><path d="M55 ${y} L${55 + d} ${y - 12}" stroke="${XYL16}" stroke-width="2"/>`);
+  }
+  return `<svg viewBox="0 0 110 110" width="88" role="img">${g}</svg>`;
+}
+function organTrio(labels) {
+  const K = ['root', 'stem', 'leaf'];
+  return `<div style="display:flex;gap:6px;justify-content:center">${(labels.order || [0, 1, 2]).map((k, i) => `<div>${organXsSVG(K[k])}<div class="cap"><b>${labels.t[i]}</b></div></div>`).join('')}</div>`;
+}
+function pathPlantSVG(o = {}) {
+  const up = o.upto == null ? 6 : o.upto, B = '#1F78C8';
+  let g = `<rect x="0" y="150" width="260" height="90" fill="${up >= 1 ? '#D9C49E' : '#E8D3B0'}"/><line x1="0" y1="150" x2="260" y2="150" stroke="#8a6d3b" stroke-width="2"/>`;
+  if (up >= 1) [[40, 175], [70, 215], [200, 180], [228, 222], [100, 228], [175, 230]].forEach(([x, y]) => g += `<path d="M${x} ${y - 6} q-4 6 0 8 q4 -2 0 -8Z" fill="#4FA3E0"/>`);
+  g += '<path d="M132 150 V44" stroke="#4E8C3A" stroke-width="9"/>';
+  [[92, 72, 25], [174, 62, -25]].forEach(([x, y, r]) => g += `<ellipse cx="${x}" cy="${y}" rx="38" ry="15" fill="${up >= 6 ? '#8FE08A' : '#5DBB63'}" stroke="#2E7D32" transform="rotate(${r} ${x} ${y})"${up >= 6 ? ' style="filter:drop-shadow(0 0 4px #FFE27A)"' : ''}/>`);
+  [[132, 150, 128, 228], [132, 158, 96, 214], [132, 158, 168, 216], [110, 184, 84, 194]].forEach(([a, b, c, d]) => g += `<path d="M${a} ${b} Q${(a + c) / 2 + 4} ${(b + d) / 2} ${c} ${d}" stroke="#B5895A" stroke-width="4" fill="none"/>`);
+  for (let k = 0; k < 7; k++) g += `<line x1="${100 + k * 4}" y1="${200 + k * 2}" x2="${96 + k * 4}" y2="${208 + k * 2}" stroke="${up >= 2 ? B : '#D9C09A'}" stroke-width="1.6"/>`;
+  if (up >= 3) g += `<path d="M110 205 Q124 196 131 190 V150" stroke="${B}" stroke-width="3" fill="none"/>`;
+  if (up >= 4) { g += `<path d="M132 150 V60" stroke="${B}" stroke-width="3"/>`; [128, 96].forEach(y => g += o.down ? `<path d="M126 ${y - 5} L132 ${y + 2} L138 ${y - 5}" stroke="#fff" stroke-width="2.4" fill="none"/>` : `<path d="M126 ${y + 5} L132 ${y - 2} L138 ${y + 5}" stroke="#fff" stroke-width="2.4" fill="none"/>`); }
+  if (up >= 5) g += `<path d="M132 84 L60 86 M132 84 L96 72 M132 70 L206 50 M132 70 L170 62" stroke="${B}" stroke-width="2.4" fill="none"/>`;
+  if (o.nums) [['١', 102, 206, 200], ['٢', 131, 176, 160], ['٣', 132, 112, 112], ['٤', 196, 53, 40]].forEach(([n, px, py, ly]) => g += `<line x1="${px}" y1="${py}" x2="240" y2="${ly}" stroke="#333"/><circle cx="250" cy="${ly}" r="10" fill="#fff" stroke="#333"/><text x="250" y="${ly + 5}" text-anchor="middle" font-size="12" font-weight="700" fill="#222">${n}</text>`);
+  return `<svg viewBox="0 0 ${o.nums ? 264 : 260} 240" width="260" direction="ltr" font-family="sans-serif" role="img" aria-label="مسار الماء داخل النبات">${g}</svg>`;
+}
+const tempBars16 = (temps, H) => groupedBars(temps.map(t => [ar(t) + ' °س', [H[t]]]), 20, 4, 8, 'ارتفاع الصبغة في الساق بعد ٣٠ دقيقة (سم) عند كل درجة حرارة');
+const twoCups16 = () => `<div style="display:flex;gap:18px;justify-content:center;align-items:flex-end">${[['(أ) ماء دافئ ٤٠ °س', 0.8], ['(ب) ماء بارد ١٠ °س', 0.2]].map(([t, h]) => `<div>${celerySVG(h, { w: 110 })}<div class="cap"><b>${t}</b></div></div>`).join('')}</div><div class="cap">ساقا كرفس متماثلتان بعد ٣٠ دقيقة في ماء ملوّن</div>`;
+Object.assign(ART, {
+  celeryDye: () => celerySVG(1) + '<div class="cap">ساق كرفس في ماء ملوّن: صعدت الصبغة داخل الساق حتى عروق الأوراق</div>',
+  celeryCut: () => celeryCutSVG() + '<div class="cap">طرف الساق المشطور تحت العدسة: الصبغة في بقع قرب الحافة فقط</div>',
+  celerySteps: () => chainRow([['🥬', 'ساق كرفس'], ['🧪', 'ماء ملوّن'], ['⏳', 'انتظر'], ['🚿', 'اغسل'], ['🔍', 'اشطر وانظر']]),
+  xylemNames: () => xylemSVG({ names: true }) + '<div class="cap">الأنسجة الوعائية الخشبية: أنابيب طويلة مجوّفة (رسم مكبّر جدًا)</div>',
+  organs3: () => organTrio({ t: ['الجذر', 'الساق', 'الورقة'] }) + '<div class="cap">الأزرق الداكن = مكان الأنسجة الوعائية الخشبية</div>',
+  path16: () => pathPlantSVG() + '<div class="cap">الخط الأزرق: طريق الماء من التربة إلى الأوراق</div>',
+  wood16: () => chainRow([['🌳', 'جذع الشجرة'], ['🪵', 'الخشب'], ['🔬', 'أوعية خشبية كثيرة']]) + '<div class="cap">الخشب يتكوّن من أنسجة وعائية خشبية</div>',
+  warmCold: () => twoCups16(),
+  vars16: () => `<table class="ftab"><tr><th>🔧 ما أغيّره</th><td>درجة حرارة الماء الملوّن</td></tr><tr><th>📏 ما أقيسه</th><td>ارتفاع الصبغة في الساق بعد ٣٠ دقيقة</td></tr><tr><th>🔒 ما أثبّته</th><td>نوع السيقان وطولها، وكمية الصبغة، وزمن القياس</td></tr><tr><th>⚠️ السلامة</th><td>الحذر عند استخدام الماء الساخن</td></tr></table>`,
+  tempGraph: () => tempBars16([10, 20, 30, 40], { 10: 4, 20: 8, 30: 12, 40: 16 })
+});
+Object.assign(FIG, {
+  celeryNum: () => celeryCutSVG({ nums: true }),
+  celeryPlain: () => celeryCutSVG({ dyed: false }) + '<div class="cap">مقطع في ساق كرفس قبل وضعها في الصبغة</div>',
+  celeryUp: () => celerySVG(0.6) + '<div class="cap">ساق كرفس في ماء ملوّن منذ ١٥ دقيقة</div>',
+  xylemNum: () => xylemSVG({ nums: true, arrows: false }),
+  organABC: () => organTrio({ t: ['(أ)', '(ب)', '(ج)'], order: [1, 2, 0] }) + '<div class="cap">مقاطع في أعضاء نبات؛ الأزرق الداكن = الأنسجة الوعائية الخشبية</div>',
+  pathNum: () => pathPlantSVG({ nums: true }),
+  pathDown: () => pathPlantSVG({ down: true }) + '<div class="cap">الرسم كما رسمه الطالب (انظر إلى اتجاه الأسهم في الساق)</div>',
+  tempBars: () => tempBars16([10, 20, 30, 40], { 10: 4, 20: 8, 30: 12, 40: 16 }),
+  twoCups: () => twoCups16(),
+  tempTab: () => `<table class="ftab"><tr><th>درجة حرارة الماء</th><td>١٠ °س</td><td>٢٠ °س</td><td>٣٠ °س</td><td>٤٠ °س</td></tr><tr><th>ارتفاع الصبغة بعد ٣٠ دقيقة</th><td>٤ سم</td><td>؟</td><td>١٢ سم</td><td>١٦ سم</td></tr></table>`,
+  timeLine: () => lineRTL([['ماء دافئ ٣٥ °س', [0, 4, 8, 12]], ['ماء بارد ١٠ °س', [0, 2, 4, 6]]], [0, 10, 20, 30], 16, 4, 8, 'الزمن (دقيقة)', 'ارتفاع الصبغة (سم)')
+});
+Object.assign(LAB, {
+  celeryLab(root, ready) {
+    const ST = [['get', '🥬 أحضر ساق كرفس في أعلاها أوراق'], ['dye', '🧪 ضع ماءً فيه صبغة ملوّنة في كأس'], ['put', '⬆️ ضع الساق قائمة مستقيمة في الصبغة'], ['wait', '⏳ راقب حتى تصل الصبغة إلى القمة'], ['wash', '🚿 أخرج الساق واغسلها بالماء'], ['cut', '🔍 اشطر الساق وانظر إلى طرفها بالعدسة']];
+    const MSG = ['أحضرت ساق كرفس طازجة، في أعلاها أوراق.', 'الكأس جاهزة فيها ماء ملوّن.', 'الساق قائمة في الصبغة. الآن راقبها.', 'وصلت الصبغة إلى قمة الساق وإلى عروق الأوراق!', 'غسلت الساق، فلم يبقَ أي صبغة على سطحها الخارجي.', 'من خلال العدسة: الصبغة لم تنتشر في كل الساق، بل بقيت في <b>بقع</b> قرب الحافة. هذه البقع هي <b>الأنسجة الوعائية الخشبية</b>.'];
+    let i = 0, busy = false;
+    const draw = (h = 0) => { $('#cvw').innerHTML = i === 0 ? celerySVG(0, { empty: true, noStalk: true }) : i === 1 ? `<div style="font-size:54px">🥬</div>` + celerySVG(0, { empty: true, noStalk: true, w: 110 }) : i === 2 ? celerySVG(0, { noStalk: true }) : i <= 4 ? celerySVG(h) : i === 5 ? celerySVG(1, { noCup: true }) : celeryCutSVG(); };
+    root.innerHTML = `<p>نفّذ خطوات النشاط بالترتيب: اختر الخطوة التالية في كل مرة.</p><div class="art" id="cvw"></div><div class="grid">${shuffle(ST).map(([k, t]) => `<button class="opt" data-k="${k}">${t}</button>`).join('')}</div><div id="cfb"></div>`;
+    draw();
+    root.addEventListener('click', e => {
+      const b = e.target.closest('[data-k]'); if (!b || busy || i >= ST.length) return;
+      if (b.dataset.k !== ST[i][0]) { $('#cfb').innerHTML = '<div class="why bad">ليست هذه الخطوة الآن. فكّر: ماذا يجب أن يحدث قبلها؟</div>'; return; }
+      b.disabled = true; b.classList.add('right');
+      if (ST[i][0] === 'wait') {
+        busy = true; let h = 0; i = 3;
+        const iv = setInterval(() => { h = Math.min(1, h + 0.08); draw(h); if (h >= 1) { clearInterval(iv); busy = false; i = 4; $('#cfb').innerHTML = `<div class="why good">✓ ${MSG[3]}</div>`; } }, 200); timers.push(iv);
+        $('#cfb').innerHTML = '<div class="why good">⏳ الصبغة تصعد داخل الساق…</div>'; return;
+      }
+      $('#cfb').innerHTML = `<div class="why good">✓ ${MSG[i]}</div>`; i++; draw(i >= 4 ? 1 : 0);
+      if (i === ST.length) ready();
+    });
+  },
+  pathLab(root, ready) {
+    const P = [['soil', '🟫 ماء التربة', 'الماء والأملاح المعدنية الذائبة في الفراغات بين حبيبات التربة.'], ['hair', '🌱 الشعيرات الجذرية', 'تمتصّ الماء والأملاح بسطحها الكبير.'], ['root', '🪵 الأنسجة الخشبية في الجذر', 'يدخل الماء إلى الأنسجة الوعائية الخشبية في وسط الجذر.'], ['stem', '🌿 الأنسجة الخشبية في الساق', 'أنابيب طويلة مجوّفة تحمل الماء إلى الأعلى.'], ['vein', '🍃 عروق الورقة', 'فيها أنسجة وعائية خشبية توزّع الماء داخل الورقة.'], ['cell', '🟩 خلايا الورقة', 'تستخدم الماء في التمثيل الضوئي.']];
+    let i = 0;
+    root.innerHTML = `<p>تتبّع رحلة الماء: اختر الجزء التالي الذي يمرّ به الماء، من التربة حتى خلايا الورقة.</p><div class="art" id="pvw">${pathPlantSVG({ upto: 0 })}</div><div class="grid">${shuffle(P).map(([k, t]) => `<button class="opt" data-k="${k}">${t}</button>`).join('')}</div><div id="pfb"></div><div class="center">المراحل: <b id="pdn">٠</b> من ${ar(P.length)}</div>`;
+    root.addEventListener('click', e => {
+      const b = e.target.closest('[data-k]'); if (!b || i >= P.length) return;
+      if (b.dataset.k !== P[i][0]) { b.classList.remove('wrong'); void b.offsetWidth; b.classList.add('wrong'); $('#pfb').innerHTML = '<div class="why bad">ليس هذا الجزء التالي في رحلة الماء. فكّر: من أين يبدأ الماء، وإلى أين يذهب؟</div>'; return; }
+      b.classList.remove('wrong'); b.classList.add('right'); b.disabled = true; i++;
+      $('#pvw').innerHTML = pathPlantSVG({ upto: i }); $('#pdn').textContent = ar(i);
+      $('#pfb').innerHTML = `<div class="why good">✓ ${P[i - 1][2]}${i === P.length ? '<br>اكتملت الرحلة: الماء ينتقل من الجذور إلى الأوراق داخل <b>الأنسجة الوعائية الخشبية</b>.' : ''}</div>`;
+      if (i === P.length) ready();
+    });
+  },
+  tempLab(root, ready) {
+    const Q = [['ما المتغيّر الذي ستغيّره؟', 'درجة حرارة الماء الملوّن', ['نوع الصبغة في كل كأس', 'عدد الأوراق على كل ساق']], ['ما الذي ستقيسه؟', 'ارتفاع الصبغة في الساق بعد ٣٠ دقيقة', ['لون الأوراق قبل التجربة', 'وزن الكأس بعد التجربة']], ['ما الذي ستجعله متماثلًا؟', 'طول السيقان وكمية الصبغة وزمن القياس', ['درجة حرارة الماء في كل الكؤوس', 'لا شيء، سأغيّر كل شيء']], ['هل توجد مخاطر سلامة؟', 'نعم، الحذر عند استخدام الماء الساخن', ['لا يوجد أي خطر مطلقًا', 'نعم، الصبغة تنفجر عند تسخينها']]];
+    const WHY = ['هذا هو المتغيّر الذي نستقصي أثره.', 'ارتفاع الصبغة في الزمن نفسه يدلّ على سرعة نقل الماء.', 'لتكون التجربة عادلة نغيّر شيئًا واحدًا فقط.', 'الماء الساخن قد يسبّب حروقًا.'];
+    const H = { 10: 4, 20: 8, 30: 12, 40: 16 }, R = {}; let i = 0, t = null, busy = false; const plan = [];
+    root.innerHTML = '<p>خطّط أولًا، ثم نفّذ: ضع ساق كرفس في ماء ملوّن بدرجات حرارة مختلفة، وقس ارتفاع الصبغة بعد ٣٠ دقيقة. (محاكاة تقريبية للتدريب)</p><div id="tq"></div><div id="tfb"></div><div class="art" id="tplan" style="text-align:start"></div><div id="trun"></div>';
+    const runUI = () => {
+      $('#trun').innerHTML = `<p><b>اختر درجة حرارة الماء:</b></p><div class="opts tf" style="grid-template-columns:repeat(4,1fr)">${[10, 20, 30, 40].map(x => `<button class="opt" data-t="${x}" style="white-space:nowrap;padding-inline:4px">${ar(x)} °س</button>`).join('')}</div><div class="art" id="tcup">${celerySVG(0)}</div><button class="btn full warm" id="tgo" disabled>⏱️ ضع الساق وانتظر ٣٠ دقيقة</button><div id="tres"></div><div class="art" id="tgr"></div><ul class="tasks"><li id="tt1">جرّب ٣ درجات حرارة على الأقل</li></ul>`;
+      $$('[data-t]', root).forEach(b => b.onclick = () => { if (busy) return; t = +b.dataset.t; $$('[data-t]', root).forEach(x => x.classList.toggle('sel', x === b)); $('#tcup').innerHTML = celerySVG(0); $('#tgo').disabled = false; });
+      $('#tgo').onclick = () => {
+        if (busy || !t) return; busy = true; let h = 0; const goal = H[t] / 20;
+        const iv = setInterval(() => { h = Math.min(goal, h + 0.04); $('#tcup').innerHTML = celerySVG(h); if (h >= goal) { clearInterval(iv); busy = false; R[t] = H[t];
+          const done = Object.keys(R).map(Number).sort((a, b) => a - b);
+          $('#tres').innerHTML = `<div class="why good">عند ${ar(t)} °س صعدت الصبغة <b>${ar(H[t])} سم</b>.${t >= 30 ? ' تذكّر: كن حذرًا مع الماء الساخن.' : ''}</div>`;
+          $('#tgr').innerHTML = tempBars16(done, H);
+          if (done.length >= 3) { $('#tt1').classList.add('done'); $('#tres').innerHTML += '<div class="why good">🔎 النمط: كلما ارتفعت درجة الحرارة، صعدت الصبغة أعلى في الزمن نفسه؛ أي أن <b>نقل الماء أسرع في الماء الدافئ</b> منه في الماء البارد.</div>'; ready(); } } }, 120); timers.push(iv);
+      };
+    };
+    const draw = () => {
+      $('#tplan').innerHTML = `<b>📋 خطتي: كيف تؤثّر درجة الحرارة على معدّل نقل الماء في ساق الكرفس؟</b><ul class="sum">${plan.map(p => `<li>${p}</li>`).join('') || '<li>ستظهر خطتك هنا كلما أجبت.</li>'}</ul>`;
+      $('#tq').innerHTML = i < Q.length ? `<p><b>${Q[i][0]}</b></p><div class="opts">${shuffle([Q[i][1], ...Q[i][2]]).map(o => `<button class="opt" data-o="${o}">${o}</button>`).join('')}</div>` : '';
+      if (i === Q.length) runUI();
+    };
+    root.addEventListener('click', e => { const b = e.target.closest('[data-o]'); if (!b || i >= Q.length) return;
+      if (b.dataset.o === Q[i][1]) { plan.push(`${Q[i][0].replace('؟', '')}: <b>${Q[i][1]}</b>`); $('#tfb').innerHTML = `<div class="why good">✓ ${WHY[i]}${i === Q.length - 1 ? ' اكتملت خطتك، نفّذها الآن.' : ''}</div>`; i++; draw(); }
+      else { b.classList.add('wrong'); b.disabled = true; $('#tfb').innerHTML = '<div class="why bad">فكّر مرة أخرى في سؤال التخطيط: التجربة العادلة تغيّر شيئًا واحدًا وتقيس أثره.</div>'; } });
+    draw();
+  }
+});
+
+/* =========================================================
    الأحداث
    ========================================================= */
 const ACT = {
