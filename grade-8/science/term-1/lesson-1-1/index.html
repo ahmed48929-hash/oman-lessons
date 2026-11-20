@@ -1422,7 +1422,7 @@ Object.assign(GAME, {
       if (t) { sel = +t.dataset.t; draw(); return; }
       if (s && sel != null) {
         const tile = tiles[sel], kind = slots[+s.dataset.s][0];
-        if (EQ_TILES[kind].includes(tile)) { slots[+s.dataset.s][1] = tile; sel = null; draw(); if (slots.every(x => x[1])) { const st_ = err === 0 ? 3 : err <= 2 ? 2 : 1; bestStars('equation', st_); $('#efb').innerHTML = winBox(st_, 'أحسنت! ماء + ثاني أكسيد الكربون ← (طاقة الضوء) ← غذاء + أكسجين', 'equation'); } }
+        if (EQ_TILES[kind].includes(tile)) { slots[+s.dataset.s][1] = tile; sel = null; draw(); if (slots.every(x => x[1])) { const st_ = err === 0 ? 3 : err <= 2 ? 2 : 1; bestStars('equation', st_); $('#efb').innerHTML = winBox(st_, (EQ_TILES.win || 'أحسنت! ماء + ثاني أكسيد الكربون ← (طاقة الضوء) ← غذاء + أكسجين'), 'equation'); } }
         else { err++; $('#eer').textContent = ar(err); toast(EQ_TILES.x.includes(tile) ? `«${tile}» ليس له مكان في المعادلة 🤔` : 'ليس هذا مكانها، فكّر مرة أخرى 🤔'); sel = null; draw(); }
       }
     });
@@ -1741,6 +1741,113 @@ Object.assign(LAB, {
         if (t >= 26) { clearInterval(iv); const ok = pred === 'low'; $('#sfb').innerHTML = `<div class="why ${ok ? 'good' : 'bad'}">${ok ? '✓ توقّعك صحيح!' : '✗ توقّعك لم يتحقق.'} ظهرت فقاعات أكثر على <b>السطح السفلي</b> (${ar(d)} مقابل ${ar(u)})، لأن الثغور موجودة في البشرة السفلى.</div>`; $('#sgo').disabled = false; $('#sgo').textContent = '🔁 أعد التجربة'; ready(); }
       }, 160); timers.push(iv);
     };
+  }
+});
+
+/* =========================================================
+   إضافات الدرس ١-٣ (المزيد حول التمثيل الضوئي)
+   ========================================================= */
+const CELLP = { wall: [292, 40, 'الجدار الخلوي'], mem: [270, 60, 'غشاء الخلية'], chl: [60, 46, 'البلاستيدات الخضراء'], nuc: [120, 128, 'النواة'], vac: [190, 90, 'الفجوة'], cyt: [250, 130, 'السيتوبلازم'] };
+function cellSVG() {
+  let g = '<rect x="10" y="12" width="290" height="140" rx="26" fill="#DDEFD9" stroke="#3E7E3E" stroke-width="4"/><rect x="18" y="20" width="274" height="124" rx="20" fill="#E9F6FB" stroke="#7FA7B8" stroke-width="1.5"/>';
+  g += '<rect x="58" y="44" width="200" height="76" rx="16" fill="#F7FCFF" stroke="#A9C8D6"/>';
+  [[40, 34], [80, 32], [120, 32], [160, 32], [200, 32], [240, 34], [272, 60], [272, 104], [34, 70], [34, 110], [70, 134], [150, 134], [200, 134], [246, 132]].forEach(([x, y]) => g += `<ellipse cx="${x}" cy="${y}" rx="12" ry="7" fill="#4CAF50" stroke="#2E7D32"/>`);
+  g += '<ellipse cx="120" cy="128" rx="14" ry="10" fill="#7E6BC4" stroke="#4B3E8A"/>';
+  return `<svg viewBox="0 0 310 165" width="310" direction="ltr" role="img" aria-label="خلية عمادية">${g}</svg>`;
+}
+function bagPlant(label, note) {
+  return `<div><svg viewBox="0 0 120 150" width="120"><path d="M20 120 Q10 20 60 10 Q110 20 100 120Z" fill="#EAF5FF" stroke="#7FA7B8" stroke-dasharray="4 3"/><rect x="40" y="110" width="40" height="30" rx="4" fill="#B07A4F"/><path d="M60 110 V50" stroke="#3E8E3E" stroke-width="4"/>${[[46, 60], [74, 70], [48, 84], [72, 92]].map(([x, y]) => `<ellipse cx="${x}" cy="${y}" rx="12" ry="6" fill="#5DBB63"/>`).join('')}<rect x="44" y="102" width="32" height="8" rx="2" fill="${note ? '#C9B6E8' : '#ddd'}"/></svg><div class="cap"><b>${label}</b><br>${note || ''}</div></div>`;
+}
+function varLeafSVG(after) {
+  const outer = after ? '#D9B25A' : '#F4F4EA', inner = after ? '#1E2A4A' : '#5DBB63';
+  return `<svg viewBox="0 0 220 130" width="220" direction="ltr"><path d="M20 110 Q40 10 200 18 Q170 120 20 110Z" fill="${outer}" stroke="#777"/><path d="M48 98 Q66 34 170 32 Q150 100 48 98Z" fill="${inner}"/><path d="M8 122 L20 110" stroke="#777" stroke-width="3"/>
+    <line x1="186" y1="30" x2="208" y2="8" stroke="#333"/><text x="210" y="10" font-size="13" font-weight="700">أ</text><line x1="110" y1="64" x2="130" y2="124" stroke="${after ? '#fff' : '#333'}"/><text x="132" y="128" font-size="13" font-weight="700">ب</text></svg>`;
+}
+Object.assign(ART, {
+  eqG: () => `<div class="eq"><div class="box in"><span>ثاني أكسيد الكربون</span>+<span>ماء</span></div><div class="arrow"><small>☀️ ضوء</small><i>⬇</i><small>🟢 كلوروفيل</small></div><div class="box out"><span>جلوكوز</span>+<span>أكسجين</span></div></div><div class="cap">السهم يعني «يتغيّر إلى»</div>`,
+  energy: () => chainRow([['☀️', 'طاقة الضوء'], ['🟢', 'يمتصّها الكلوروفيل'], ['🍬', 'تُخزَّن في الجلوكوز']]) + '<div class="cap">الجلوكوز مخزن للطاقة الكيميائية الكامنة</div>',
+  cell: () => cellSVG() + '<div class="cap">خلية من النسيج العمادي (رسم توضيحي)</div>',
+  glucoseStarch: () => {
+    const hex = (x, y, c) => `<polygon points="${[0, 1, 2, 3, 4, 5].map(i => [x + 9 * Math.cos(Math.PI / 3 * i), y + 9 * Math.sin(Math.PI / 3 * i)].map(v => v.toFixed(1)).join(',')).join(' ')}" fill="${c}" stroke="#8a6d1a"/>`;
+    let a = ''; [[250, 40], [280, 70], [240, 90], [275, 110], [255, 62]].forEach(([x, y]) => a += hex(x, y, '#FBE7A1'));
+    let b = ''; for (let i = 0; i < 7; i++) b += hex(30 + i * 17, 60 + (i % 2 ? 8 : 0), '#F2D06B');
+    for (let i = 0; i < 7; i++) b += hex(30 + i * 17, 86 + (i % 2 ? 8 : 0), '#F2D06B');
+    return `<svg viewBox="0 0 310 130" width="310" direction="ltr">${a}${b}<path d="M222 70 H160" stroke="var(--muted)" stroke-width="3"/><path d="M168 63 L158 70 L168 77" stroke="var(--muted)" stroke-width="3" fill="none"/><text x="260" y="128" text-anchor="middle" font-size="12" fill="var(--ink)">جلوكوز (يذوب)</text><text x="80" y="128" text-anchor="middle" font-size="12" fill="var(--ink)">نشا (لا يذوب)</text></svg>`;
+  },
+  iodine: () => `<div style="display:flex;gap:14px;justify-content:center"><div><svg viewBox="0 0 120 80" width="120"><path d="M10 70 Q20 5 110 10 Q95 75 10 70Z" fill="#E8D9A8" stroke="#8a7a4a"/></svg><div class="cap">ورقة بلا نشا: يبقى لون اليود بنّيًا</div></div><div><svg viewBox="0 0 120 80" width="120"><path d="M10 70 Q20 5 110 10 Q95 75 10 70Z" fill="#1E2A4A" stroke="#111"/></svg><div class="cap">ورقة فيها نشا: أزرق مائل للسواد</div></div></div>`,
+  steps13: () => chainRow([['🔥', 'اغلِ الورقة في الماء'], ['🧯', 'أطفئ الموقد'], ['🧪', 'ضعها في الإيثانول'], ['💧', 'اغمسها في الماء'], ['🟤', 'أضف اليود']])
+});
+Object.assign(FIG, {
+  eqBlankG: () => `<div class="eq"><div class="box in"><span>ثاني أكسيد الكربون</span>+<span>ماء</span></div><div class="arrow"><small>☀️ ضوء</small><i>⬇</i><small>🟢 كلوروفيل</small></div><div class="box out"><span style="border-color:var(--sun);background:var(--sun-soft)">؟</span>+<span>أكسجين</span></div></div>`,
+  varLeaf: () => varLeafSVG(false) + '<div class="cap">ورقة مبرقشة: (أ) جزء أبيض، (ب) جزء أخضر</div>',
+  varAfter: () => varLeafSVG(true) + '<div class="cap">الورقة المبرقشة بعد اختبار النشا</div>',
+  bags: () => `<div style="display:flex;gap:16px;justify-content:center">${bagPlant('النبتة (أ)', 'معها مادة تمتصّ ثاني أكسيد الكربون')}${bagPlant('النبتة (ب)', 'بلا هذه المادة')}</div><div class="cap">النبتتان في كيسين شفّافين تحت الضوء</div>`,
+  starchDay: () => groupedBars([['٦ صباحًا', [4]], ['١٢ ظهرًا', [16]], ['٦ مساءً', [24]], ['١٢ ليلًا', [12]]], 28, 4, 8, 'كمية النشا في ورقة خلال يوم واحد (وحدات)'),
+  chloroBars: () => groupedBars([['خلية عمادية', [40]], ['خلية إسفنجية', [16]], ['خلية بشرة', [0]]], 44, 4, 8, 'متوسط عدد البلاستيدات الخضراء في الخلية'),
+  cellNum: () => { let s = cellSVG(); const L = Object.entries(CELLP).map(([k, [x, y]], i) => `<circle cx="${x}" cy="${y}" r="10" fill="#fff" stroke="#333"/><text x="${x}" y="${y + 5}" text-anchor="middle" font-size="12" font-weight="700" fill="#222">${ar(i + 1)}</text>`).join(''); return s.replace('</svg>', L + '</svg>'); }
+});
+Object.assign(INTER, {
+  cellHot(root, done, finish) {
+    const F = { wall: 'يحيط بالخلية ويدعمها.', mem: 'يتحكّم في دخول المواد إلى الخلية وخروجها.', chl: 'فيها الكلوروفيل، ويحدث داخلها التمثيل الضوئي، ويُخزَّن فيها النشا حبيبات.', nuc: 'تتحكّم في أنشطة الخلية.', vac: 'كيس كبير مملوء بسائل.', cyt: 'مادة هلامية تحدث فيها أنشطة الخلية.' };
+    const seen = new Set(done ? Object.keys(CELLP) : []);
+    root.innerHTML = `<div class="hotwrap" style="max-width:310px">${cellSVG()}${Object.entries(CELLP).map(([k, [x, y]]) => `<button class="hot sm${done ? ' seen' : ''}" style="left:${x / 310 * 100}%;top:${y / 165 * 100}%;transform:translate(-50%,-50%);background:var(--sun)" data-k="${k}"></button>`).join('')}</div><div class="hotinfo" id="chinfo">${done ? 'تعرّفت على الأجزاء الستة ✓' : 'اضغط على النقاط (٦ نقاط).'}</div>`;
+    $$('.hot', root).forEach(b => b.onclick = () => { const k = b.dataset.k; b.classList.add('seen'); seen.add(k); $('#chinfo').innerHTML = `<b>${CELLP[k][2]}</b><br>${F[k]}<br><small>(${ar(seen.size)} من ٦)</small>`; if (seen.size === 6) finish(); });
+  }
+});
+Object.assign(LAB, {
+  eqLab(root, ready) {
+    const T = shuffle(['ثاني أكسيد الكربون', 'ماء', 'ضوء', 'كلوروفيل', 'جلوكوز', 'أكسجين', 'نشا', 'تربة']);
+    const SL = [['in', ''], ['in', ''], ['top', ''], ['bot', ''], ['out', ''], ['out', '']];
+    const OK = { in: ['ثاني أكسيد الكربون', 'ماء'], top: ['ضوء'], bot: ['كلوروفيل'], out: ['جلوكوز', 'أكسجين'] };
+    const WHY = { 'نشا': 'النشا ليس في المعادلة؛ يحوّل النبات بعض الجلوكوز إلى نشا بعد ذلك.', 'تربة': 'التربة ليست مادة في التفاعل؛ النبات يأخذ منها الماء فقط.' };
+    let sel = null, err = 0;
+    root.innerHTML = '<p>اضغط بطاقة ثم اضغط مكانها. انتبه: بطاقتان لا مكان لهما!</p><div class="gstats"><span>أخطاء<b id="ql">٠</b></span></div><div id="qeq"></div><div id="qfb"></div>';
+    const draw = () => {
+      const sl = k => `<button class="eslot${SL[k][1] ? ' on' : ''}" data-s="${k}">${SL[k][1] || '…'}</button>`, used = SL.map(s => s[1]);
+      $('#qeq').innerHTML = `<div class="eq"><div class="box">${sl(0)}+${sl(1)}</div><div class="arrow">${sl(2)}<i>⬇</i>${sl(3)}</div><div class="box">${sl(4)}+${sl(5)}</div></div><div class="pool" style="margin-top:12px">${T.map((t, k) => used.includes(t) ? '' : `<button class="word${sel === k ? ' picked' : ''}" data-t="${k}">${t}</button>`).join('')}</div>`;
+    };
+    root.addEventListener('click', e => {
+      const t = e.target.closest('[data-t]'), s = e.target.closest('[data-s]');
+      if (t) { sel = +t.dataset.t; draw(); return; }
+      if (s && sel != null) {
+        const tile = T[sel], kind = SL[+s.dataset.s][0];
+        if (OK[kind].includes(tile)) { SL[+s.dataset.s][1] = tile; sel = null; draw(); $('#qfb').innerHTML = ''; if (SL.every(x => x[1])) { $('#qfb').innerHTML = '<div class="why good">✓ اكتملت المعادلة: ثاني أكسيد الكربون + ماء ← (ضوء، كلوروفيل) ← جلوكوز + أكسجين</div>'; ready(); } }
+        else { err++; $('#ql').textContent = ar(err); $('#qfb').innerHTML = `<div class="why bad">${WHY[tile] || (OK.out.includes(tile) ? `«${tile}» يصنعه النبات، فمكانه بعد السهم.` : OK.in.includes(tile) ? `«${tile}» يستخدمه النبات، فمكانه قبل السهم.` : 'فوق السهم وتحته يُكتب الضوء والكلوروفيل.')}</div>`; sel = null; draw(); }
+      }
+    });
+    draw();
+  },
+  starchLab(root, ready) {
+    let g = 0; const tried = new Set();
+    root.innerHTML = `<p>اصنع الجلوكوز بالضوء داخل البلاستيدة الخضراء، ثم قرّر كيف يخزّن النبات الجلوكوز الزائد.</p>
+      <div class="art" id="sbox" style="min-height:120px"></div>
+      <button class="btn full warm" id="slight">☀️ سلّط الضوء: اصنع جلوكوز</button>
+      <div class="opts tf" style="margin-top:8px"><button class="opt" id="sglu">خزّنه جلوكوز</button><button class="opt" id="sstar">حوّله إلى نشا</button></div><div id="sfb2"></div>`;
+    const hexes = (n, c, chain) => Array.from({ length: n }, (_, i) => `<span style="display:inline-block;width:22px;height:20px;margin:${chain ? '0 -2px' : '4px'};background:${c};clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%)"></span>`).join('');
+    const draw = (mode) => { $('#sbox').innerHTML = `<div style="background:#DDEFD9;border:3px solid #3E7E3E;border-radius:40px;padding:14px">${mode === 'starch' ? `<div>${hexes(g, '#C9A227', true)}</div><div class="cap">حبيبات نشا لا تذوب داخل البلاستيدة</div>` : mode === 'dis' ? '<div class="cap">💧 ذاب الجلوكوز في ماء الخلية!</div>' : `<div>${hexes(g, '#FBE7A1')}</div><div class="cap">جلوكوز: ${ar(g)}</div>`}</div>`; };
+    draw();
+    $('#slight').onclick = () => { g = Math.min(g + 2, 10); draw(); };
+    $('#sglu').onclick = () => { if (!g) { toast('اصنع بعض الجلوكوز أولًا ☀️'); return; } tried.add('g'); draw('dis'); g = 0; $('#sfb2').innerHTML = '<div class="why bad">لاحظ: ذاب الجلوكوز في الماء! لهذا لا يخزّنه النبات جلوكوزًا؛ فهو قابل للذوبان، فيصعب تخزينه داخل الخلية.</div>'; if (tried.size === 2) ready(); };
+    $('#sstar').onclick = () => { if (!g) { toast('اصنع بعض الجلوكوز أولًا ☀️'); return; } tried.add('s'); draw('starch'); $('#sfb2').innerHTML = '<div class="why good">✓ حوّل النبات الجلوكوز إلى نشا: آلاف وحدات الجلوكوز متّصلة في سلسلة طويلة، لا تذوب، فتُخزَّن حبيبات داخل البلاستيدة.</div>'; if (tried.size === 2) ready(); };
+  },
+  iodineLab(root, ready) {
+    const ST = [['boil', '🔥 ضع الورقة في الماء المغليّ'], ['off', '🧯 أطفئ الموقد'], ['tong', '🥢 أخرج الورقة بالملقط'], ['eth', '🧪 ضع الورقة في الإيثانول (في ماء ساخن)'], ['rinse', '💧 اغمس الورقة في الماء وابسطها'], ['iod', '🟤 أضف محلول اليود']];
+    const LEAF = ['ورقة خضراء طازجة', 'ورقة طرية: تفكّكت أغشية خلاياها', 'ورقة طرية (الموقد مطفأ الآن)', 'ورقة خارج الماء', 'خرج الكلوروفيل إلى الإيثانول: الورقة باهتة', 'ورقة طرية باهتة مبسوطة على لوح', 'أزرق مائل للسواد: في الورقة نشا!'];
+    const COL = ['#5DBB63', '#6CC070', '#6CC070', '#7FC27F', '#E6E3B8', '#ECE8C6', '#1E2A4A'];
+    let i = 0, flame = true;
+    const MSG = { boil: 'غلي الورقة يفكّك أغشية خلاياها، فيصل اليود إلى النشا داخلها.', off: 'أطفأت الموقد قبل الإيثانول، لأنه سريع الاشتعال.', tong: 'أخرجتها بالملقط برفق، فهي طرية تتمزّق بسهولة.', eth: 'الإيثانول يُخرج الكلوروفيل، فيسهل رؤية لون اليود بعد ذلك.', rinse: 'الماء يجعل الورقة طرية بعد الإيثانول.', iod: 'تحوّل اللون إلى الأزرق المائل للسواد: الورقة فيها نشا.' };
+    root.innerHTML = `<p>نفّذ خطوات اختبار النشا بالترتيب الصحيح، وانتبه للسلامة!</p>
+      <div class="art"><svg viewBox="0 0 200 90" width="200"><path id="ilf" d="M20 80 Q30 10 180 15 Q160 85 20 80Z" fill="#5DBB63" stroke="#2E7D32"/></svg><div class="cap" id="ilt">${LEAF[0]}</div><div class="cap" id="ifl">🔥 الموقد مشتعل</div></div>
+      <div class="grid" id="ibtn">${shuffle(ST).map(([k, t]) => `<button class="opt" data-k="${k}">${t}</button>`).join('')}</div><div id="ifb"></div>`;
+    $('#ibtn').addEventListener('click', e => {
+      const b = e.target.closest('[data-k]'); if (!b || i >= ST.length) return; const k = b.dataset.k;
+      if (k === 'eth' && flame) { $('#ifb').innerHTML = '<div class="why bad">⚠️ تحذير سلامة! أطفئ الموقد أولًا؛ فالإيثانول سريع الاشتعال.</div>'; return; }
+      if (k !== ST[i][0]) { $('#ifb').innerHTML = '<div class="why bad">ليست هذه الخطوة الآن. فكّر: ماذا يجب أن يحدث قبلها؟</div>'; return; }
+      if (k === 'off') { flame = false; $('#ifl').textContent = '○ الموقد مطفأ'; }
+      i++; b.disabled = true; b.classList.add('right'); $('#ilf').setAttribute('fill', COL[i]); $('#ilt').textContent = LEAF[i];
+      $('#ifb').innerHTML = `<div class="why good">✓ ${MSG[k]}</div>`;
+      if (i === ST.length) ready();
+    });
   }
 });
 
