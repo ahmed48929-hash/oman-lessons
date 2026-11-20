@@ -1954,6 +1954,83 @@ Object.assign(LAB, {
 });
 
 /* =========================================================
+   إضافات الدرس ١-٥ (الجذور)
+   ========================================================= */
+function rootPlantSVG(o = {}) {
+  let g = '<rect x="0" y="120" width="260" height="90" fill="#E8D3B0"/><line x1="0" y1="120" x2="260" y2="120" stroke="#8a6d3b" stroke-width="2"/>';
+  g += '<path d="M130 120 V30" stroke="#4E8C3A" stroke-width="5"/>';
+  [[100, 50, -1], [160, 40, 1], [96, 82, -1], [164, 76, 1]].forEach(([x, y, d]) => g += `<ellipse cx="${x}" cy="${y}" rx="24" ry="10" fill="#5DBB63" stroke="#2E7D32" transform="rotate(${d * -20} ${x} ${y})"/>`);
+  g += '<circle cx="130" cy="24" r="9" fill="#F6C343" stroke="#C8962A"/>';
+  [[130, 120, 128, 200], [130, 128, 92, 182], [130, 128, 170, 186], [112, 150, 80, 160], [150, 152, 186, 160], [129, 170, 112, 196], [129, 170, 148, 198]].forEach(([a, b, c, d]) => g += `<path d="M${a} ${b} Q${(a + c) / 2 + 4} ${(b + d) / 2} ${c} ${d}" stroke="#B5895A" stroke-width="2.5" fill="none"/>`);
+  if (o.nums) [['١', 160, 40, 230, 36], ['٢', 130, 100, 230, 96], ['٣', 150, 160, 230, 166], ['٤', 130, 24, 230, 14]].forEach(([n, px, py, lx, ly]) => g += `<line x1="${px}" y1="${py}" x2="${lx - 10}" y2="${ly}" stroke="#333"/><circle cx="${lx}" cy="${ly}" r="10" fill="#fff" stroke="#333"/><text x="${lx}" y="${ly + 5}" text-anchor="middle" font-size="12" font-weight="700" fill="#222">${n}</text>`);
+  return `<svg viewBox="0 0 250 210" width="250" direction="ltr" font-family="sans-serif">${g}</svg>`;
+}
+function rootHairSVG(o = {}) {
+  let g = '<rect x="0" y="0" width="300" height="170" fill="#F3E6CC"/>';
+  [[40, 30, 16], [90, 20, 14], [150, 28, 17], [215, 22, 15], [270, 34, 16], [60, 80, 15], [128, 92, 14], [196, 84, 16], [258, 98, 15], [30, 130, 14], [100, 140, 15], [170, 140, 14], [240, 148, 16]].forEach(([x, y, r]) => g += `<circle cx="${x}" cy="${y}" r="${r}" fill="#C9A77A" stroke="#8a6d3b"/>`);
+  g += '<rect x="0" y="150" width="300" height="20" fill="#D9EED3" stroke="#3E7E3E"/>';
+  for (let x = 4; x < 300; x += 26) g += `<rect x="${x}" y="152" width="24" height="16" rx="3" fill="#EAF7E5" stroke="#6A8F5A"/>`;
+  g += '<path d="M150 152 V60 Q150 50 158 50 Q166 50 166 60 V152" fill="#EAF7E5" stroke="#3E7E3E" stroke-width="2"/><circle cx="158" cy="132" r="5" fill="#7E6BC4"/>';
+  if (o.arrows !== false) g += '<g stroke="#2A74B5" stroke-width="2.5" fill="none"><path d="M112 60 L144 70"/><path d="M138 64 L145 70 L137 74"/><path d="M204 60 L172 72"/><path d="M178 66 L171 72 L179 76"/></g>';
+  if (o.nums) [['١', 90, 20, 18], ['٢', 112, 56, 54], ['٣', 160, 90, 90], ['٤', 60, 160, 126]].forEach(([n, px, py, ly]) => g += `<line x1="${px}" y1="${py}" x2="300" y2="${ly}" stroke="#333"/><circle cx="310" cy="${ly}" r="10" fill="#fff" stroke="#333"/><text x="310" y="${ly + 5}" text-anchor="middle" font-size="12" font-weight="700" fill="#222">${n}</text>`);
+  return `<svg viewBox="0 0 ${o.nums ? 324 : 300} 172" width="${o.nums ? 320 : 300}" direction="ltr" font-family="sans-serif" role="img" aria-label="خلية شعيرة جذرية بين حبيبات التربة">${g}</svg>`;
+}
+function beanSVG(rot, grown) {
+  return `<g transform="rotate(${rot} 0 0)"><ellipse cx="0" cy="0" rx="14" ry="10" fill="#C7A16B" stroke="#7a5a2f"/><ellipse cx="${-6}" cy="0" rx="3" ry="5" fill="#5a3d1c"/></g>` + (grown ? `<path d="M0 8 Q${rot ? 8 : 2} 30 0 52" stroke="#E9E2C8" stroke-width="4" fill="none"/><path d="M0 -8 Q-4 -24 2 -40" stroke="#7CC36A" stroke-width="3" fill="none"/>` : '');
+}
+function beanJarSVG(grown, rots = [0, 90, 200]) {
+  const xs = [70, 150, 230];
+  return `<svg viewBox="0 0 300 190" width="300" direction="ltr"><rect x="20" y="10" width="260" height="170" rx="14" fill="#EAF6FB" stroke="#7FA7B8" stroke-width="3"/><rect x="28" y="18" width="244" height="154" rx="10" fill="#FFFBEF" stroke="#E2D7B8"/><rect x="28" y="150" width="244" height="22" fill="#CFE8F7" opacity=".8"/>${rots.map((r, i) => `<g transform="translate(${xs[i]} 70)">${beanSVG(r, grown)}</g>`).join('')}</svg>`;
+}
+Object.assign(ART, {
+  rootPlant: () => rootPlantSVG() + '<div class="cap">الجذور تحت سطح التربة قد تشغل مساحة تقارب ما فوقها</div>',
+  rootFns: () => `<div class="grid">${[['💧', 'امتصاص الماء والأملاح المعدنية ونقلها'], ['⚓', 'تثبيت النبات في التربة'], ['🥕', 'تخزين الغذاء'], ['❄️', 'البقاء حيّة في الطقس الصعب']].map(([i, t]) => `<div class="opt" style="cursor:default">${i} ${t}</div>`).join('')}</div>`,
+  storage: () => `<div style="display:flex;gap:10px;justify-content:center;font-size:44px">🥕 🍠 🫜</div><div class="cap">الجزر والبطاطا الحلوة والشمندر: جذور خزّن فيها النبات غذاءه</div>`,
+  rootHair: () => rootHairSVG() + '<div class="cap">خلية شعيرة جذرية تمتدّ بين حبيبات التربة وتمتصّ الماء</div>',
+  weather15: () => chainRow([['☀️', 'صيف جاف: تموت الأوراق'], ['🟫', 'الجذر حيّ تحت الأرض'], ['🌧️', 'يتحسّن الطقس'], ['🌱', 'تنمو أوراق جديدة']]),
+  beanBefore: () => beanJarSVG(false) + '<div class="cap">ثلاث بذور فول في اتجاهات مختلفة بين الورق الماص والكأس</div>',
+  beanAfter: () => beanJarSVG(true) + '<div class="cap">بعد أيام: الجذور كلها تتّجه إلى الأسفل، والسيقان إلى الأعلى</div>'
+});
+Object.assign(FIG, {
+  rootNum: () => rootPlantSVG({ nums: true }),
+  hairNum: () => rootHairSVG({ nums: true, arrows: false }),
+  twoRoots: () => `<div style="display:flex;gap:16px;justify-content:center;align-items:flex-end"><div><svg viewBox="0 0 100 120" width="100"><path d="M50 50 V5" stroke="#4E8C3A" stroke-width="4"/><ellipse cx="38" cy="18" rx="12" ry="6" fill="#5DBB63"/><ellipse cx="62" cy="24" rx="12" ry="6" fill="#5DBB63"/><line x1="0" y1="50" x2="100" y2="50" stroke="#8a6d3b"/>${[[50, 115], [25, 100], [75, 104], [38, 112], [62, 112]].map(([x, y]) => `<path d="M50 50 Q${(50 + x) / 2} ${(50 + y) / 2 - 6} ${x} ${y}" stroke="#B5895A" stroke-width="2" fill="none"/>`).join('')}</svg><div class="cap"><b>النبات (أ)</b></div></div><div><svg viewBox="0 0 100 120" width="100"><path d="M50 50 L40 5 M50 50 L50 2 M50 50 L60 5" stroke="#4E8C3A" stroke-width="3"/><line x1="0" y1="50" x2="100" y2="50" stroke="#8a6d3b"/><path d="M36 50 Q50 46 64 50 L52 116 Q50 120 48 116Z" fill="#F08A24" stroke="#B05A10"/></svg><div class="cap"><b>النبات (ب)</b></div></div></div>`,
+  hairBars: () => groupedBars([['بلا شعيرات', [8]], ['مع شعيرات', [32]]], 36, 4, 8, 'كمية الماء الممتصّة في ١٠ دقائق (وحدات)'),
+  beanAfter: () => beanJarSVG(true, [0, 90, 200]),
+  rootGrowth: () => groupedBars([['الأسبوع ١', [4]], ['الأسبوع ٢', [12]], ['الأسبوع ٣', [20]], ['الأسبوع ٤', [28]]], 32, 4, 8, 'طول الجذر الرئيسي (سم)')
+});
+Object.assign(LAB, {
+  rootFnLab(root, ready) {
+    const FN = { abs: '💧 امتصاص الماء والأملاح', anc: '⚓ تثبيت النبات', sto: '🥕 تخزين الغذاء', sur: '❄️ البقاء حيّة تحت الأرض' };
+    const SIT = [['wind', '🌬️ رياح قوية', 'هبّت رياح قوية على شجرة السدر.', 'anc', 'الجذور تثبّت النبات في التربة فلا يُقتلع.'], ['goat', '🐐 ماعز يشدّ الأوراق', 'ماعز يشدّ أوراق نبتة في الوادي.', 'anc', 'الجذور تثبّت النبتة فلا تُقتلع عند شدّ أوراقها.'], ['soil', '🟫 تربة رطبة', 'التربة حول النبات رطبة فيها ماء وأملاح معدنية.', 'abs', 'الجذور تمتصّ الماء والأملاح وتنقلها إلى أجزاء النبات.'], ['carrot', '🥕 غذاء زائد', 'صنع نبات الجزر غذاءً أكثر من حاجته.', 'sto', 'يخزّن الجزر الغذاء في جذره ليستفيد منه لاحقًا، ونأكله نحن أيضًا.'], ['dry', '☀️ صيف جاف', 'ماتت الأوراق فوق الأرض في صيف جاف.', 'sur', 'يبقى الجزء تحت الأرض حيًّا، وتنمو أوراق جديدة عندما يتحسّن الطقس.']];
+    const done = new Set(); let cur = null;
+    root.innerHTML = `<p>اختر موقفًا، ثم اختر وظيفة الجذور التي تساعد النبات فيه.</p><div class="grid" id="rsit">${SIT.map(s => `<button class="opt" data-s="${s[0]}">${s[1]}</button>`).join('')}</div><div id="rq"></div><div id="rfb"></div><div class="center">مواقف مكتملة: <b id="rdn">٠</b> من ${ar(SIT.length)}</div>`;
+    root.addEventListener('click', e => {
+      const s = e.target.closest('[data-s]'), f = e.target.closest('[data-f]');
+      if (s) { cur = SIT.find(x => x[0] === s.dataset.s); $('#rq').innerHTML = `<p><b>${cur[2]}</b> أيّ وظيفة للجذور تساعده؟</p><div class="grid">${Object.entries(FN).map(([k, t]) => `<button class="opt" data-f="${k}">${t}</button>`).join('')}</div>`; $('#rfb').innerHTML = ''; return; }
+      if (f && cur) {
+        if (f.dataset.f === cur[3]) { done.add(cur[0]); $(`[data-s=${cur[0]}]`, root).classList.add('right'); $('#rfb').innerHTML = `<div class="why good">✓ ${cur[4]}</div>`; $('#rq').innerHTML = ''; $('#rdn').textContent = ar(done.size); cur = null; if (done.size === SIT.length) ready(); }
+        else { f.classList.add('wrong'); $('#rfb').innerHTML = '<div class="why bad">فكّر مرة أخرى: ماذا يحتاج النبات في هذا الموقف؟</div>'; }
+      }
+    });
+  },
+  hairLab(root, ready) {
+    root.innerHTML = `<p>قارن بين جذر بلا شعيرات جذرية وجذر مغطّى بها: أيّهما يمتصّ ماءً أكثر في الوقت نفسه؟ (محاكاة)</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">${[['a', 'جذر بلا شعيرات', 0], ['b', 'جذر مع شعيرات', 1]].map(([k, t, h]) => `<div class="art"><svg viewBox="0 0 80 120" width="80"><path d="M40 0 V110" stroke="#B5895A" stroke-width="10" stroke-linecap="round"/>${h ? Array.from({ length: 14 }, (_, i) => `<path d="M40 ${10 + i * 7} l${i % 2 ? 16 : -16} ${3}" stroke="#D9C09A" stroke-width="2"/>`).join('') : ''}</svg><div class="cap">${t}</div><div style="height:10px;background:var(--line);border-radius:6px;overflow:hidden"><i id="hb${k}" style="display:block;height:100%;width:0;background:var(--water)"></i></div><div class="cap" id="hv${k}">٠ وحدة ماء</div></div>`).join('')}</div>
+      <button class="btn full blue" id="hgo">💧 ابدأ الامتصاص</button><div id="hfb"></div>`;
+    $('#hgo').onclick = () => { $('#hgo').disabled = true; let t = 0; const iv = setInterval(() => { t++; const a = t * 0.8, b = t * 3.2; $('#hba').style.width = a / 32 * 100 + '%'; $('#hbb').style.width = b / 32 * 100 + '%'; $('#hva').textContent = ar(Math.round(a)) + ' وحدة ماء'; $('#hvb').textContent = ar(Math.round(b)) + ' وحدة ماء'; if (t >= 10) { clearInterval(iv); $('#hfb').innerHTML = '<div class="why good">الجذر المغطّى بالشعيرات امتصّ ماءً أكثر بكثير، لأن الشعيرات الجذرية توفّر <b>سطحًا كبيرًا</b> للامتصاص.</div>'; $('#hgo').disabled = false; $('#hgo').textContent = '🔁 أعد التجربة'; ready(); } }, 180); timers.push(iv); };
+  },
+  beanLab(root, ready) {
+    const OR = [['up', 'السُّرة للأعلى', 270], ['side', 'السُّرة لليمين', 0], ['down', 'السُّرة للأسفل', 90], ['left', 'السُّرة لليسار', 180]];
+    const pick = [];
+    root.innerHTML = `<p>ضع ثلاث بذور فول منقوعة في اتجاهات مختلفة، ثم انتظر أيامًا وراقب اتجاه نمو الجذور.</p><div class="grid" id="bor">${OR.map(o => `<button class="opt" data-o="${o[0]}">${o[1]}</button>`).join('')}</div><div class="art" id="bjar">${beanJarSVG(false, [])}</div><button class="btn full warm" id="bgo" disabled>⏳ انتظر ٥ أيام (مكان دافئ، ورق رطب)</button><div id="bfb"></div>`;
+    const draw = g => { $('#bjar').innerHTML = beanJarSVG(g, pick.map(p => OR.find(o => o[0] === p)[2])); };
+    root.addEventListener('click', e => { const b = e.target.closest('[data-o]'); if (!b || pick.length >= 3) return; pick.push(b.dataset.o); b.classList.add('sel'); b.disabled = true; draw(false); if (pick.length < 3) { $('#bfb').innerHTML = `<div class="why good">وضعت ${ar(pick.length)} من ٣ بذور. اختر اتجاهًا مختلفًا.</div>`; } else { $('#bgo').disabled = false; $('#bfb').innerHTML = '<div class="why good">جاهز! انتظر حتى تنبت.</div>'; } });
+    $('#bgo').onclick = () => { $('#bgo').disabled = true; draw(true); $('#bfb').innerHTML = '<div class="why good">لاحظ: مهما كان اتجاه البذرة، <b>تتّجه الجذور إلى الأسفل</b> نحو الماء والتربة، وتتّجه السيقان إلى الأعلى نحو الضوء.</div>'; ready(); };
+  }
+});
+
+/* =========================================================
    الأحداث
    ========================================================= */
 const ACT = {
